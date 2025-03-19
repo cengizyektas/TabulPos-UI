@@ -14,27 +14,26 @@
             <div
                 class="mt-8 text-4xl font-extrabold leading-tight tracking-tight"
             >
-                Sign in
+                Giriş Yap
             </div>
             <div class="mt-0.5 flex items-baseline font-medium">
-                <div>Don't have an account?</div>
+                <div>Hesabınız yok mu?</div>
                 <a
                     class="ml-1 text-primary-500 hover:underline"
                     [routerLink]="['/sign-up']"
-                    >Sign up
+                    >Kayıt Ol
                 </a>
             </div>
 
-            <!-- Alert -->
+            <!-- Alert 
             <fuse-alert
                 class="mt-8"
                 [appearance]="'outline'"
                 [showIcon]="false"
                 [type]="'info'"
             >
-                You are browsing <strong>Fuse Demo</strong>. Click on the "Sign
-                in" button to access the Demo and Documentation.
-            </fuse-alert>
+                <strong>Fuse Demo</strong>'yu görüntülüyorsunuz. Demo ve Dokümantasyona erişmek için "Giriş Yap" butonuna tıklayın.
+            </fuse-alert>-->
 
             <!-- Alert -->
             @if (showAlert) {
@@ -53,21 +52,21 @@
             <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
                 <!-- Email field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Email address</mat-label>
+                    <mat-label>E-posta adresi</mat-label>
                     <input id="email" matInput [formControlName]="'email'" />
                     @if (signInForm.get('email').hasError('required')) {
-                        <mat-error> Email address is required </mat-error>
+                        <mat-error> E-posta adresi gerekli </mat-error>
                     }
                     @if (signInForm.get('email').hasError('email')) {
                         <mat-error>
-                            Please enter a valid email address
+                            Lütfen geçerli bir e-posta adresi girin
                         </mat-error>
                     }
                 </mat-form-field>
 
                 <!-- Password field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Password</mat-label>
+                    <mat-label>Şifre</mat-label>
                     <input
                         id="password"
                         matInput
@@ -98,7 +97,7 @@
                             ></mat-icon>
                         }
                     </button>
-                    <mat-error> Password is required </mat-error>
+                    <mat-error> Şifre gerekli </mat-error>
                 </mat-form-field>
 
                 <!-- Actions -->
@@ -110,12 +109,12 @@
                         [color]="'primary'"
                         [formControlName]="'rememberMe'"
                     >
-                        Remember me
+                        Beni Hatırla
                     </mat-checkbox>
                     <a
                         class="text-md font-medium text-primary-500 hover:underline"
                         [routerLink]="['/forgot-password']"
-                        >Forgot password?
+                        >Şifremi Unuttum
                     </a>
                 </div>
 
@@ -128,7 +127,7 @@
                     (click)="signIn()"
                 >
                     @if (!signInForm.disabled) {
-                        <span> Sign in </span>
+                        <span> Giriş Yap </span>
                     }
                     @if (signInForm.disabled) {
                         <mat-progress-spinner
@@ -141,7 +140,7 @@
                 <!-- Separator -->
                 <div class="mt-8 flex items-center">
                     <div class="mt-px flex-auto border-t"></div>
-                    <div class="text-secondary mx-2">Or continue with</div>
+                    <div class="text-secondary mx-2">Veya devam et</div>
                     <div class="mt-px flex-auto border-t"></div>
                 </div>
 
@@ -196,13 +195,11 @@
         <!-- Content -->
         <div class="relative z-10 w-full max-w-2xl">
             <div class="text-7xl font-bold leading-none text-gray-100">
-                <div>Welcome to</div>
-                <div>our community</div>
+                <div>Topluluğumuza</div>
+                <div>hoş geldiniz</div>
             </div>
             <div class="mt-6 text-lg leading-6 tracking-tight text-gray-400">
-                Fuse helps developers to build organized and well coded
-                dashboards full of beautiful and rich modules. Join us and start
-                building your application today.
+                Fuse, geliştiricilere düzenli ve iyi kodlanmış paneller oluşturmak için yardımcı olur. Bize katılın ve uygulamanızı bugün oluşturmaya başlayın.
             </div>
             <div class="mt-8 flex items-center">
                 <div class="flex flex-0 items-center -space-x-1.5">
@@ -224,7 +221,7 @@
                     />
                 </div>
                 <div class="ml-4 font-medium tracking-tight text-gray-400">
-                    More than 17k people joined us, it's your turn
+                    17 binden fazla kişi bize katıldı, şimdi sıra sizde
                 </div>
             </div>
         </div>
