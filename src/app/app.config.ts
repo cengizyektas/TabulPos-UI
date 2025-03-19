@@ -60,8 +60,8 @@ export const appConfig: ApplicationConfig = {
                         label: 'Turkish',
                     },
                 ],
-                defaultLang: 'en',
-                fallbackLang: 'en',
+                defaultLang: 'tr',
+                fallbackLang: 'tr',
                 reRenderOnLangChange: true,
                 prodMode: !isDevMode(),
             },
@@ -84,7 +84,7 @@ export const appConfig: ApplicationConfig = {
                 service: MockApiService,
             },
             fuse: {
-                layout: 'classy',
+                layout: 'classic',
                 scheme: 'light',
                 screens: {
                     sm: '600px',
@@ -92,31 +92,31 @@ export const appConfig: ApplicationConfig = {
                     lg: '1280px',
                     xl: '1440px',
                 },
-                theme: 'theme-default',
+                theme: 'theme-rose',
                 themes: [
                     {
                         id: 'theme-default',
-                        name: 'Default',
+                        name: 'Mavi',
                     },
                     {
                         id: 'theme-brand',
-                        name: 'Brand',
+                        name: 'Marka',
                     },
                     {
                         id: 'theme-teal',
-                        name: 'Teal',
+                        name: 'Camgöbeği',
                     },
                     {
                         id: 'theme-rose',
-                        name: 'Rose',
+                        name: 'Kırmızı',
                     },
                     {
                         id: 'theme-purple',
-                        name: 'Purple',
+                        name: 'Mor',
                     },
                     {
                         id: 'theme-amber',
-                        name: 'Amber',
+                        name: 'Kehribar',
                     },
                 ],
             },
