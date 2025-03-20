@@ -8,6 +8,24 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/example'
+    },
+    {
+        id: 'tanimlamalar',
+        title: 'Tanımlamalar',
+        type: 'collapsable',
+        icon: 'mat_solid:assignment_turned_in',
+        link: '/product-definition',
+        children: [
+            {
+                id: 'tanimlamalar.menu-urunler',
+                title: 'Menü / Ürünler',
+                type: 'basic',
+                icon: 'mat_solid:restaurant_menu',
+                link: '/product-definition',
+                exactMatch: true,
+            },
+           
+        ],
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [

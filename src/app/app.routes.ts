@@ -10,7 +10,7 @@ import { LayoutComponent } from 'app/layout/layout.component';
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
-    {path: '', pathMatch : 'full', redirectTo: 'example'},
+    {path: '', pathMatch : 'full', redirectTo: 'product-definition'},
 
     // Redirect signed-in user to the '/example'
     //
@@ -75,6 +75,7 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
+            {path: 'product-definition', loadChildren: () => import('app/modules/apps/urun-tanimlama/uruntanimlama.routes')},
         ]
     }
 ];

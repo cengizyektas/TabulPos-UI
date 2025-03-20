@@ -92,7 +92,7 @@ export const appConfig: ApplicationConfig = {
                     lg: '1280px',
                     xl: '1440px',
                 },
-                theme: 'theme-rose',
+                theme: 'theme-default',
                 themes: [
                     {
                         id: 'theme-default',
