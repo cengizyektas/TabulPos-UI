@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Label, Note } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
+import { Kategori, Note } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
 import { cloneDeep } from 'lodash-es';
 import {
     BehaviorSubject,
@@ -16,7 +16,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class NotesService {
     // Private
-    private _labels: BehaviorSubject<Label[] | null> = new BehaviorSubject(
+    private _labels: BehaviorSubject<Kategori[] | null> = new BehaviorSubject(
         null
     );
     private _note: BehaviorSubject<Note | null> = new BehaviorSubject(null);
@@ -34,7 +34,7 @@ export class NotesService {
     /**
      * Getter for labels
      */
-    get labels$(): Observable<Label[]> {
+    get labels$(): Observable<Kategori[]> {
         return this._labels.asObservable();
     }
 
@@ -59,9 +59,9 @@ export class NotesService {
     /**
      * Get labels
      */
-    getLabels(): Observable<Label[]> {
-        return this._httpClient.get<Label[]>('api/apps/notes/labels').pipe(
-            tap((response: Label[]) => {
+    getLabels(): Observable<Kategori[]> {
+        return this._httpClient.get<Kategori[]>('api/apps/notes/labels').pipe(
+            tap((response: Kategori[]) => {
                 this._labels.next(response);
             })
         );
@@ -72,9 +72,9 @@ export class NotesService {
      *
      * @param title
      */
-    addLabel(title: string): Observable<Label[]> {
+    addLabel(title: string): Observable<Kategori[]> {
         return this._httpClient
-            .post<Label[]>('api/apps/notes/labels', { title })
+            .post<Kategori[]>('api/apps/notes/labels', { title })
             .pipe(
                 tap((labels) => {
                     // Update the labels
@@ -88,9 +88,9 @@ export class NotesService {
      *
      * @param label
      */
-    updateLabel(label: Label): Observable<Label[]> {
+    updateLabel(label: Kategori): Observable<Kategori[]> {
         return this._httpClient
-            .patch<Label[]>('api/apps/notes/labels', { label })
+            .patch<Kategori[]>('api/apps/notes/labels', { label })
             .pipe(
                 tap((labels) => {
                     // Update the notes
@@ -107,9 +107,9 @@ export class NotesService {
      *
      * @param id
      */
-    deleteLabel(id: string): Observable<Label[]> {
+    deleteLabel(id: string): Observable<Kategori[]> {
         return this._httpClient
-            .delete<Label[]>('api/apps/notes/labels', { params: { id } })
+            .delete<Kategori[]>('api/apps/notes/labels', { params: { id } })
             .pipe(
                 tap((labels) => {
                     // Update the notes

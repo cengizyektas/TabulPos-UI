@@ -14,7 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { NotesService } from 'app/modules/apps/urun-tanimlama/uruntanim.service';
-import { Label } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
+import { Kategori } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
 import {
     Observable,
     Subject,
@@ -40,9 +40,9 @@ import {
     ],
 })
 export class NotesLabelsComponent implements OnInit, OnDestroy {
-    labels$: Observable<Label[]>;
+    labels$: Observable<Kategori[]>;
 
-    labelChanged: Subject<Label> = new Subject<Label>();
+    labelChanged: Subject<Kategori> = new Subject<Kategori>();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -69,7 +69,7 @@ export class NotesLabelsComponent implements OnInit, OnDestroy {
             .pipe(
                 takeUntil(this._unsubscribeAll),
                 debounceTime(500),
-                filter((label) => label.title.trim() !== ''),
+                filter((label) => label.baslik.trim() !== ''),
                 switchMap((label) => this._notesService.updateLabel(label))
             )
             .subscribe(() => {
@@ -103,7 +103,7 @@ export class NotesLabelsComponent implements OnInit, OnDestroy {
     /**
      * Update label
      */
-    updateLabel(label: Label): void {
+    updateLabel(label: Kategori): void {
         this.labelChanged.next(label);
     }
 

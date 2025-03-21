@@ -90,7 +90,7 @@
                             class="m-1 flex items-center rounded-full bg-gray-100 px-3 py-0.5 text-sm font-medium text-gray-500 dark:bg-gray-700 dark:text-gray-300"
                         >
                             <div>
-                                {{ label.title }}
+                                {{ label.baslik }}
                             </div>
                             <mat-icon
                                 class="ml-1 cursor-pointer icon-size-4"
@@ -131,7 +131,7 @@
                                     uploadImage(note, imageFileInput.files)
                                 "
                                 #imageFileInput
-                            />
+                            />                            
                             <label
                                 class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full hover:bg-gray-400 hover:bg-opacity-20 dark:hover:bg-black dark:hover:bg-opacity-5"
                                 for="image-file-input"
@@ -176,7 +176,7 @@
                                                 disableRipple
                                             ></mat-checkbox>
                                             <span class="ml-1 leading-5">{{
-                                                label.title
+                                                label.baslik
                                             }}</span>
                                         </span>
                                     </button>

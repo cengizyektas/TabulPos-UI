@@ -21,7 +21,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { NotesService } from 'app/modules/apps/urun-tanimlama/uruntanim.service';
-import { Label, Note, Task } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
+import { Kategori, Note, Task } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
 import {
     Observable,
     Subject,
@@ -52,7 +52,7 @@ import {
 })
 export class NotesDetailsComponent implements OnInit, OnDestroy {
     note$: Observable<Note>;
-    labels$: Observable<Label[]>;
+    labels$: Observable<Kategori[]>;
 
     noteChanged: Subject<Note> = new Subject<Note>();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -249,7 +249,7 @@ export class NotesDetailsComponent implements OnInit, OnDestroy {
      * @param note
      * @param label
      */
-    isNoteHasLabel(note: Note, label: Label): boolean {
+    isNoteHasLabel(note: Note, label: Kategori): boolean {
         return !!note.labels.find((item) => item.id === label.id);
     }
 
@@ -259,7 +259,7 @@ export class NotesDetailsComponent implements OnInit, OnDestroy {
      * @param note
      * @param label
      */
-    toggleLabelOnNote(note: Note, label: Label): void {
+    toggleLabelOnNote(note: Note, label: Kategori): void {
         // If the note already has the label
         if (this.isNoteHasLabel(note, label)) {
             note.labels = note.labels.filter((item) => item.id !== label.id);

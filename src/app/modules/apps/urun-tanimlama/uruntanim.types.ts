@@ -4,9 +4,9 @@ export interface Task {
     completed?: string;
 }
 
-export interface Label {
+export interface Kategori {
     id?: string;
-    title?: string;
+    baslik?: string;
 }
 
 export interface Note {
@@ -15,7 +15,7 @@ export interface Note {
     content?: string;
     tasks?: Task[];
     image?: string | null;
-    labels?: Label[];
+    labels?: Kategori[];
     archived?: boolean;
     createdAt?: string;
     updatedAt?: string | null;

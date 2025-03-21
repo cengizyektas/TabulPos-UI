@@ -19,7 +19,7 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NotesDetailsComponent } from 'app/modules/apps/urun-tanimlama/details/details.component';
 import { NotesLabelsComponent } from 'app/modules/apps/urun-tanimlama/labels/labels.component';
 import { NotesService } from 'app/modules/apps/urun-tanimlama/uruntanim.service';
-import { Label, Note } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
+import { Kategori, Note } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
 import { cloneDeep } from 'lodash-es';
 import {
     BehaviorSubject,
@@ -49,7 +49,7 @@ import {
     ],
 })
 export class NotesListComponent implements OnInit, OnDestroy {
-    labels$: Observable<Label[]>;
+    labels$: Observable<Kategori[]>;
     notes$: Observable<Note[]>;
 
     drawerMode: 'over' | 'side' = 'side';

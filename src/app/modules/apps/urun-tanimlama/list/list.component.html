@@ -37,7 +37,7 @@
                                 ">
                         <mat-icon class="text-current" [svgIcon]="'heroicons_outline:clipboard'"></mat-icon>
                         <div class="text-default ml-3 select-none leading-5">
-                            {{ label.title }}
+                            {{ label.baslik }}
                         </div>
                     </div>
                     }
@@ -50,7 +50,7 @@
                             filterStatus !== 'archived',
                     }" (click)="filterByArchived()" matRipple [matRippleDisabled]="filterStatus === 'archived'">
                         <mat-icon class="text-current" [svgIcon]="'heroicons_outline:archive-box'"></mat-icon>
-                        
+
                         <div class="text-default ml-3 select-none leading-5">
                             İptaller
                         </div>
@@ -101,10 +101,10 @@
                     <!-- New note -->
                     <button class="ml-4 min-w-10 px-1 sm:px-4" mat-flat-button color="'bg-accent'"
                         (click)="addNewNote()">
-                        <mat-icon class="icon-size-5"   [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                         <span class="ml-2 hidden sm:inline-block">Yeni Ürün Ekle</span>
                     </button>
-                 
+
                 </div>
 
                 <!-- Notes -->
@@ -140,6 +140,7 @@
                                         {{ note.title }}
                                     </div>
                                     }
+                                    asdasdas
                                     <!-- Content -->
                                     @if (note.content) {
                                     <div [class.text-xl]="
@@ -151,6 +152,7 @@
                                     }
                                     <!-- Tasks -->
                                     @if (note.tasks) {
+                                        
                                     <div class="space-y-1.5">
                                         @for (
                                         task of note.tasks;
@@ -196,10 +198,10 @@
                                         label
                                         )
                                         ) {
-                                        <div
+                                        <div                                        
                                             class="m-1 rounded-full bg-gray-100 px-3 py-0.5 text-sm font-medium text-gray-500 dark:bg-gray-700 dark:text-gray-300">
                                             {{
-                                            label.title
+                                            label.baslik
                                             }}
                                         </div>
                                         }
@@ -216,14 +218,14 @@
                 <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
                     <mat-icon class="icon-size-24" [svgIcon]="'heroicons_outline:document'"></mat-icon>
                     <div class="text-secondary mt-4 text-2xl font-semibold tracking-tight">
-                        There are no notes!
+                        Ürün Bulunamadı..
                     </div>
                 </div>
                 }
                 } @else {
                 <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
                     <div class="text-secondary mt-4 text-2xl font-semibold tracking-tight">
-                        Loading...
+                        Yükleniyor...
                     </div>
                 </div>
                 }
