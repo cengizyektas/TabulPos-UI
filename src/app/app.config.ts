@@ -80,7 +80,7 @@ export const appConfig: ApplicationConfig = {
         provideIcons(),
         provideFuse({
             mockApi: {
-                delay: 0,
+                delay: 1,
                 service: MockApiService,
             },
             fuse: {
