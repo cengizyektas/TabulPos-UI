@@ -13,7 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { NotesService } from 'app/modules/apps/urun-tanimlama/uruntanim.service';
+import { UrunService } from 'app/modules/apps/urun-tanimlama/uruntanim.service';
 import { Kategori } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
 import {
     Observable,
@@ -40,7 +40,7 @@ import {
     ],
 })
 export class NotesLabelsComponent implements OnInit, OnDestroy {
-    labels$: Observable<Kategori[]>;
+    kategoriler$: Observable<Kategori[]>;
 
     labelChanged: Subject<Kategori> = new Subject<Kategori>();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -50,7 +50,7 @@ export class NotesLabelsComponent implements OnInit, OnDestroy {
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _notesService: NotesService
+        private _urunservis: UrunService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ export class NotesLabelsComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
         // Get the labels
-        this.labels$ = this._notesService.labels$;
+        this.kategoriler$ = this._urunservis.kategoriler$;
 
         // Subscribe to label updates
         this.labelChanged
@@ -70,7 +70,7 @@ export class NotesLabelsComponent implements OnInit, OnDestroy {
                 takeUntil(this._unsubscribeAll),
                 debounceTime(500),
                 filter((label) => label.baslik.trim() !== ''),
-                switchMap((label) => this._notesService.updateLabel(label))
+                switchMap((label) => this._urunservis.updateKategori(label))
             )
             .subscribe(() => {
                 // Mark for check
@@ -97,7 +97,7 @@ export class NotesLabelsComponent implements OnInit, OnDestroy {
      * @param title
      */
     addLabel(title: string): void {
-        this._notesService.addLabel(title).subscribe();
+        this._urunservis.addKategori(title).subscribe();
     }
 
     /**
@@ -113,7 +113,7 @@ export class NotesLabelsComponent implements OnInit, OnDestroy {
      * @param id
      */
     deleteLabel(id: string): void {
-        this._notesService.deleteLabel(id).subscribe(() => {
+        this._urunservis.deleteKategori(id).subscribe(() => {
             // Mark for check
             this._changeDetectorRef.markForCheck();
         });

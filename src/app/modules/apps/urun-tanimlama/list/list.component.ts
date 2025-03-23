@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, NgClass,CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -16,10 +16,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FuseMasonryComponent } from '@fuse/components/masonry';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { NotesDetailsComponent } from 'app/modules/apps/urun-tanimlama/details/details.component';
 import { NotesLabelsComponent } from 'app/modules/apps/urun-tanimlama/labels/labels.component';
-import { NotesService } from 'app/modules/apps/urun-tanimlama/uruntanim.service';
-import { Kategori, Note } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
+import { UrunService } from 'app/modules/apps/urun-tanimlama/uruntanim.service';
+import { Kategori, Urun } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
 import { cloneDeep } from 'lodash-es';
 import {
     BehaviorSubject,
@@ -32,13 +31,14 @@ import {
 } from 'rxjs';
 
 @Component({
-    selector: 'notes-list',
-    templateUrl: './list.component.html',
+    selector: 'urunler-list',
+    templateUrl:'./list.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatSidenavModule,
         MatRippleModule,
+        CommonModule,
         NgClass,
         MatIconModule,
         MatButtonModule,
@@ -48,100 +48,83 @@ import {
         AsyncPipe,
     ],
 })
-export class NotesListComponent implements OnInit, OnDestroy {
-    labels$: Observable<Kategori[]>;
-    notes$: Observable<Note[]>;
+export class UrunlerListComponent implements OnInit, OnDestroy {
+    kategoriler$: Observable<Kategori[]>;
+    urunler$: Observable<Urun[]>;
 
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = true;
-    filter$: BehaviorSubject<string> = new BehaviorSubject('notes');
+    filter$: BehaviorSubject<string> = new BehaviorSubject('urunler');
     searchQuery$: BehaviorSubject<string> = new BehaviorSubject(null);
     masonryColumns: number = 4;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-    /**
-     * Constructor
-     */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _matDialog: MatDialog,
-        private _notesService: NotesService
+        private _urunlerservis: UrunService
     ) {}
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Accessors
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Get the filter status
-     */
     get filterStatus(): string {
         return this.filter$.value;
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
 
-    /**
-     * On init
-     */
     ngOnInit(): void {
-        // Request the data from the server
-        this._notesService.getLabels().subscribe();
-        this._notesService.getNotes().subscribe();
+        this._urunlerservis.getKategoriler().subscribe();
+        this._urunlerservis.getUrunler().subscribe();
 
-        // Get labels
-        this.labels$ = this._notesService.labels$;
+        this.kategoriler$ = this._urunlerservis.kategoriler$;
 
-        // Get notes
-        this.notes$ = combineLatest([
-            this._notesService.notes$,
+       
+        this.urunler$ =combineLatest([
+            this._urunlerservis.urunler$,
             this.filter$,
             this.searchQuery$,
         ]).pipe(
             distinctUntilChanged(),
-            map(([notes, filter, searchQuery]) => {
-                if (!notes || !notes.length) {
+            map(([urunler, filter, searchQuery]) => {
+                if (!urunler || !urunler.length) {
                     return;
                 }
 
                 // Store the filtered notes
-                let filteredNotes = notes;
+                let filteredUrunler = urunler;
 
                 // Filter by query
                 if (searchQuery) {
                     searchQuery = searchQuery.trim().toLowerCase();
-                    filteredNotes = filteredNotes.filter(
-                        (note) =>
-                            note.title.toLowerCase().includes(searchQuery) ||
-                            note.content.toLowerCase().includes(searchQuery)
+                    filteredUrunler = filteredUrunler.filter(
+                        (urun) =>
+                            urun.urunAdi.toLowerCase().includes(searchQuery) ||
+                        urun.urunKodu.toLowerCase().includes(searchQuery)
                     );
                 }
 
                 // Show all
-                if (filter === 'notes') {
+                if (filter === 'urunler') {
                     // Do nothing
                 }
 
-                // Show archive
-                const isArchive = filter === 'archived';
-                filteredNotes = filteredNotes.filter(
-                    (note) => note.archived === isArchive
+                const isArchive = filter === 'aktif';
+                filteredUrunler = filteredUrunler.filter(
+                    (urun) => urun.aktif != isArchive
                 );
 
                 // Filter by label
-                if (filter.startsWith('label:')) {
-                    const labelId = filter.split(':')[1];
-                    filteredNotes = filteredNotes.filter(
-                        (note) =>
-                            !!note.labels.find((item) => item.id === labelId)
+
+              
+                if (filter.startsWith('kategori:')) {
+                     const labelId = filter.split(':')[1];
+                    filteredUrunler = filteredUrunler.filter(
+                        (urun) =>
+                            urun.kategoriId.includes(labelId)
                     );
                 }
 
-                return filteredNotes;
+                return filteredUrunler;
             })
         );
 
@@ -193,18 +176,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    /**
-     * Add a new note
-     */
-    addNewNote(): void {
-        this._matDialog.open(NotesDetailsComponent, {
-            autoFocus: false,
-            data: {
-                note: {},
-            },
-        });
-    }
-
+ 
     /**
      * Open the edit labels dialog
      */
@@ -212,23 +184,8 @@ export class NotesListComponent implements OnInit, OnDestroy {
         this._matDialog.open(NotesLabelsComponent, { autoFocus: false });
     }
 
-    /**
-     * Open the note dialog
-     */
-    openNoteDialog(note: Note): void {
-        this._matDialog.open(NotesDetailsComponent, {
-            autoFocus: false,
-            data: {
-                note: cloneDeep(note),
-            },
-        });
-    }
-
-    /**
-     * Filter by archived
-     */
     filterByArchived(): void {
-        this.filter$.next('archived');
+        this.filter$.next('aktif');
     }
 
     /**
@@ -237,7 +194,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
      * @param labelId
      */
     filterByLabel(labelId: string): void {
-        const filterValue = `label:${labelId}`;
+        const filterValue = `kategori:${labelId}`;
         this.filter$.next(filterValue);
     }
 
@@ -254,7 +211,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
      * Reset filter
      */
     resetFilter(): void {
-        this.filter$.next('notes');
+        this.filter$.next('urunler');
     }
 
     /**
@@ -263,7 +220,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
      * @param index
      * @param item
      */
-    trackByFn(index: number, item: any): any {
+    trackByFn(index: number, item: any): any {       
         return item.id || index;
     }
 }

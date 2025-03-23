@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { UrunTanimlamaComponent } from './uruntanimlama.component';
-import { NotesListComponent } from './list/list.component';
+import { UrunlerListComponent } from './list/list.component';
 export default [
     {
         path: '',
@@ -8,7 +8,7 @@ export default [
         children: [
             {
                 path: '',
-                component: NotesListComponent,
+                component: UrunlerListComponent,
             },
         ],
     },

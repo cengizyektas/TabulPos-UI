@@ -1,0 +1,76 @@
+<div class="flex flex-col bg-white rounded-xs w-full mx-auto">
+    <h2 class="text-2xl font-semibold mb-2">Müşteri Ekle</h2>
+    <p class="text-gray-600 mb-3">Yeni eklemek istediğiniz müşteri bilgilerini giriniz</p>
+
+    <form class="flex flex-col gap-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+            <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Adı</label>
+                <mat-form-field>
+                    <input matInput [placeholder]="'Adı'" class="text-sm font-medium" />
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Soyadı</label>
+                <mat-form-field>
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+                    <input matInput [placeholder]="'Soyadı'" class="text-sm font-medium" />
+                </mat-form-field>
+
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
+            <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Telefon</label>
+                <mat-form-field class="flex-auto">
+                    <input matInput [placeholder]="'Telefon numarası giriniz.'" class="text-sm font-medium" />
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:device-phone-mobile'"></mat-icon>
+                </mat-form-field>
+            </div>
+            
+            <div class="flex flex-col">
+                <label class="mb-1 text-sm font-medium text-gray-700">Telefon -2</label>
+                <mat-form-field class="flex-auto">
+                    <input class="px-3 py-2" matInput [placeholder]="'Telefon numarası giriniz.'"  class="text-sm font-medium" />
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:device-phone-mobile'"></mat-icon>
+                </mat-form-field>
+            </div>
+
+
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 text-sm font-medium text-gray-700">Açılış Bakiyesi</label>
+            <mat-form-field class="flex-auto">
+                <input class="px-3 py-2" matInput [placeholder]="'Telefon - 2'" value="0" class="text-sm font-medium"  />
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_outline:currency-dollar'"></mat-icon>
+            </mat-form-field>
+
+        </div>
+
+        <div class="flex items-center gap-2 text-red-600">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+            <span class="text-sm">Tanımlı adres bulunamadı. Yeni adres ekleyebilirsiniz</span>
+        </div>
+
+        <button type="button" class="flex items-center gap-2 text-red-600 w-fit">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <span>Yeni Adres Ekle</span>
+        </button>
+
+        <div class="flex justify-between mt-4">
+            <button type="button" class="px-6 py-2 text-red-600 rounded hover:bg-red-50">İptal</button>
+            <button type="submit" class="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700">Ekle</button>
+        </div>
+    </form>
+</div>

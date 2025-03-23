@@ -1,13 +1,13 @@
 {
-    "name": "fuse-angular",
+    "name": "Tabul POS 1.0",
     "version": "21.0.0",
-    "description": "Fuse - Angular Admin Template and Starter Project",
+    "description": "Tabul POS 1.0",
     "author": "https://themeforest.net/user/srcn",
     "license": "https://themeforest.net/licenses/standard",
     "private": true,
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
+        "start": "ng serve --port 2907",
         "build": "ng build",
         "watch": "ng build --watch --configuration development",
         "test": "ng test"
@@ -25,6 +25,7 @@
         "@angular/platform-browser-dynamic": "19.0.5",
         "@angular/router": "19.0.5",
         "@jsverse/transloco": "7.5.1",
+        "angular2-draggable": "^16.0.0",
         "apexcharts": "4.3.0",
         "crypto-js": "4.2.0",
         "highlight.js": "11.11.1",

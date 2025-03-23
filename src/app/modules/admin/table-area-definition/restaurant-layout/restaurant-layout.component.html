@@ -1,0 +1,76 @@
+<div class="restaurant-layout-container">
+  <div class="layout-header">
+    <div class="layout-actions">
+      <button class="min-w-10  text-primary-600" mat-flat-button [color]="'danger'" (click)="addSquareTable()">
+        <mat-icon class="icon-size-5" [svgIcon]="'mat_solid:add_box'"></mat-icon>
+        <span class="ml-2 hidden sm:inline-block">Kare Masa Ekle</span>
+      </button>
+      <button class="min-w-10  text-primary-600" mat-flat-button [color]="'danger'" (click)="addRoundTable()">
+        <mat-icon class="icon-size-5" [svgIcon]="'mat_solid:add_circle'"></mat-icon>
+        <span class="ml-2 hidden sm:inline-block">Yuvarlak Masa Ekle</span>
+      </button>
+      <button class="min-w-10  text-primary-600"   color="warn" mat-flat-button [color]="'danger'" [disabled]="!selectedTable" (click)="deleteSelectedTable()">
+        <mat-icon class="icon-size-5" [svgIcon]="'mat_solid:delete'"></mat-icon>
+        <span class="ml-2 hidden sm:inline-block">Masayı Sil</span>
+      </button>
+  
+
+    </div>
+  </div>
+
+  <div class="layout-area p-3">
+    <!-- Her bir masa için -->
+    <div *ngFor="let table of restaurantArea.tables" class="table-item" [class.table-round]="isRoundTable(table)"
+      [class.table-square]="!isRoundTable(table)" [class.selected]="selectedTable?.id === table.id"
+      [style.width.px]="table.width" [style.height.px]="table.height"
+      [style.transform]="'translate(' + table.x + 'px,' + table.y + 'px)'" [position]="{x: table.x, y: table.y}"
+      [ngStyle]="{'z-index': table.id === selectedTable?.id ? 2 : 1}" ngDraggable [preventDefaultEvent]="true"
+      [zIndex]="table.id === selectedTable?.id ? 2 : 1" (endOffset)="onMoveEnd ($event, table)"
+      (click)="selectTable(table)" ngResizable [rzHandles]="'all'" x [rzMinWidth]="50" [rzMinHeight]="50"
+      [rzMaxWidth]="450" [rzMaxHeight]="450" (rzStop)="onTableResized($event, table)">
+      <div class="table-content">
+        <div class="table-name">{{ table.name }}</div>
+        <div class="table-capacity" *ngIf="table.capacity">{{ table.capacity }} Kişilik</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout-details" *ngIf="selectedTable">
+    <h3>Masa Detayları</h3>
+    <div class="detail-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Masa Adı</mat-label>
+        <input matInput [(ngModel)]="selectedTable.name">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Kapasite</mat-label>
+        <input matInput type="number" [(ngModel)]="selectedTable.capacity">
+      </mat-form-field>
+
+      <div class="position-details">
+        <mat-form-field appearance="outline">
+          <mat-label>X Konumu</mat-label>
+          <input matInput type="number" [(ngModel)]="selectedTable.x">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Y Konumu</mat-label>
+          <input matInput type="number" [(ngModel)]="selectedTable.y">
+        </mat-form-field>
+      </div>
+
+      <div class="size-details">
+        <mat-form-field appearance="outline">
+          <mat-label>Genişlik</mat-label>
+          <input matInput type="number" [(ngModel)]="selectedTable.width">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Yükseklik</mat-label>
+          <input matInput type="number" [(ngModel)]="selectedTable.height">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>

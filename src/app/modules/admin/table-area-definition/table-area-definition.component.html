@@ -1,0 +1,50 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- Main -->
+    <div class="flex-auto p-3 sm:p-3 ">
+        <div class="flex min-w-0 flex-auto flex-col ">
+            <!-- Main -->
+            <div class="flex-auto  sm:p-7  bg-white dark:bg-gray-800 shadow-md rounded-sm">
+                <div class="flex items-center flex-wrap gap-2">
+                    <!-- Icon and Title -->
+                    <div class="flex items-center gap-4 flex-1">
+                        <div
+                            class="min-w-10 sm:px-4 sm:py-4 bg-gradient-to-r from-red-400 via-red-500 to-red-600 rounded-sm">
+                            <mat-icon svgIcon="mat_solid:view_quilt" class="w-12 h-12 text-white"></mat-icon>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-semibold leading-none tracking-tight">Masa / Bölgeler</div>
+                            <div class="text-sm text-secondary ml-0.5 font-medium">
+                                Restoranınıza ait masa ve bölgeleri bu ekrandan düzenleyebilirsiniz.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex flex-wrap gap-2">
+                        <button class="min-w-10 px-4 py-2 text-primary-600" mat-flat-button [color]="'danger'">
+                            <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:arrow_downward'"></mat-icon>
+                            <span class="ml-2 hidden sm:inline-block">Yeni Bölge Ekle</span>
+                        </button>
+                        <button class="min-w-10 px-4 py-2 text-primary-600" mat-flat-button [color]="'danger'">
+                            <mat-icon class="icon-size-5" [svgIcon]="'mat_solid:reset_tv'"></mat-icon>
+                            <span class="ml-2 hidden sm:inline-block">Bölge Düzenini Sıfırla</span>
+                        </button>
+                        <button class="min-w-10 px-4 py-2 text-primary-600" mat-flat-button [color]="'danger'">
+                            <mat-icon class="icon-size-5" [svgIcon]="'mat_solid:view_module'"></mat-icon>
+                            <span class="ml-2 hidden sm:inline-block">Toplu Masa Ekle</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-2">
+                    <mat-tab-group [disableRipple]="true" mat-stretch-tabs="false">
+                      <mat-tab *ngFor="let area of restaurantData.restaurantAreas" [label]="area.name">
+                        <app-restaurant-layout [restaurantArea]="area"></app-restaurant-layout>
+                      </mat-tab>
+                    </mat-tab-group>
+                  </div>
+            </div>
+        </div>
+
+    </div>
+</div>

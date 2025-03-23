@@ -1,0 +1,26 @@
+.mat-mdc-unelevated-button {
+    padding: 0 20px !important;
+    border-radius: 5px !important;
+}
+
+.card-icon {
+    border-radius: 3px;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(255, 221, 170, .253);
+    background: linear-gradient(60deg, #f69322, #d32f2f);
+    background: linear-gradient(60deg, var(--bg-secondary), var(--bg-primary));
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    width: 70px;
+    height: 75px;
+    position: relative;
+    top: -30px;
+    margin-right: 10px;
+}
+
+.mat-row:hover {
+    background-color: #f0f0f0 !important; /* Hover rengi */
+    cursor: pointer !important; /* İmleci pointer yap */
+  }

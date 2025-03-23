@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Kategori, Note } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
-import { cloneDeep } from 'lodash-es';
+import {
+    Kategori,
+    Urun,
+} from 'app/modules/apps/urun-tanimlama/uruntanim.types';
 import {
     BehaviorSubject,
     Observable,
@@ -14,42 +16,39 @@ import {
 } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class NotesService {
+export class UrunService {
     // Private
-    private _labels: BehaviorSubject<Kategori[] | null> = new BehaviorSubject(
+    private _kategoriler: BehaviorSubject<Kategori[] | null> =
+        new BehaviorSubject(null);
+    private _Urun: BehaviorSubject<Urun | null> = new BehaviorSubject(null);
+    private _urunler: BehaviorSubject<Urun[] | null> = new BehaviorSubject(
         null
     );
-    private _note: BehaviorSubject<Note | null> = new BehaviorSubject(null);
-    private _notes: BehaviorSubject<Note[] | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
      */
     constructor(private _httpClient: HttpClient) {}
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Accessors
-    // -----------------------------------------------------------------------------------------------------
-
     /**
      * Getter for labels
      */
-    get labels$(): Observable<Kategori[]> {
-        return this._labels.asObservable();
+    get kategoriler$(): Observable<Kategori[]> {
+        return this._kategoriler.asObservable();
     }
 
     /**
      * Getter for notes
      */
-    get notes$(): Observable<Note[]> {
-        return this._notes.asObservable();
+    get urunler$(): Observable<Urun[]> {
+        return this._urunler.asObservable();
     }
 
     /**
      * Getter for note
      */
-    get note$(): Observable<Note> {
-        return this._note.asObservable();
+    get note$(): Observable<Urun> {
+        return this._Urun.asObservable();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -59,12 +58,14 @@ export class NotesService {
     /**
      * Get labels
      */
-    getLabels(): Observable<Kategori[]> {
-        return this._httpClient.get<Kategori[]>('api/apps/notes/labels').pipe(
-            tap((response: Kategori[]) => {
-                this._labels.next(response);
-            })
-        );
+    getKategoriler(): Observable<Kategori[]> {
+        return this._httpClient
+            .get<Kategori[]>('api/apps/notes/kategoriler')
+            .pipe(
+                tap((response: Kategori[]) => {
+                    this._kategoriler.next(response);
+                })
+            );
     }
 
     /**
@@ -72,13 +73,13 @@ export class NotesService {
      *
      * @param title
      */
-    addLabel(title: string): Observable<Kategori[]> {
+    addKategori(title: string): Observable<Kategori[]> {
         return this._httpClient
-            .post<Kategori[]>('api/apps/notes/labels', { title })
+            .post<Kategori[]>('api/apps/notes/kategoriler', { title })
             .pipe(
                 tap((labels) => {
                     // Update the labels
-                    this._labels.next(labels);
+                    this._kategoriler.next(labels);
                 })
             );
     }
@@ -88,16 +89,16 @@ export class NotesService {
      *
      * @param label
      */
-    updateLabel(label: Kategori): Observable<Kategori[]> {
+    updateKategori(label: Kategori): Observable<Kategori[]> {
         return this._httpClient
-            .patch<Kategori[]>('api/apps/notes/labels', { label })
+            .patch<Kategori[]>('api/apps/notes/kategoriler', { label })
             .pipe(
                 tap((labels) => {
                     // Update the notes
-                    this.getNotes().subscribe();
+                    this.getUrunler().subscribe();
 
                     // Update the labels
-                    this._labels.next(labels);
+                    this._kategoriler.next(labels);
                 })
             );
     }
@@ -107,16 +108,18 @@ export class NotesService {
      *
      * @param id
      */
-    deleteLabel(id: string): Observable<Kategori[]> {
+    deleteKategori(id: string): Observable<Kategori[]> {
         return this._httpClient
-            .delete<Kategori[]>('api/apps/notes/labels', { params: { id } })
+            .delete<
+                Kategori[]
+            >('api/apps/notes/kategoriler', { params: { id } })
             .pipe(
                 tap((labels) => {
                     // Update the notes
-                    this.getNotes().subscribe();
+                    this.getUrunler().subscribe();
 
                     // Update the labels
-                    this._labels.next(labels);
+                    this._kategoriler.next(labels);
                 })
             );
     }
@@ -124,10 +127,10 @@ export class NotesService {
     /**
      * Get notes
      */
-    getNotes(): Observable<Note[]> {
-        return this._httpClient.get<Note[]>('api/apps/notes/all').pipe(
-            tap((response: Note[]) => {
-                this._notes.next(response);
+    getUrunler(): Observable<Urun[]> {
+        return this._httpClient.get<Urun[]>('api/apps/notes/all').pipe(
+            tap((response: Urun[]) => {
+                this._urunler.next(response);
             })
         );
     }
@@ -135,113 +138,28 @@ export class NotesService {
     /**
      * Get note by id
      */
-    getNoteById(id: string): Observable<Note> {
-        return this._notes.pipe(
+    getUrunById(id: string): Observable<Urun> {
+        return this._urunler.pipe(
             take(1),
-            map((notes) => {
+            map((urunler) => {
                 // Find within the folders and files
-                const note = notes.find((value) => value.id === id) || null;
+                const urun =urunler.find((value) => value.kategoriId === id) || null; 
 
                 // Update the note
-                this._note.next(note);
+                this._Urun.next(urun);
 
                 // Return the note
-                return note;
+                return urun;
             }),
-            switchMap((note) => {
-                if (!note) {
+            switchMap((urun) => {
+                if (!urun) {
                     return throwError(
-                        'Could not found the note with id of ' + id + '!'
+                        'Ürün Bılınamadı ' + id + '!'
                     );
                 }
 
-                return of(note);
+                return of(urun);
             })
         );
-    }
-
-    /**
-     * Add task to the given note
-     *
-     * @param note
-     * @param task
-     */
-    addTask(note: Note, task: string): Observable<Note> {
-        return this._httpClient
-            .post<Note>('api/apps/notes/tasks', {
-                note,
-                task,
-            })
-            .pipe(
-                switchMap(() =>
-                    this.getNotes().pipe(
-                        switchMap(() => this.getNoteById(note.id))
-                    )
-                )
-            );
-    }
-
-    /**
-     * Create note
-     *
-     * @param note
-     */
-    createNote(note: Note): Observable<Note> {
-        return this._httpClient
-            .post<Note>('api/apps/notes', { note })
-            .pipe(
-                switchMap((response) =>
-                    this.getNotes().pipe(
-                        switchMap(() =>
-                            this.getNoteById(response.id).pipe(
-                                map(() => response)
-                            )
-                        )
-                    )
-                )
-            );
-    }
-
-    /**
-     * Update the note
-     *
-     * @param note
-     */
-    updateNote(note: Note): Observable<Note> {
-        // Clone the note to prevent accidental reference based updates
-        const updatedNote = cloneDeep(note) as any;
-
-        // Before sending the note to the server, handle the labels
-        if (updatedNote.labels.length) {
-            updatedNote.labels = updatedNote.labels.map((label) => label.id);
-        }
-
-        return this._httpClient
-            .patch<Note>('api/apps/notes', { updatedNote })
-            .pipe(
-                tap((response) => {
-                    // Update the notes
-                    this.getNotes().subscribe();
-                })
-            );
-    }
-
-    /**
-     * Delete the note
-     *
-     * @param note
-     */
-    deleteNote(note: Note): Observable<boolean> {
-        return this._httpClient
-            .delete<boolean>('api/apps/notes', { params: { id: note.id } })
-            .pipe(
-                map((isDeleted: boolean) => {
-                    // Update the notes
-                    this.getNotes().subscribe();
-
-                    // Return the deleted status
-                    return isDeleted;
-                })
-            );
     }
 }

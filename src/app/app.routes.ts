@@ -75,7 +75,11 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
+            {path: 'restaurant-customers', loadChildren: () => import('app/modules/admin/customers/customers.routes')},
+            {path: 'restaurant-discounts', loadChildren: () => import('app/modules/admin/discounts/discounts.routes')},
+            {path: 'restaurant-complimentary', loadChildren: () => import('app/modules/admin/complimentary/complimentary.routes')},
             {path: 'product-definition', loadChildren: () => import('app/modules/apps/urun-tanimlama/uruntanimlama.routes')},
+            {path: 'table-area-definition', loadChildren: () => import('app/modules/admin/table-area-definition/table-area-definition.routes')},
         ]
     }
 ];

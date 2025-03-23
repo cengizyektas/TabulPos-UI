@@ -29,13 +29,13 @@
     </mat-form-field>
     <!-- Labels -->
     <div class="mt-4 flex flex-col">
-        @if (labels$ | async; as labels) {
-            @for (label of labels; track trackByFn($index, label)) {
+        @if (kategoriler$ | async; as kategoriler) {
+            @for (kategori of kategoriler; track trackByFn($index, kategori)) {
                 <mat-form-field class="fuse-mat-dense w-full">
                     <button
                         mat-icon-button
                         matPrefix
-                        (click)="deleteLabel(label.id)"
+                        (click)="deleteLabel(kategori.id)"
                     >
                         <mat-icon
                             class="icon-size-5"
@@ -44,8 +44,8 @@
                     </button>
                     <input
                         [autocomplete]="'off'"
-                        [(ngModel)]="label.title"
-                        (input)="updateLabel(label)"
+                        [(ngModel)]="kategori.baslik"
+                        (input)="updateLabel(kategori)"
                         required
                         matInput
                     />

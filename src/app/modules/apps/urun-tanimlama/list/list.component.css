@@ -1,0 +1,10 @@
+.bg-card {
+    position: relative;
+    padding-bottom: 2rem; /* Footer için yer açar */
+}
+
+.bg-card .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

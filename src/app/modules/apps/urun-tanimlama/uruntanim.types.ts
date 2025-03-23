@@ -9,14 +9,26 @@ export interface Kategori {
     baslik?: string;
 }
 
-export interface Note {
-    id?: string;
-    title?: string;
-    content?: string;
-    tasks?: Task[];
-    image?: string | null;
-    labels?: Kategori[];
-    archived?: boolean;
-    createdAt?: string;
-    updatedAt?: string | null;
-}
+export interface Urun {
+    urunId: number;
+    firmaId: number;
+    urunKodu: string;
+    barkod?: string | null;
+    urunAdi: string;
+    aciklama?: string | null;
+    kategoriId?: string | null;
+    birimId: number;
+    maliyet?: number | null;
+    fiyat?: number | null;
+    vergiOrani?: number | null;
+    resim?: string | null;
+    tarif?: string | null;
+    hazirlanmaSuresi?: number | null;
+    aktif?: boolean;
+    stokTakibiYapiliyorMu?: boolean;
+    minStokSeviyesi?: number | null;
+    sira?: number;
+    olusturulmaTarihi?: Date;
+    guncellenmeTarihi?: Date;
+    kategori?: Kategori;
+  }

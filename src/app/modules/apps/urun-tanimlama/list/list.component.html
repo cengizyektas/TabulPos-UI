@@ -10,34 +10,34 @@
 
                 <div class="space-y-2">
                     <!-- Edit Labels -->
-                    <div class=" flex cursor-pointer items-center rounded-full px-4 py-2 font-medium hover:bg-hover"
+                    <div class=" flex cursor-pointer items-center rounded-full px-4 py-2 font-medium hover:bg-hover bg-white"
                         [ngClass]="{
                         'bg-gray-200 text-primary dark:bg-gray-700 dark:text-primary-400':
-                            filterStatus === 'notes',
+                            filterStatus === 'urunler',
                         'text-hint hover:bg-hover':
-                            filterStatus !== 'notes',
+                            filterStatus !== 'urunler',
                     }" (click)="openEditLabelsDialog()" matRipple>
                         <mat-icon class="text-hint" svgIcon="heroicons_outline:plus"></mat-icon>
-                        <div class="ml-3 select-none leading-5">
+                        <div class="ml-3 select-none leading-5 text-default">
                             Kategori Ekle
                         </div>
                     </div>
 
 
                     <!-- Labels -->
-                    @if (labels$ | async; as labels) {
-                    @for (label of labels; track trackByFn($index, label)) {
+                    @if (kategoriler$ | async; as kategoriler) {
+                    @for (kategori of kategoriler; track trackByFn($index, kategori)) {
                     <div class="relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium" [ngClass]="{
                                     'bg-gray-200 text-primary dark:bg-gray-700 dark:text-primary-400':
-                                        'label:' + label.id === filterStatus,
+                                        'label:' + kategori.id === filterStatus,
                                     'text-hint hover:bg-hover':
-                                        'label:' + label.id !== filterStatus,
-                                }" (click)="filterByLabel(label.id)" matRipple [matRippleDisabled]="
-                                    'label:' + label.id === filterStatus
+                                        'label:' + kategori.id !== filterStatus,
+                                }" (click)="filterByLabel(kategori.id)" matRipple [matRippleDisabled]="
+                                    'label:' + kategori.id === filterStatus
                                 ">
                         <mat-icon class="text-current" [svgIcon]="'heroicons_outline:clipboard'"></mat-icon>
                         <div class="text-default ml-3 select-none leading-5">
-                            {{ label.baslik }}
+                            {{ kategori.baslik }}
                         </div>
                     </div>
                     }
@@ -45,19 +45,18 @@
                     <!-- Archive -->
                     <div class="relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium" [ngClass]="{
                         'bg-gray-200 text-primary dark:bg-gray-700 dark:text-primary-400':
-                            filterStatus === 'archived',
+                            filterStatus === 'aktif',
                         'text-hint hover:bg-hover':
-                            filterStatus !== 'archived',
-                    }" (click)="filterByArchived()" matRipple [matRippleDisabled]="filterStatus === 'archived'">
+                            filterStatus !== 'aktif',
+                    }" (click)="filterByArchived()" matRipple [matRippleDisabled]="filterStatus === 'aktif'">
                         <mat-icon class="text-current" [svgIcon]="'heroicons_outline:archive-box'"></mat-icon>
 
                         <div class="text-default ml-3 select-none leading-5">
                             İptaller
                         </div>
                     </div>
-                    <!-- Notes -->
                     <div class="relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium"
-                        (click)="resetFilter()" matRipple [matRippleDisabled]="filterStatus === 'notes'">
+                        (click)="resetFilter()" matRipple [matRippleDisabled]="filterStatus === 'urunler'">
                         <mat-icon class="text-hint" svgIcon="heroicons_outline:squares-2x2"></mat-icon>
                         <div class="text-default ml-3 select-none leading-5">
                             Tüm Kategoriler
@@ -86,132 +85,70 @@
                         </mat-form-field>
                     </div>
                     <!-- New note -->
-                    <button class="ml-4 min-w-10 px-1 sm:px-4 no-radius" mat-flat-button [color]="'danger'"
-                        (click)="addNewNote()">
+                    <button class="ml-4 min-w-10 px-1 sm:px-4 no-radius" mat-flat-button [color]="'danger'">
                         <mat-icon class="text-current " svgIcon="mat_outline:library_books"></mat-icon>
 
                         <span class="ml-2 hidden sm:inline-block">Birimler</span>
                     </button>
                     <!-- New note -->
-                    <button class="ml-4 min-w-10 px-1 sm:px-4" mat-flat-button [color]="'danger'"
-                        (click)="addNewNote()">
+                    <button class="ml-4 min-w-10 px-1 sm:px-4" mat-flat-button [color]="'danger'">
                         <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:dvr'"></mat-icon>
                         <span class="ml-2 hidden sm:inline-block">Mutfak Grupları</span>
                     </button>
                     <!-- New note -->
-                    <button class="ml-4 min-w-10 px-1 sm:px-4" mat-flat-button color="'bg-accent'"
-                        (click)="addNewNote()">
+                    <button class="ml-4 min-w-10 px-1 sm:px-4" mat-flat-button color="'bg-accent'">
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:plus'"></mat-icon>
                         <span class="ml-2 hidden sm:inline-block">Yeni Ürün Ekle</span>
                     </button>
 
                 </div>
-
-                <!-- Notes -->
-                @if (notes$ | async; as notes) {
-                @if (notes.length) {
+                @if (urunler$ | async; as urunler) {
+                @if (urunler.length) {
                 <!-- Masonry layout -->
-                <fuse-masonry class="-mx-2 mt-8" [items]="notes" [columns]="masonryColumns"
+                <fuse-masonry class="-mx-2 mt-8" [items]="urunler" [columns]="masonryColumns"
                     [columnsTemplate]="columnsTemplate">
                     <!-- Columns template -->
                     <ng-template #columnsTemplate let-columns>
                         <!-- Columns -->
-                        @for (
-                        column of columns;
-                        track trackByFn($index, column)
-                        ) {
-                        <!-- Column -->
-                        <div class="flex-1 space-y-4 px-2">
-                            @for (
-                            note of column.items;
-                            track trackByFn($index, note)
-                            ) {
-                            <!-- Note -->
-                            <div class="bg-card flex cursor-pointer flex-col overflow-hidden rounded-2xl shadow"
-                                (click)="openNoteDialog(note)">
-                                <!-- Image -->
-                                @if (note.image) {
-                                <img class="w-full object-cover" [src]="note.image" />
-                                }
-                                <div class="flex flex-auto flex-col space-y-4 p-6">
-                                    <!-- Title -->
-                                    @if (note.title) {
-                                    <div class="line-clamp-3 font-semibold">
-                                        {{ note.title }}
-                                    </div>
-                                    }
-                                    asdasdas
-                                    <!-- Content -->
-                                    @if (note.content) {
-                                    <div [class.text-xl]="
-                                                                note.content
-                                                                    .length < 70
-                                                            ">
-                                        {{ note.content }}
-                                    </div>
-                                    }
-                                    <!-- Tasks -->
-                                    @if (note.tasks) {
-                                        
-                                    <div class="space-y-1.5">
-                                        @for (
-                                        task of note.tasks;
-                                        track trackByFn(
-                                        $index,
-                                        task
-                                        )
-                                        ) {
-                                        <div class="flex items-center">
-                                            @if (
-                                            !task.completed
-                                            ) {
-                                            <div class="flex h-5 w-5 items-center justify-center">
-                                                <div class="h-4 w-4 rounded-full border-2"></div>
-                                            </div>
-                                            }
-                                            @if (
-                                            task.completed
-                                            ) {
-                                            <mat-icon class="text-hint icon-size-5" [svgIcon]="
-                                                                                'heroicons_solid:check-circle'
-                                                                            "></mat-icon>
-                                            }
-                                            <div class="ml-1.5 leading-5" [ngClass]="{
-                                                                            'text-secondary line-through':
-                                                                                task.completed,
-                                                                        }">
-                                                {{
-                                                task.content
-                                                }}
-                                            </div>
-                                        </div>
-                                        }
-                                    </div>
-                                    }
-                                    <!-- Labels -->
-                                    @if (note.labels) {
-                                    <div class="-m-1 flex flex-wrap items-center">
-                                        @for (
-                                        label of note.labels;
-                                        track trackByFn(
-                                        $index,
-                                        label
-                                        )
-                                        ) {
-                                        <div                                        
-                                            class="m-1 rounded-full bg-gray-100 px-3 py-0.5 text-sm font-medium text-gray-500 dark:bg-gray-700 dark:text-gray-300">
-                                            {{
-                                            label.baslik
-                                            }}
-                                        </div>
-                                        }
-                                    </div>
-                                    }
+                        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-2 ">
+                            @for (urun of urunler; track trackByFn($index, urun)) {
+                            <!-- Card -->
+                            <div class="bg-card flex flex-col rounded-lg shadow-sm overflow-hidden w-full">
+                                <!-- Buttons -->
+                                <div class="flex justify-around px-8 py-2 border-t  dark:bg-gray-800">
+                                    <button mat-icon-button color="primary" (click)="onEdit(urunler)">
+                                        <mat-icon [svgIcon]="'mat_outline:color_lens'"></mat-icon>
+                                    </button>
+                                    <button mat-icon-button (click)="onView(urunler)">
+                                        <mat-icon [svgIcon]="'heroicons_outline:eye'"></mat-icon>
+                                    </button>
+                                    <button mat-icon-button (click)="onDelete(urunler)">
+                                        <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                    </button>
+                                   
                                 </div>
+
+                                <!-- Product Name -->
+                                <div
+                                    class="p-4 text-center font-semibold text-md text-gray-800 dark:text-gray-200 h-auto grow ">
+                                    {{ urun.urunAdi || 'Ürün İsmi' }}
+                                </div>
+                                <!-- Category Name -->
+                                <div
+                                    class="p-2 text-center font-medium text-xs text-gray-600 dark:text-gray-400 dark:bg-gray-800  ">
+                                    {{ urun?.kategori.baslik || 'Kategori İsmi' }}
+                                </div>
+                                <!-- Category Name -->
+                                <div
+                                    class="p-2 text-left font-medium text-md text-gray-600 dark:text-gray-400 bg-primary-50 dark:bg-gray-800  ">
+                                    {{ urun?.fiyat || 0 | currency:'TRY':'symbol-narrow' }}
+                                </div>
+
+
+
                             </div>
                             }
                         </div>
-                        }
                     </ng-template>
                 </fuse-masonry>
                 } @else {
@@ -231,8 +168,6 @@
                 }
 
                 <!-- Loading template -->
-
-                <!-- No notes template -->
             </div>
         </mat-drawer-content>
     </mat-drawer-container>
