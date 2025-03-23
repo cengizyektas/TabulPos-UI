@@ -27,6 +27,5 @@ export class TableAreaDefinitionComponent {
   ngOnInit(): void {
     // Örnek veriyi yükle
     this.restaurantData = createSampleRestaurantData();
-    console.log(this.restaurantData);
   }
 }

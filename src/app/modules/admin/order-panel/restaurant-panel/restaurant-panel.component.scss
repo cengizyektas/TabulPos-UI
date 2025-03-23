@@ -1,0 +1,112 @@
+.mat-mdc-tab-group .mat-mdc-tab-body-content {
+    padding: 4px !important;
+  }
+.restaurant-layout-container {
+    display: flex;
+    flex-direction: column;
+
+    .layout-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .layout-actions {
+            display: flex;
+            gap: 10px;
+        }
+    }
+
+    .layout-area {
+        position: relative;
+        background-color: #f3f3f3; /* Masa alanının arka plan rengi */
+        border-radius: 8px; /* Köşeleri yuvarlat */
+        min-height: 800px;
+        overflow: hidden;
+
+        .table-item {
+            position: absolute;
+            background-color: #ffffff; /* Masaların arka plan rengi */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #d9d0d0;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+            border-radius: 8px; /* Köşeleri yuvarlat */
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+
+            &.selected {
+                box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Seçili masaya daha belirgin gölge */
+                transform: scale(1.05); /* Seçili masayı biraz büyüt */
+            }
+
+            &.table-round {
+                border-radius: 50%; /* Yuvarlak masalar */
+            }
+
+            &.table-square {
+                border-radius: 8px; /* Kare masalar */
+            }
+
+            .table-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                pointer-events: none;
+
+                .table-name {
+                    font-weight: bold;
+                    font-size: 16px;
+                    color: #333;
+                }
+
+                .table-capacity {
+                    font-size: 14px;
+                    color: #666;
+                }
+            }
+
+            .ng-resizable-handle {
+                z-index: 3;
+            }
+        }
+    }
+
+    .layout-details {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 4px;
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .detail-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .position-details,
+            .size-details {
+                display: flex;
+                gap: 10px;
+
+                mat-form-field {
+                    flex: 1;
+                }
+            }
+        }
+    }
+}

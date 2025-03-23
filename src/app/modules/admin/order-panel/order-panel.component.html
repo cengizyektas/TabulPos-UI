@@ -1,0 +1,7 @@
+<div class="w-full  bg-white dark:bg-gray-600">
+    <mat-tab-group [disableRipple]="true" mat-stretch-tabs="false">
+        <mat-tab *ngFor="let area of restaurantData.restaurantAreas" class="bg-gray-100"  [label]="area.name">
+            <app-restaurant-layout class="bg-blue-500" [restaurantArea]="area"></app-restaurant-layout>
+        </mat-tab>
+    </mat-tab-group>
+</div>

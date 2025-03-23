@@ -1,0 +1,24 @@
+<div class="restaurant-layout-container">
+  <div class="layout-area">
+      <!-- Her bir masa için -->
+      <div *ngFor="let table of restaurantArea.tables" class="table-item"
+          [class.table-round]="isRoundTable(table)"
+          [class.table-square]="!isRoundTable(table)" 
+          [style.width.px]="table.width" [style.height.px]="table.height"
+          [style.left.px]="table.x" [style.top.px]="table.y"
+          [ngStyle]="{'z-index': table.id === selectedTable?.id ? 2 : 1}"  
+          cdkDrag
+          cdkDragBoundary=".layout-area"
+          cdkDragFreeDragPosition="{x: table.x, y: table.y}"
+          (cdkDragEnded)="onTableMoved($event, table)"
+          cdkResizable
+          [cdkResizableHandles]="'all'"
+          (resizeEnd)="onTableResized($event, table)"
+          (click)="selectTable(table)">
+          <div class="table-content">
+              <div class="table-name">{{ table.name }}</div>
+              <div class="table-capacity" *ngIf="table.capacity">{{ table.capacity }} Kişilik</div>
+          </div>
+      </div>
+  </div>
+</div>

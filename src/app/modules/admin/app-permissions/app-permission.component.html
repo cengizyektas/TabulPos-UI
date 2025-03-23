@@ -1,0 +1,59 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- Main -->
+    <div class="flex-auto p-3 sm:p-3 ">
+        <div class="flex min-w-0 flex-auto flex-col ">
+            <!-- Main -->
+            <div class="flex-auto  sm:p-8  bg-white dark:bg-gray-800 shadow-md rounded-sm">
+                <div class="flex items-center">
+                    <div
+                        class="min-w-10 sm:px-4  sm:py-4 bg-gradient-to-r from-red-400 via-red-500 to-red-600 rounded-sm ">
+                        <mat-icon svgIcon="heroicons_outline:banknotes" class="w-12 h-12 text-white"></mat-icon>
+                    </div>
+
+                    <div class="pb-2 min-w-10 px-1 sm:px-4 ">
+                        <div class="text-2xl font-semibold leading-none tracking-tight"> Yetki / İzin Ekranı </div>
+                        <div class="text-sm text-secondary ml-0.5 font-medium"> Kullanıcılarınızın
+                            yetkilerini/izinlerini buradan güncelleyebilirsiniz </div>
+                    </div>
+
+                    <!-- New note -->
+                    <button class="ml-auto min-w-10 px-1 sm:px-4 text-white" mat-flat-button color="primary"
+                        (click)="onSave()">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                        <span class="ml-2 hidden sm:inline-block">Kaydet</span>
+                    </button>
+
+
+                </div>
+
+                <div class="flex-auto mt-4 h-full">
+                    <!-- İzin Matrisi -->
+                    <div class="permission-matrix" *ngFor="let group of permissionGroups | keyvalue">
+                        <h2 class="group-title">{{ getCategoryName(group.key) }}</h2>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="permission-name">İzin</th>
+                                        <th *ngFor="let role of roles">{{ role.friendlyName }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let permission of group.value">
+                                        <td class="permission-name">{{ permission.friendlyName }}</td>
+                                        <td *ngFor="let role of roles" class="checkbox-cell">
+                                            <input type="checkbox"
+                                                [checked]="permissionMatrix[permission.id]?.[role.id] || false"
+                                                (change)="togglePermission(permission.id, role.id)">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

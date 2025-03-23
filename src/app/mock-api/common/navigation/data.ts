@@ -4,10 +4,10 @@ import { FuseNavigationItem } from '@fuse/components/navigation';
 export const defaultNavigation: FuseNavigationItem[] = [
     {
         id: 'example',
-        title: 'Test',
+        title: 'Anasayfa',
         type: 'basic',
-        icon: 'heroicons_outline:chart-pie',
-        link: '/example',
+        icon: 'mat_solid:home',
+        link: '',
     },
     {
         id: 'tanimlamalar',
@@ -66,19 +66,41 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
+
+    {
+        id: 'example',
+        title: 'Sipariş',
+        type: 'basic',
+        icon: 'mat_solid:view_column',
+        link: '/order-panel',
+    },
+    {
+        id: 'example',
+        title: 'Mutfak',
+        type: 'basic',
+        icon: 'mat_solid:desktop_mac',
+        link: '',
+    },
+    {
+        id: 'example',
+        title: 'İşlemler',
+        type: 'basic',
+        icon: 'mat_solid:layers',
+        link: '',
+    },
     {
         id: 'tanimlamalar',
         title: 'Kullanıcılar',
         type: 'collapsable',
         icon: 'mat_solid:people',
-        link: '/product-definition',
+        link: '',
         children: [
             {
                 id: 'tanimlamalar.masalar.bolgeler',
                 title: 'Kullanıcılar',
                 type: 'basic',
                 icon: 'mat_solid:people',
-                link: '/users',
+                link: '/users-list',
                 exactMatch: true,
             },
             {
@@ -86,10 +108,17 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title: 'Yetkiler',
                 type: 'basic',
                 icon: 'mat_solid:verified_user',
-                link: '',
+                link: '/app-permission',
                 exactMatch: true,
             },
         ],
+    },
+    {
+        id: 'example',
+        title: 'Ayarlar',
+        type: 'basic',
+        icon: 'mat_solid:settings',
+        link: '',
     },
 ];
 export const compactNavigation: FuseNavigationItem[] = [

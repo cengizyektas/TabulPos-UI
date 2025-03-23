@@ -3,22 +3,14 @@ import { initialDataResolver } from 'app/app.resolvers';
 import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
-
-// @formatter:off
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const appRoutes: Route[] = [
-
     // Redirect empty path to '/example'
     {path: '', pathMatch : 'full', redirectTo: 'product-definition'},
-
-    // Redirect signed-in user to the '/example'
-    //
+    // Redirect signed-in user to the '/example'    //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
     {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'example'},
-
     // Auth routes for guests
     {
         path: '',
@@ -36,7 +28,6 @@ export const appRoutes: Route[] = [
             {path: 'sign-up', loadChildren: () => import('app/modules/auth/sign-up/sign-up.routes')}
         ]
     },
-
     // Auth routes for authenticated users
     {
         path: '',
@@ -51,7 +42,6 @@ export const appRoutes: Route[] = [
             {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.routes')}
         ]
     },
-
     // Landing routes
     {
         path: '',
@@ -63,7 +53,6 @@ export const appRoutes: Route[] = [
             {path: 'home', loadChildren: () => import('app/modules/landing/home/home.routes')},
         ]
     },
-
     // Admin routes
     {
         path: '',
@@ -80,6 +69,9 @@ export const appRoutes: Route[] = [
             {path: 'restaurant-complimentary', loadChildren: () => import('app/modules/admin/complimentary/complimentary.routes')},
             {path: 'product-definition', loadChildren: () => import('app/modules/apps/urun-tanimlama/uruntanimlama.routes')},
             {path: 'table-area-definition', loadChildren: () => import('app/modules/admin/table-area-definition/table-area-definition.routes')},
+            {path: 'users-list', loadChildren: () => import('app/modules/admin/users/users.routes')},
+            {path: 'app-permission', loadChildren: () => import('app/modules/admin/app-permissions/app-permission.routes')},
+            {path: 'order-panel', loadChildren: () => import('app/modules/admin/order-panel/order-panel.routes')},
         ]
     }
 ];

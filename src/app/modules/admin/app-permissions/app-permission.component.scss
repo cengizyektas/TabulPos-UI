@@ -1,0 +1,132 @@
+.permission-container {
+    padding: 24px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon-container {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(to right, #f97316, #dc2626);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+  }
+  
+  .title-container {
+    margin-left: 16px;
+  
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1f2937;
+      margin: 0;
+    }
+  
+    p {
+      font-size: 14px;
+      color: #4b5563;
+      margin: 4px 0 0 0;
+    }
+  }
+  
+  .save-button {
+    background-color: #dc2626;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  
+    &:hover {
+      background-color: #b91c1c;
+    }
+  
+    i {
+      margin-right: 8px;
+    }
+  }
+  
+  .permission-matrix {
+    margin-bottom: 32px;
+  
+    .group-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 16px;
+    }
+  
+    .table-container {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+  
+      th, td {
+        padding: 12px 16px;
+      }
+  
+      th {
+        background-color: #f9fafb;
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-align: center;
+      }
+  
+      .permission-name {
+        text-align: left;
+        width: 33%;
+        font-size: 14px;
+        font-weight: 500;
+        color: #111827;
+      }
+  
+      .checkbox-cell {
+        text-align: center;
+  
+        input[type="checkbox"] {
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+          accent-color: #dc2626;
+        }
+      }
+  
+      tbody tr {
+        &:hover {
+          background-color: #f9fafb;
+        }
+  
+        &:not(:last-child) {
+          border-bottom: 1px solid #e5e7eb;
+        }
+      }
+    }
+  }
