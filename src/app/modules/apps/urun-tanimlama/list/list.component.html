@@ -86,7 +86,7 @@
                     </div>
                     <!-- New note -->
                     <button class="ml-4 min-w-10 px-1 sm:px-4 no-radius" mat-flat-button [color]="'danger'">
-                        <mat-icon class="text-current " svgIcon="mat_outline:library_books"></mat-icon>
+                        <mat-icon  class="text-current " svgIcon="mat_outline:library_books"></mat-icon>
 
                         <span class="ml-2 hidden sm:inline-block">Birimler</span>
                     </button>
@@ -105,15 +105,15 @@
                 @if (urunler$ | async; as urunler) {
                 @if (urunler.length) {
                 <!-- Masonry layout -->
-                <fuse-masonry class="-mx-2 mt-8" [items]="urunler" [columns]="masonryColumns"
+                <fuse-masonry class="-mx-2 mt-8 w-full" [items]="urunler" [columns]="masonryColumns"
                     [columnsTemplate]="columnsTemplate">
                     <!-- Columns template -->
-                    <ng-template #columnsTemplate let-columns>
+                    <ng-template #columnsTemplate let-columns class="w-full">
                         <!-- Columns -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-2 ">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 ">
                             @for (urun of urunler; track trackByFn($index, urun)) {
                             <!-- Card -->
-                            <div class="bg-card flex flex-col rounded-xl shadow-md overflow-hidden w-full bg-white dark:bg-gray-800">
+                            <div class=" rounded-xl shadow-md overflow-hidden w-full bg-white dark:bg-gray-800">
                                 <!-- Buttons -->
                                 <div class="flex justify-around px-8 py-2 border-t  dark:bg-gray-800">
                                     <button mat-icon-button color="primary" (click)="onEdit(urunler)">

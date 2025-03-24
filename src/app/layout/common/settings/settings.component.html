@@ -1,4 +1,4 @@
-<div
+<!-- <div
     class="settings-cog fixed right-0 z-90 flex h-10 w-10 cursor-pointer items-center justify-center rounded-l-lg bg-red-600 bg-opacity-90 shadow-lg print:hidden"
     [class.lg:right-0]="
         config.layout === 'centered' || config.layout === 'material'
@@ -13,8 +13,10 @@
         class="animate-spin-slow text-white icon-size-5"
         [svgIcon]="'heroicons_solid:cog-8-tooth'"
     ></mat-icon>
-</div>
-
+</div> -->
+<button mat-icon-button (click)="settingsDrawer.toggle()"> 
+    <mat-icon [svgIcon]="'heroicons_outline:cog-8-tooth'"></mat-icon>
+</button>
 <fuse-drawer
     class="z-999 w-screen min-w-screen sm:w-100 sm:min-w-100"
     fixed
@@ -48,7 +50,7 @@
 
         <div class="flex flex-col p-6">
             <!-- Theme -->
-            <div class="text-secondary text-md font-semibold">THEME</div>
+            <div class="text-secondary text-md font-semibold">Temalar</div>
             <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 @for (theme of config.themes; track theme) {
                     <div

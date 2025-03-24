@@ -95,7 +95,7 @@
                         }
                     },
                     "options": {
-                        "port": 2907
+                        "port": 2025
                     },
                     "defaultConfiguration": "development"
                 },

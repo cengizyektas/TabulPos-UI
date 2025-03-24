@@ -68,7 +68,7 @@
   
   .permission-matrix {
     margin-bottom: 32px;
-  
+    width: 100%;
     .group-title {
       font-size: 18px;
       font-weight: 500;
@@ -79,7 +79,7 @@
     .table-container {
       border: 1px solid #e5e7eb;
       border-radius: 8px;
-      overflow: hidden;
+      width: 100%;
     }
   
     table {
