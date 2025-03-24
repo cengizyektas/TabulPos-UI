@@ -1,7 +1,7 @@
 <div class="restaurant-layout-container">
   <div class="layout-area h-full">
       <!-- Her bir masa için -->
-      <div *ngFor="let table of restaurantArea.tables" class="table-item"
+      <div *ngFor="let table of restaurantArea.tables" class="table-item "
           [class.table-round]="isRoundTable(table)"
           [class.table-square]="!isRoundTable(table)" 
           [style.width.px]="table.width" [style.height.px]="table.height"
