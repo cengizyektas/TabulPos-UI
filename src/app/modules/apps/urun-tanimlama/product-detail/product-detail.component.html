@@ -1,1 +1,337 @@
-<p>product-detail works!</p>
+<!-- Responsive Product Detail Layout with mat-drawer -->
+<div class="w-full h-screen">
+  <mat-drawer-container class="h-full bg-gray-50">
+    <!-- Sidebar Drawer -->
+    <mat-drawer #drawer [mode]="isScreenSmall ? 'over' : 'side'" [opened]="!isScreenSmall"
+      class="w-full sm:w-80 md:w-96 p-0 border-r bg-white">
+      <div class="flex flex-col h-full">
+        <!-- Sidebar Content -->
+        <div class="flex-1 overflow-y-auto">
+          <div class="flex flex-col items-center text-center p-6 border-b">
+            <div class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+              <mat-icon class="text-5xl text-gray-400">restaurant_menu</mat-icon>
+            </div>
+            <h2 class="text-xl font-extrabold from-on-accent-300">Ürün Adı</h2>
+            <p class="text-gray-600 text-lg">₺23,00</p>
+            <p class="text-sm text-gray-500 mt-1">Tam</p>
+          </div>
+
+          <div class="p-4">
+            <p class="text-sm font-medium text-gray-500 mb-4">Parametreler</p>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-gray-700 font-semibold">Favori Ürün</span>
+                <mat-slide-toggle color="primary"></mat-slide-toggle>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <span class="text-gray-700 font-semibold">Satış Ekranında Göster</span>
+                <mat-slide-toggle color="primary" checked></mat-slide-toggle>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <span class="text-gray-700 font-semibold">KDV Hariç Olsun</span>
+                <mat-slide-toggle color="primary"></mat-slide-toggle>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <span class="text-gray-700 font-semibold">Özellik ve Porsiyon Otomatik Sorulsun</span>
+                <mat-slide-toggle color="primary"></mat-slide-toggle>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <span class="text-gray-700 font-semibold">Mutfak Ekranında Göster</span>
+                <mat-slide-toggle color="primary" checked></mat-slide-toggle>
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Ürün KDV Grubu</mat-label>
+                <mat-select>
+                  <mat-option value="1">Yiyecek</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-drawer>
+
+    <!-- Main Content -->
+    <mat-drawer-content class="p-0">
+      <!-- Top Navigation Bar -->
+      <div class="bg-white border-b p-4 flex justify-between items-center sticky top-0 z-10">
+        <div class="flex items-center">
+          <button mat-icon-button (click)="drawer.toggle()" class="mr-2">
+            <mat-icon>menu</mat-icon>
+          </button>
+        
+        </div>
+        <div class="flex items-center space-x-2">
+          <button mat-button class="mr-2">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Geri</span>
+          </button>
+          <button class="min-w-10 px-4 py-2 " mat-flat-button >
+            <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:delete'"></mat-icon>
+            <span class="ml-2 hidden sm:inline-block">Ürünü Sil</span>
+          </button>
+          <button class="min-w-10 px-4 py-2 text-primary-600" mat-flat-button [color]="'danger'">
+            <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:add'"></mat-icon>
+            <span class="ml-2 hidden sm:inline-block">Yeni Ürün Ekle</span>
+          </button>
+          <button class="min-w-10 px-4 py-2 text-primary-600" mat-flat-button [color]="'danger'">
+            <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:refresh'"></mat-icon>
+            <span class="ml-2 hidden sm:inline-block">Güncelle</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="">
+        <div class="bg-white  ">
+          <!-- Genel Bilgiler -->
+          <div class="p-6 border-b">
+            <h2 class="text-lg font-medium mb-6 font-bold">Genel Bilgiler</h2>
+            <div class="grid grid-cols-1 gap-4">
+              <div class="flex flex-col md:flex-row gap-1">
+                <div class="flex-1">
+                  <mat-form-field appearance="outline" class="w-full size-sm">
+                    <mat-label>Kategoriler</mat-label>
+                    <mat-select>
+                      <mat-option value="1">Kahvaltılıklar</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="flex-1">
+                  <mat-form-field appearance="outline" class="w-full size-sm">
+                    <mat-label>Ürün Adı</mat-label>
+                    <input matInput required>
+                  </mat-form-field>
+                </div>
+                <div class="w-10">
+                  <button mat-icon-button color="primary" class="mt-2" matTooltip="Renk Seç">
+                    <mat-icon>palette</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex flex-col md:flex-row gap-1">
+                <div class="w-full md:w-32">
+                  <mat-form-field appearance="outline" class="w-full size-sm">
+                    <mat-label>KDV Oranı</mat-label>
+                    <input matInput type="number" required value="10">
+                  </mat-form-field>
+                </div>
+                <div class="flex-1">
+                  <mat-form-field appearance="outline" class="w-full size-sm">
+                    <mat-label>Mutfak Grubu</mat-label>
+                    <mat-select>
+                      <mat-option value="1">Mutfak</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <p class="text-xs text-gray-500 mt-1">Not: Mutfağınıza bölümlere ayırarak ürün bazlı yazdırma ve
+                    görüntüleme işlemi yapabilirsiniz.</p>
+                </div>
+                <div class="w-48">
+                  <mat-form-field appearance="outline" class="w-full size-sm">
+                    <mat-label>Ürün Kodu</mat-label>
+                    <input matInput>
+                  </mat-form-field>
+                </div>
+                <div class="flex-1">
+                  <mat-form-field appearance="outline" class="w-full size-xs">
+                    <mat-label>Marş Grubu</mat-label>
+                    <mat-select>
+                      <mat-option value="1">Marş 1</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <p class="text-xs text-gray-500 mt-1">Not: Ürünlerinizin mutfakta hangi sırayla hazırlanması
+                    gerektiğini belirleyebilirsiniz.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Porsiyon Bilgileri -->
+          <div class="p-6">
+            <h2 class="text-lg font-medium mb-2">Porsiyon Bilgileri</h2>
+            <p class="text-sm text-gray-500 mb-6">Bir ürünün farklı porsiyonlarını oluşturmak için kullanılır. Örneğin;
+              yarım döner veya 3 çeyrek kokoreç gibi</p>
+
+            <div class="flex items-center gap-2 mb-6">
+              <mat-tab-group class="w-full" mat-stretch-tabs="false" mat-align-tabs="start">
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <div class="flex items-center">
+                      <mat-label>Tam</mat-label>
+                      <button mat-icon-button class="ml-2 delete-tab-button">
+                        <mat-icon class="text-xl">delete_forever</mat-icon>
+                      </button>
+                    </div>
+                  </ng-template>
+                  <div class="pt-6">
+                    <div class="space-y-4">
+                      <div class="flex items-start">
+                        <mat-checkbox class="mt-1 mr-4">Varsayılan Porsiyon</mat-checkbox>
+                      </div>
+
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <mat-form-field appearance="outline" class="w-full size-sm">
+                            <mat-label>Birim</mat-label>
+                            <mat-select>
+                              <mat-option value="1">Yarım</mat-option>
+                              <mat-option value="2">Tam</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+                        <div>
+                          <mat-form-field appearance="outline" class="w-full size-sm">
+                            <mat-label>Fiyat</mat-label>
+                            <input matInput type="number">
+                            <div class="absolute right-0 top-0 h-full flex items-center pr-2 text-gray-500">
+                              <mat-icon>sync</mat-icon>
+                            </div>
+                          </mat-form-field>
+                        </div>
+
+                        <div>
+                          <mat-form-field appearance="outline" class="w-full size-sm">
+                            <mat-label>Maliyet Tutarı</mat-label>
+                            <input matInput type="number">
+                            <div class="absolute right-0 top-0 h-full flex items-center pr-2 text-gray-500">
+                              <mat-icon>sync</mat-icon>
+                            </div>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <div class="flex items-center">
+                      <mat-label>Yarım</mat-label>
+                      <button mat-icon-button class="ml-2 delete-tab-button">
+                        <mat-icon class="text-xl">delete_forever</mat-icon>
+                      </button>
+                    </div>
+                  </ng-template>
+                  <div>
+                    <div class="space-y-4">
+                      <div class="flex items-start">
+                        <mat-checkbox class="mt-1 mr-4">Varsayılan Porsiyon</mat-checkbox>
+                      </div>
+
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <mat-form-field appearance="outline" class="w-full size-sm">
+                            <mat-label>Birim</mat-label>
+                            <mat-select>
+                              <mat-option value="1">Yarım</mat-option>
+                              <mat-option value="2">Tam</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+                        <div>
+                          <mat-form-field appearance="outline" class="w-full size-sm">
+                            <mat-label>Fiyat</mat-label>
+                            <input matInput type="number">
+                            <div class="absolute right-0 top-0 h-full flex items-center pr-2 text-gray-500">
+                              <mat-icon>sync</mat-icon>
+                            </div>
+                          </mat-form-field>
+                        </div>
+
+                        <div>
+                          <mat-form-field appearance="outline" class="w-full size-sm">
+                            <mat-label>Maliyet Tutarı</mat-label>
+                            <input matInput type="number">
+                            <div class="absolute right-0 top-0 h-full flex items-center pr-2 text-gray-500">
+                              <mat-icon>sync</mat-icon>
+                            </div>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+
+            <div>
+              <p class="text-sm font-medium text-gray-600 mb-4">Sipariş türüne göre özelleştir</p>
+
+              <div class="space-y-4">
+                <div class="flex items-center justify-between py-3 border-b">
+                  <div class="flex items-center">
+                    <mat-icon class="mr-2 text-gray-400">note</mat-icon>
+                    <span class="text-gray-700">Reçeteli ürün kullan</span>
+                  </div>
+                  <div class="flex items-center">
+                    <mat-slide-toggle color="warn"></mat-slide-toggle>
+                    <span class="ml-2 text-red-500 text-sm">Reçete eklemeden önce ürün kaydedilmelidir.</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between py-3 border-b">
+                  <div class="flex items-center">
+                    <mat-icon class="mr-2 text-gray-400">qr_code</mat-icon>
+                    <span class="text-gray-700">Barkod Ekle</span>
+                  </div>
+                  <mat-slide-toggle color="primary"></mat-slide-toggle>
+                </div>
+
+                <div class="flex items-center justify-between py-3 border-b">
+                  <div class="flex items-center">
+                    <mat-icon class="mr-2 text-gray-400">settings</mat-icon>
+                    <span class="text-gray-700">Özellik Tanımlama</span>
+                  </div>
+                  <div class="flex items-center">
+                    <mat-slide-toggle color="warn"></mat-slide-toggle>
+                    <span class="ml-2 text-red-500 text-sm">Özellik tanımlamadan önce ürün kaydedilmelidir.</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between py-3 border-b">
+                  <div class="flex items-center">
+                    <mat-icon class="mr-2 text-gray-400">settings</mat-icon>
+                    <span class="text-gray-700">Özellik Tanımlama</span>
+                  </div>
+                  <div class="flex items-center">
+                    <mat-slide-toggle color="warn"></mat-slide-toggle>
+                    <span class="ml-2 text-red-500 text-sm">Özellik tanımlamadan önce ürün kaydedilmelidir.</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between py-3 border-b">
+                  <div class="flex items-center">
+                    <mat-icon class="mr-2 text-gray-400">settings</mat-icon>
+                    <span class="text-gray-700">Özellik Tanımlama</span>
+                  </div>
+                  <div class="flex items-center">
+                    <mat-slide-toggle color="warn"></mat-slide-toggle>
+                    <span class="ml-2 text-red-500 text-sm">Özellik tanımlamadan önce ürün kaydedilmelidir.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
+
+<!-- Add these styles to your component's CSS file -->
+<style>
+  ::ng-deep .urun-tab-group .mat-mdc-tab-body-content {
+    padding: 0 !important;
+  }
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    height: 0 !important;
+  }
+</style>

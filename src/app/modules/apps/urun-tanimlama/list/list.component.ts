@@ -14,11 +14,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterModule } from '@angular/router';
 import { FuseMasonryComponent } from '@fuse/components/masonry';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NotesLabelsComponent } from 'app/modules/apps/urun-tanimlama/labels/labels.component';
 import { UrunService } from 'app/modules/apps/urun-tanimlama/uruntanim.service';
 import { Kategori, Urun } from 'app/modules/apps/urun-tanimlama/uruntanim.types';
+
 import { cloneDeep } from 'lodash-es';
 import {
     BehaviorSubject,
@@ -46,6 +48,7 @@ import {
         MatInputModule,
         FuseMasonryComponent,
         AsyncPipe,
+        RouterModule
     ],
 })
 export class UrunlerListComponent implements OnInit, OnDestroy {

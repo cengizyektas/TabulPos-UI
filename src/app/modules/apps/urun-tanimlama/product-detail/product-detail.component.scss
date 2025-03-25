@@ -1,0 +1,182 @@
+/* Custom styles for product detail component */
+
+/* Make sure drawer takes up full height */
+.mat-drawer-container {
+  min-height: 100vh;
+}
+
+/* Drawer width adjustments for different screen sizes */
+.mat-drawer {
+  width: 100%;
+
+  @media (min-width: 640px) {
+    width: 320px;
+  }
+
+  @media (min-width: 768px) {
+    width: 384px;
+  }
+}
+
+/* Handle form fields better on small screens */
+.mat-mdc-form-field {
+  width: 100%;
+
+  &.size-sm {
+    .mat-mdc-form-field-flex {
+      min-height: 40px !important;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding: 8px 0 !important;
+      min-height: 40px !important;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      padding-top: 0 !important;
+    }
+  }
+}
+
+/* Custom transitions for drawer */
+.mat-drawer {
+  transition: width 0.3s ease;
+}
+
+/* Fix for form field margins */
+::ng-deep {
+  .mat-mdc-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .mat-mdc-form-field-appearance-outline {
+    .mat-mdc-form-field-wrapper {
+      margin: 0;
+    }
+
+    .mat-mdc-form-field-outline {
+      background-color: white;
+    }
+
+    .mat-mdc-form-field-flex {
+      margin-top: 0;
+      padding: 0 12px;
+    }
+  }
+}
+
+/* Custom shadow for main card */
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Custom scrollbar for drawer content */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+}
+
+/* Icon size in the product image placeholder */
+.text-5xl {
+  font-size: 3rem;
+}
+
+/* Top navigation button styles */
+.mat-mdc-button, .mat-mdc-outlined-button, .mat-mdc-raised-button {
+  .mat-icon {
+    margin-right: 4px;
+  }
+}
+
+/* Tab and portion button styles */
+::ng-deep {
+  .mat-mdc-tab-header {
+    border-bottom: none;
+  }
+
+  .mat-mdc-tab {
+    height: 36px !important;
+    min-width: unset !important;
+    padding: 0 16px !important;
+  }
+
+  .mdc-tab {
+    --mdc-secondary-navigation-tab-container-height: 36px;
+    flex-grow: 0;
+  }
+
+  .mdc-tab--active {
+    background-color: var(--mdc-filled-button-container-color);
+    color: var(--mdc-filled-button-label-text-color);
+  }
+
+  .mat-mdc-tab-header-pagination {
+    display: none !important;
+  }
+
+  .mat-mdc-tab-labels {
+    gap: 8px;
+  }
+}
+
+.portion-add-button {
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px 4px 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 36px;
+  padding: 0 16px;
+  margin-bottom: -1px;
+  color: rgba(0, 0, 0, 0.87);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Slide toggle styles */
+.mat-mdc-slide-toggle {
+  &.mat-warn {
+    --mdc-switch-selected-track-color: rgb(239, 68, 68);
+    --mdc-switch-selected-handle-color: rgb(239, 68, 68);
+    --mdc-switch-selected-hover-track-color: rgb(239, 68, 68);
+    --mdc-switch-selected-hover-handle-color: rgb(239, 68, 68);
+    --mdc-switch-selected-pressed-track-color: rgb(239, 68, 68);
+    --mdc-switch-selected-pressed-handle-color: rgb(239, 68, 68);
+  }
+}
+
+/* Material form field overrides */
+::ng-deep {
+  .mat-mdc-text-field-wrapper {
+    background-color: white !important;
+  }
+
+  .mat-mdc-form-field-flex {
+    background-color: white !important;
+  }
+
+  .mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-shape: 4px;
+  }
+}

@@ -3,11 +3,11 @@
 
 <!-- Navigation -->
 <fuse-vertical-navigation
-    class="dark bg-gray-900 print:hidden"
-    [mode]="isScreenSmall ? 'over' : 'side'"
+    class="dark bg-wite  print:hidden"
+    [mode]="isScreenSmall ? 'side' : 'over'"
     [name]="'mainNavigation'"
     [navigation]="navigation.default"
-    [opened]="!isScreenSmall"
+    [opened]="false"
 >
     <!-- Navigation header hook -->
     <ng-container fuseVerticalNavigationContentHeader>
