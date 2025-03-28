@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -30,6 +30,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     standalone: true,
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.scss',
+    
+        encapsulation: ViewEncapsulation.None,
 })
 export class ProductDetailComponent implements OnInit, OnDestroy {
     isScreenSmall: boolean = false;
