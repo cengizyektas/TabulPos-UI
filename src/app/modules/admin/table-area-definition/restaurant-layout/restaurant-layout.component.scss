@@ -1,40 +1,53 @@
 .mat-mdc-tab-body-content {
-    padding: 4px;
+    padding: 0;
+    overflow: hidden;
 }
 
 .restaurant-layout-container {
     display: flex;
     flex-direction: column;
-
+    height: 100%;
+    
     .layout-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+        background-color: white;
+        border-bottom: 1px solid #e2e8f0;
 
         h2 {
             margin: 0;
             color: #333;
+            font-size: 16px;
         }
 
         .layout-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
+            
+            button {
+                font-size: 14px;
+            }
         }
     }
 
     .layout-area {
         position: relative;
-        border: 2px dashed #ccc;
-        background-color: #f9f9f9;
-        margin-bottom: 20px;
-        min-height: 800px;
-        overflow: hidden;
-
+        border: 1px dashed #cbd5e1;
+        background-color: #f1f5f9;
+        flex-grow: 1;
+        height: calc(100vh - 250px); /* Increased height for maximum design space */
+        min-height: 500px; /* Ensures minimum height */
+        overflow: auto;
+        
         .table-item {
             position: absolute;
-            background-color: #fff;
-            border: 1px solid #000;
+            background-color: white;
+            border: 1px solid #334155;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -43,8 +56,8 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
             &.selected {
-                border: 2px solid #f44336;
-                box-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+                border: 2px solid #ef4444;
+                box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
             }
 
             &.table-round {
@@ -70,7 +83,7 @@
 
                 .table-capacity {
                     font-size: 12px;
-                    color: #666;
+                    color: #64748b;
                 }
             }
 
@@ -81,28 +94,37 @@
     }
 
     .layout-details {
-        background-color: #f5f5f5;
-        padding: 15px;
-        border-radius: 4px;
+        background-color: white;
+        padding: 16px;
+        border-top: 1px solid #e2e8f0;
 
         h3 {
             margin-top: 0;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: #333;
+            font-size: 16px;
         }
 
         .detail-form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
 
             .position-details,
             .size-details {
                 display: flex;
-                gap: 10px;
+                gap: 8px;
+                flex-wrap: wrap;
 
                 mat-form-field {
-                    flex: 1;
+                    flex: 1 1 calc(50% - 5px);
+                    min-width: 120px;
+                }
+                
+                @media (max-width: 480px) {
+                    mat-form-field {
+                        flex: 1 1 100%;
+                    }
                 }
             }
         }
@@ -112,60 +134,69 @@
 // Resize işleyicileri için stil iyileştirmeleri
 ::ng-deep .ng-resizable-handle {
     position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: #7c7575;
+    width: 8px;
+    height: 8px;
+    background-color: #64748b;
     border-radius: 50%;
 
     &.ng-resizable-se {
-        bottom: -5px;
-        right: -5px;
+        bottom: -4px;
+        right: -4px;
         cursor: se-resize;
     }
 
     &.ng-resizable-sw {
-        bottom: -5px;
-        left: -5px;
+        bottom: -4px;
+        left: -4px;
         cursor: sw-resize;
     }
 
     &.ng-resizable-ne {
-        top: -5px;
-        right: -5px;
+        top: -4px;
+        right: -4px;
         cursor: ne-resize;
     }
 
     &.ng-resizable-nw {
-        top: -5px;
-        left: -5px;
+        top: -4px;
+        left: -4px;
         cursor: nw-resize;
     }
 
     &.ng-resizable-e {
         top: 50%;
-        right: -5px;
-        margin-top: -5px;
+        right: -4px;
+        margin-top: -4px;
         cursor: e-resize;
     }
 
     &.ng-resizable-w {
         top: 50%;
-        left: -5px;
-        margin-top: -5px;
+        left: -4px;
+        margin-top: -4px;
         cursor: w-resize;
     }
 
     &.ng-resizable-n {
-        top: -5px;
+        top: -4px;
         left: 50%;
-        margin-left: -5px;
+        margin-left: -4px;
         cursor: n-resize;
     }
 
     &.ng-resizable-s {
-        bottom: -5px;
+        bottom: -4px;
         left: 50%;
-        margin-left: -5px;
+        margin-left: -4px;
         cursor: s-resize;
+    }
+}
+
+// Mobile responsive adjustments
+@media (max-width: 768px) {
+    .restaurant-layout-container {
+        .layout-area {
+            height: 500px;
+        }
     }
 }

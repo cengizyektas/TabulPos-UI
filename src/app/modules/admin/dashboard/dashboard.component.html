@@ -1,0 +1,164 @@
+<div class="flex flex-col min-w-0 flex-auto">
+    <div class="flex-auto p-6 sm:p-10">
+        <!-- Restaurant İstatistikleri -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- İlk Satır Kartları -->
+            <div class="lg:col-span-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Toplam Satış -->
+                <div class="flex flex-col p-6 bg-orange-100 rounded-xl">
+                    <div class="text-lg font-medium text-gray-800">Bugünkü toplam satış tutarı</div>
+                    <div class="flex">
+                        <div class="flex-auto">
+                            <div class="text-3xl font-bold mt-2 text-orange-800">{{ todaysData.totalSales }}</div>
+                            <div class="text-sm font-medium text-gray-600 mt-1">Gün sonu raporu</div>
+                        </div>
+                        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-orange-300">
+                            <mat-icon class="text-orange-700">assessment</mat-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Misafir Sayısı -->
+                <div class="flex flex-col p-6 bg-blue-100 rounded-xl">
+                    <div class="text-lg font-medium text-gray-800">Bugün ağırlanan misafir sayısı</div>
+                    <div class="flex">
+                        <div class="flex-auto">
+                            <div class="text-3xl font-bold mt-2 text-blue-800">{{ todaysData.guestCount }}</div>
+                        </div>
+                        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-300">
+                            <mat-icon class="text-blue-700">people</mat-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Açık Siparişler -->
+                <div class="flex flex-col p-6 bg-green-100 rounded-xl">
+                    <div class="text-lg font-medium text-gray-800">Bugün açık sipariş toplamı</div>
+                    <div class="flex">
+                        <div class="flex-auto">
+                            <div class="text-3xl font-bold mt-2 text-green-800">{{ todaysData.openOrders }}</div>
+                        </div>
+                        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-green-300">
+                            <mat-icon class="text-green-700">shopping_cart</mat-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Giderler -->
+                <div class="flex flex-col p-6 bg-pink-100 rounded-xl">
+                    <div class="text-lg font-medium text-gray-800">Bugünkü toplam gider tutarı</div>
+                    <div class="flex">
+                        <div class="flex-auto">
+                            <div class="text-3xl font-bold mt-2 text-pink-800">{{ todaysData.expenses }}</div>
+                            <div class="text-sm font-medium text-gray-600 mt-1">Masraflar</div>
+                        </div>
+                        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-pink-300">
+                            <mat-icon class="text-pink-700">account_balance_wallet</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Günlük Satış Grafiği -->
+            <div class="lg:col-span-4">
+                <div class="flex flex-col p-6 bg-card shadow rounded-xl">
+                    <div class="text-lg font-medium">Günlük Satış Miktarları</div>
+                    <div class="flex-auto" *ngIf="dailySalesChartOptions">
+                        <apx-chart
+                            [series]="dailySalesChartOptions.series"
+                            [chart]="dailySalesChartOptions.chart"
+                            [xaxis]="dailySalesChartOptions.xaxis"
+                            [yaxis]="dailySalesChartOptions.yaxis"
+                            [colors]="dailySalesChartOptions.colors"
+                            [stroke]="dailySalesChartOptions.stroke"
+                            [dataLabels]="dailySalesChartOptions.dataLabels"
+                            [fill]="dailySalesChartOptions.fill">
+                        </apx-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GitHub Sorunları Özeti (İkinci satıra alındı) -->
+        <div class="grid grid-cols-1 mt-8 bg-card shadow rounded-2xl overflow-hidden">
+            <div class="flex flex-col p-6">
+                <div class="flex items-center justify-between">
+                    <div class="text-xl font-semibold">GitHub Sorunları Özeti</div>
+                    <div class="flex items-center space-x-2">
+                        <button
+                            class="px-4 py-2 rounded-lg"
+                            mat-flat-button
+                            [color]="selectedWeek === 'last-week' ? 'primary' : ''"
+                            [ngClass]="{'bg-gray-200': selectedWeek !== 'last-week'}"
+                            (click)="selectWeek('last-week')">
+                            Geçen Hafta
+                        </button>
+                        <button
+                            class="px-4 py-2 rounded-lg"
+                            mat-flat-button
+                            [color]="selectedWeek === 'this-week' ? 'primary' : ''"
+                            [ngClass]="{'bg-gray-200': selectedWeek !== 'this-week'}"
+                            (click)="selectWeek('this-week')">
+                            Bu Hafta
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                    <!-- Yeni vs. Kapatılan -->
+                    <div class="flex flex-col">
+                        <div class="text-lg font-medium">Yeni vs. Kapatılan</div>
+                        <div class="flex-auto" *ngIf="newVsClosedChartOptions">
+                            <apx-chart
+                                [series]="newVsClosedChartOptions.series"
+                                [chart]="newVsClosedChartOptions.chart"
+                                [xaxis]="newVsClosedChartOptions.xaxis"
+                                [yaxis]="newVsClosedChartOptions.yaxis"
+                                [colors]="newVsClosedChartOptions.colors"
+                                [stroke]="newVsClosedChartOptions.stroke"
+                                [tooltip]="newVsClosedChartOptions.tooltip"
+                                [dataLabels]="newVsClosedChartOptions.dataLabels"
+                                [fill]="newVsClosedChartOptions.fill"
+                                [grid]="newVsClosedChartOptions.grid">
+                            </apx-chart>
+                        </div>
+                    </div>
+
+                    <!-- Genel Bakış -->
+                    <div class="flex flex-col">
+                        <div class="text-lg font-medium">Genel Bakış</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="flex flex-col items-center justify-center p-8 rounded-lg bg-indigo-50">
+                                <div class="text-7xl font-bold text-indigo-700">{{ githubIssues.newIssues }}</div>
+                                <div class="text-lg font-medium text-indigo-700 mt-2">Yeni Sorunlar</div>
+                            </div>
+                            <div class="flex flex-col items-center justify-center p-8 rounded-lg bg-green-50">
+                                <div class="text-7xl font-bold text-green-700">{{ githubIssues.closedIssues }}</div>
+                                <div class="text-lg font-medium text-green-700 mt-2">Kapatıldı</div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                            <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-blue-50">
+                                <div class="text-3xl font-bold text-blue-700">{{ githubIssues.fixed }}</div>
+                                <div class="text-sm font-medium text-blue-700 mt-1">Düzeltildi</div>
+                            </div>
+                            <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-purple-50">
+                                <div class="text-3xl font-bold text-purple-700">{{ githubIssues.wontFix }}</div>
+                                <div class="text-sm font-medium text-purple-700 mt-1">Düzeltilmeyecek</div>
+                            </div>
+                            <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-amber-50">
+                                <div class="text-3xl font-bold text-amber-700">{{ githubIssues.reopened }}</div>
+                                <div class="text-sm font-medium text-amber-700 mt-1">Yeniden Açıldı</div>
+                            </div>
+                            <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-red-50">
+                                <div class="text-3xl font-bold text-red-700">{{ githubIssues.needsTriage }}</div>
+                                <div class="text-sm font-medium text-red-700 mt-1">Triyaj Gerekli</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

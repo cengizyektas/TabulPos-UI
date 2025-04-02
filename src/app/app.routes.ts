@@ -5,12 +5,12 @@ import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 export const appRoutes: Route[] = [
     // Redirect empty path to '/example'
-    {path: '', pathMatch : 'full', redirectTo: 'printer-settings'},
+    {path: '', pathMatch : 'full', redirectTo: 'dashboard'},
     // Redirect signed-in user to the '/example'    //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'example'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'dashboard'},
     {
         path: '',
         canActivate: [NoAuthGuard],
@@ -64,6 +64,7 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
+            {path: 'dashboard', loadChildren: () => import('app/modules/admin/dashboard/dashboard.routes')},
             {path: 'restaurant-customers', loadChildren: () => import('app/modules/admin/customers/customers.routes')},
             {path: 'restaurant-discounts', loadChildren: () => import('app/modules/admin/discounts/discounts.routes')},
             {path: 'restaurant-complimentary', loadChildren: () => import('app/modules/admin/complimentary/complimentary.routes')},
