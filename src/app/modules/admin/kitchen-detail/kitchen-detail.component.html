@@ -1,0 +1,244 @@
+<!-- Kitchen Detail Screen Container -->
+<div class="flex flex-col  bg-gray-100  w-full">
+  <!-- Header - Full Width -->
+  <header class="sticky top-0 w-full bg-white p-4 shadow-sm z-10 w-full mt-2">
+    <div class="flex items-center justify-between">
+      <button class="flex items-center text-gray-700 hover:text-gray-900">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        <span>Geri Dön</span>
+      </button>
+
+      <div class="flex items-center space-x-3">
+        <button class="flex items-center bg-gray-100 px-3 py-1.5 rounded-md text-sm hover:bg-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z" />
+          </svg>
+          <span>Sırala</span>
+        </button>
+        <button class="flex items-center bg-gray-100 px-3 py-1.5 rounded-md text-sm hover:bg-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+          </svg>
+          <span>Hazırlanıyor Aşaması</span>
+        </button>
+        <button class="flex items-center bg-gray-100 px-3 py-1.5 rounded-md text-sm hover:bg-gray-200" (click)="showHazirlananSiparisler()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+          </svg>
+          <span>Hazırlanan Siparişler</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 overflow-y-auto p-4">
+    <div class="container mx-auto px-4 md:px-6">
+      <!-- No Orders State (Show this when hasOrders is false) -->
+      <div *ngIf="!hasOrders" class="h-full flex flex-col items-center justify-center text-center py-20">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-2">Bekleyen Sipariş Bulunmuyor...</h2>
+        <p class="text-gray-500">Yeni siparişler otomatik olarak yüklenecektir...</p>
+      </div>
+
+      <!-- Orders List (Show this when hasOrders is true) -->
+      <div *ngIf="hasOrders" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Order Card 1 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <!-- Restaurant/Vendor Info -->
+          <div class="flex justify-between items-center p-4 border-b">
+            <div class="flex items-center">
+              <div class="bg-yellow-400 h-12 w-12 rounded-full flex items-center justify-center text-white mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">yektas / 101</div>
+                <div class="text-sm text-gray-500">salon / Masa 2</div>
+              </div>
+            </div>
+            <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm">
+              Tümü Hazır
+            </button>
+          </div>
+
+          <!-- Order Items -->
+          <div class="divide-y">
+            <!-- Order Item 1 -->
+            <div class="p-4 flex justify-between items-center">
+              <div class="flex items-center">
+                <div class="mr-3">
+                  <div class="text-xs text-green-500 font-medium">Hazırlanıyor</div>
+                  <div class="text-xs text-gray-500">00:00:21</div>
+                </div>
+                <div>
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span class="text-sm text-gray-500">yektas</span>
+                  </div>
+                  <div class="font-medium">1 Tam - Ayvalık Tostu</div>
+                </div>
+              </div>
+              <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm">
+                Hazır
+              </button>
+            </div>
+
+            <!-- Order Item 2 (duplicate of 1 for demo) -->
+            <div class="p-4 flex justify-between items-center">
+              <div class="flex items-center">
+                <div class="mr-3">
+                  <div class="text-xs text-green-500 font-medium">Hazırlanıyor</div>
+                  <div class="text-xs text-gray-500">00:00:21</div>
+                </div>
+                <div>
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span class="text-sm text-gray-500">yektas</span>
+                  </div>
+                  <div class="font-medium">1 Tam - Ayvalık Tostu</div>
+                </div>
+              </div>
+              <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm">
+                Hazır
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional order cards for demo (showing grid capability) -->
+        <!-- Card 2 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="flex justify-between items-center p-4 border-b">
+            <div class="flex items-center">
+              <div class="bg-yellow-400 h-12 w-12 rounded-full flex items-center justify-center text-white mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">yektas / 102</div>
+                <div class="text-sm text-gray-500">salon / Masa 4</div>
+              </div>
+            </div>
+            <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm">
+              Tümü Hazır
+            </button>
+          </div>
+          <div class="divide-y">
+            <div class="p-4 flex justify-between items-center">
+              <div class="flex items-center">
+                <div class="mr-3">
+                  <div class="text-xs text-green-500 font-medium">Hazırlanıyor</div>
+                  <div class="text-xs text-gray-500">00:01:05</div>
+                </div>
+                <div>
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span class="text-sm text-gray-500">yektas</span>
+                  </div>
+                  <div class="font-medium">2 Adet - Kaşarlı Tost</div>
+                </div>
+              </div>
+              <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm">
+                Hazır
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="flex justify-between items-center p-4 border-b">
+            <div class="flex items-center">
+              <div class="bg-yellow-400 h-12 w-12 rounded-full flex items-center justify-center text-white mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">yektas / 103</div>
+                <div class="text-sm text-gray-500">salon / Masa 6</div>
+              </div>
+            </div>
+            <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm">
+              Tümü Hazır
+            </button>
+          </div>
+          <div class="divide-y">
+            <div class="p-4 flex justify-between items-center">
+              <div class="flex items-center">
+                <div class="mr-3">
+                  <div class="text-xs text-green-500 font-medium">Hazırlanıyor</div>
+                  <div class="text-xs text-gray-500">00:03:15</div>
+                </div>
+                <div>
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span class="text-sm text-gray-500">yektas</span>
+                  </div>
+                  <div class="font-medium">1 Porsiyon - Patates Kızartması</div>
+                </div>
+              </div>
+              <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm">
+                Hazır
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="flex justify-between items-center p-4 border-b">
+            <div class="flex items-center">
+              <div class="bg-yellow-400 h-12 w-12 rounded-full flex items-center justify-center text-white mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">yektas / 104</div>
+                <div class="text-sm text-gray-500">salon / Masa 8</div>
+              </div>
+            </div>
+            <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm">
+              Tümü Hazır
+            </button>
+          </div>
+          <div class="divide-y">
+            <div class="p-4 flex justify-between items-center">
+              <div class="flex items-center">
+                <div class="mr-3">
+                  <div class="text-xs text-green-500 font-medium">Hazırlanıyor</div>
+                  <div class="text-xs text-gray-500">00:00:45</div>
+                </div>
+                <div>
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span class="text-sm text-gray-500">yektas</span>
+                  </div>
+                  <div class="font-medium">2 Adet - Çay</div>
+                </div>
+              </div>
+              <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm">
+                Hazır
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

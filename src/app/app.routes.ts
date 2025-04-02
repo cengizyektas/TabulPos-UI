@@ -5,13 +5,12 @@ import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 export const appRoutes: Route[] = [
     // Redirect empty path to '/example'
-    {path: '', pathMatch : 'full', redirectTo: 'product-definition'},
+    {path: '', pathMatch : 'full', redirectTo: 'printer-settings'},
     // Redirect signed-in user to the '/example'    //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
     {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'example'},
-    // Auth routes for guests
     {
         path: '',
         canActivate: [NoAuthGuard],
@@ -39,7 +38,8 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'sign-out', loadChildren: () => import('app/modules/auth/sign-out/sign-out.routes')},
-            {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.routes')}
+            {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.routes')},
+            {path: 'order-detail', loadChildren: () => import('app/modules/admin/order-detail/order-detail.routes')}
         ]
     },
     // Landing routes
@@ -72,6 +72,11 @@ export const appRoutes: Route[] = [
             {path: 'users-list', loadChildren: () => import('app/modules/admin/users/users.routes')},
             {path: 'app-permission', loadChildren: () => import('app/modules/admin/app-permissions/app-permission.routes')},
             {path: 'order-panel', loadChildren: () => import('app/modules/admin/order-panel/order-panel.routes')},
+            {path: 'kitchen-detail', loadChildren: () => import('app/modules/admin/kitchen-detail/kitchen-detail.routes')},
+            {path: 'printer-settings', loadChildren: () => import('app/modules/admin/printer-settings/printer-setting.routes')},
+            {path: 'customer-display-settings', loadChildren: () => import('app/modules/admin/customer-display-settings/customer-display-settings.routes')},
+            {path: 'company-settings', loadChildren: () => import('app/modules/admin/company-settings/company-settings.routes')},
         ]
+
     }
 ];

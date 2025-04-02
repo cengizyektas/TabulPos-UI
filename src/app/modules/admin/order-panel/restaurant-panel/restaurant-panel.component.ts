@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { Router } from '@angular/router';
 import { AngularDraggableModule } from 'angular2-draggable';
 import {
     RestaurantArea,
@@ -40,7 +41,7 @@ export class RestaurantPanelComponent {
         round: { width: 150, height: 150, radius: 1 },
     };
 
-    constructor() {}
+    constructor(private router: Router) {}
 
     ngOnInit(): void {
         if (!this.restaurantArea) {
@@ -50,6 +51,12 @@ export class RestaurantPanelComponent {
     // Masa seçme işlemi
     selectTable(table: RestaurantTable): void {
         this.selectedTable = table;
+        this.router.navigate(['/order-detail'], {
+            queryParams: {
+                tableId: table.id.toString(),
+                tableName: table.name
+            }
+        });
     }
 
     // Masa taşıma işlemi tamamlandığında

@@ -1,0 +1,77 @@
+.location-modal-container {
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.location-modal-header {
+  margin-bottom: 16px;
+}
+
+// Make sure the map container has a height
+.location-map-container {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    z-index: 400;
+    display: none;
+  }
+  
+  &.loading::before {
+    display: block;
+  }
+}
+
+// Style for leaflet marker
+:host ::ng-deep {
+  .leaflet-div-icon {
+    background: none;
+    border: none;
+  }
+  
+  .leaflet-control-zoom {
+    border: none !important;
+    a {
+      color: #666;
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+  
+  .leaflet-control-attribution {
+    font-size: 10px;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .location-modal-container {
+    padding: 16px;
+  }
+  
+  .location-map-container {
+    #location-map {
+      height: 300px !important;
+    }
+  }
+  
+  .mt-6.flex.justify-between {
+    flex-direction: column;
+    gap: 16px;
+    
+    div {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+} 

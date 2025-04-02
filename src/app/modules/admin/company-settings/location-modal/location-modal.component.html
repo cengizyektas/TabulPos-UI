@@ -1,0 +1,46 @@
+<div class="location-modal-container">
+  <div class="location-modal-header">
+    <h2 class="text-xl font-semibold text-gray-800">Restoran Konumu</h2>
+    <p class="text-gray-600 mt-2">
+      <mat-icon class="text-gray-500 align-text-bottom">info</mat-icon>
+      Tarayıcınızda konum servislerine izin vererek ya da haritadan konum seçerek restoranınızın konumunu seçebilirsiniz.
+    </p>
+  </div>
+
+  <div class="location-map-container mt-4">
+    <div id="location-map" class="h-[400px] rounded-lg shadow-md"></div>
+  </div>
+
+  <div class="mt-4 bg-gray-100 p-3 rounded-lg">
+    <div class="text-gray-700 font-medium">Seçilen konum:</div>
+    <div class="text-gray-800 mt-1">{{ location.address }}</div>
+  </div>
+
+  <div class="mt-6 flex justify-between">
+    <button 
+      mat-stroked-button 
+      color="primary" 
+      class="bg-blue-50 text-blue-600 border-blue-200" 
+      (click)="onLearnPosition()">
+      <mat-icon>my_location</mat-icon>
+      Konumumu Öğren
+    </button>
+    
+    <div>
+      <button 
+        mat-stroked-button 
+        class="mr-2" 
+        (click)="onCancel()">
+        İptal
+      </button>
+      
+      <button 
+        mat-flat-button 
+        color="warn" 
+        class="bg-red-500 text-white" 
+        (click)="onSave()">
+        Konumu Kaydet
+      </button>
+    </div>
+  </div>
+</div> 

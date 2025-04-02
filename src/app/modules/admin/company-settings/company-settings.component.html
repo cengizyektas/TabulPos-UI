@@ -1,0 +1,227 @@
+<div class="w-full max-w-screen-xl mx-auto max-h-screen p-4">
+  <!-- Header -->
+  <div class="flex items-center justify-between bg-white text-gray-800 p-4 rounded-t-lg">
+    <div class="flex items-center">
+      <mat-icon class="text-gray-800">settings</mat-icon>
+      <div class="ml-4">
+        <h1 class="text-xl font-semibold">Restaurant Tanımlamaları</h1>
+        <p class="text-sm">Restaurantınız ile ilgili tanımlamaları bu alandan yapabilirsiniz.</p>
+      </div>
+    </div>
+    <button mat-flat-button color="primary" class="bg-white text-red-500 hover:bg-gray-100" (click)="saveSettings()">
+      <mat-icon>refresh</mat-icon>
+      Güncelle
+    </button>
+  </div>
+
+  <!-- Tabs -->
+  <mat-tab-group class="bg-white rounded-b-lg shadow-lg">
+    <!-- General Settings Tab -->
+    <mat-tab label="Genel Ayarlar">
+      <div class="p-6 h-[600px] overflow-y-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Restaurant Name -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Restaurant Adı</mat-label>
+            <input matInput [(ngModel)]="restaurant.name" placeholder="Restaurant adını giriniz">
+          </mat-form-field>
+
+          <!-- Working Hours -->
+          <div class="grid grid-cols-2 gap-4">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Gün Başlangıç</mat-label>
+              <input matInput type="time" [(ngModel)]="restaurant.startTime">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Gün Bitiş</mat-label>
+              <input matInput type="time" [(ngModel)]="restaurant.endTime">
+            </mat-form-field>
+          </div>
+
+          <!-- Session -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Bildirim Sesi</mat-label>
+            <mat-select [(ngModel)]="restaurant.session">
+              <mat-option value="1">Ses 1</mat-option>
+              <mat-option value="2">Ses 2</mat-option>
+              <mat-option value="3">Ses 3</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Socket Address -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Grp3 Soket Adresi</mat-label>
+            <input matInput [(ngModel)]="restaurant.socketAddress" placeholder="localhost:5002">
+          </mat-form-field>
+
+          <!-- Timeouts -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Ekran kilit süresi (sn)</mat-label>
+            <input matInput type="number" [(ngModel)]="restaurant.screenTimeout" min="0">
+            <mat-hint>0 girilir ise devre dışı kalır</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Masa renk değiştirme süresi (dakika)</mat-label>
+            <input matInput type="number" [(ngModel)]="restaurant.tableTimeout" min="0">
+            <mat-hint>Belirtilen süre kadar işlem yapılmazsa masanın rengi değişir</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Restaurant Location Information -->
+        <div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <div class="flex items-start">
+            <mat-icon class="text-orange-500 mr-2">location_on</mat-icon>
+            <div class="flex-grow">
+              <h3 class="font-medium text-gray-800">Restoran Konumu</h3>
+              <p class="text-sm text-gray-600 mt-1">{{ location.address }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-between">
+          <button mat-flat-button color="primary" class="bg-blue-500 text-white" (click)="openLocationModal()">
+            <mat-icon>edit_location</mat-icon>
+            Restoran Konumunu Düzenle
+          </button>
+          <button mat-flat-button color="accent" class="bg-purple-500 text-white">
+            <mat-icon>business</mat-icon>
+            Gelir Merkezlerini Düzenle
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Payment Methods Tab -->
+    <mat-tab label="Ödeme Tipleri">
+      <div class="p-6 h-[600px] overflow-y-auto">
+        <h2 class="text-lg font-semibold mb-4 flex justify-between">
+          <span>Kullanılan Ödeme Tipleri</span>
+          <button mat-button color="primary" class="text-blue-500">Ödeme Tiplerini Düzenle</button>
+        </h2>
+
+        <div class="space-y-4">
+          <div *ngFor="let method of paymentMethods" class="flex justify-between items-center border-b pb-3">
+            <span class="text-gray-800">{{ method.name }}</span>
+            <mat-slide-toggle
+              color="primary"
+              [(ngModel)]="method.enabled"
+              [class.text-red-500]="method.enabled"
+            ></mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Parameters Tab -->
+    <mat-tab label="Parametreler">
+      <div class="p-6 h-[600px] overflow-y-auto">
+        <h2 class="text-lg font-semibold mb-4">Parametreler</h2>
+
+        <div class="space-y-6">
+          <div *ngFor="let param of parameters" class="border-b pb-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-medium text-gray-800">{{ param.name }}</h3>
+                <p class="text-sm text-gray-600 mt-1">{{ param.description }}</p>
+              </div>
+              <mat-slide-toggle
+                color="primary"
+                [(ngModel)]="param.enabled"
+                [class.text-red-500]="param.enabled"
+              ></mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Currency Settings Tab -->
+    <mat-tab label="Döviz Ayarları">
+      <div class="p-6 h-[600px] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-lg font-semibold">Döviz ile ödeme aktif</h2>
+          <mat-slide-toggle color="primary" [(ngModel)]="currencySettings.enabled"></mat-slide-toggle>
+        </div>
+
+        <div *ngIf="currencySettings.enabled" class="flex items-end gap-4">
+          <div class="flex-grow">
+            <div class="text-sm text-gray-500 mb-1">TRY</div>
+            <mat-form-field appearance="outline" class="w-full">
+              <input matInput type="number" [(ngModel)]="currencySettings.rate" min="0.01" step="0.01">
+            </mat-form-field>
+          </div>
+          <div class="mb-4 text-gray-500">Türk Lirası - ₺</div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Address Information Tab -->
+    <mat-tab label="Adres Bilgileri">
+      <div class="p-6 h-[600px] overflow-y-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Country -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Ülke</mat-label>
+            <mat-select [(ngModel)]="address.country">
+              <mat-option value="Turkey">Turkey</mat-option>
+              <mat-option value="Germany">Germany</mat-option>
+              <mat-option value="United Kingdom">United Kingdom</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- City -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Şehir</mat-label>
+            <mat-select [(ngModel)]="address.city">
+              <mat-option value="Ankara">Ankara</mat-option>
+              <mat-option value="Istanbul">Istanbul</mat-option>
+              <mat-option value="Izmir">Izmir</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- District -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>İlçe</mat-label>
+            <mat-select [(ngModel)]="address.district">
+              <mat-option value="">Seçiniz</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Neighborhood -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Mahalle</mat-label>
+            <mat-select [(ngModel)]="address.neighborhood">
+              <mat-option value="">Seçiniz</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Street Name -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Sokak Adı</mat-label>
+            <input matInput [(ngModel)]="address.streetName">
+          </mat-form-field>
+
+          <!-- Street Address -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Adres</mat-label>
+            <textarea matInput [(ngModel)]="address.streetAddress" rows="2"></textarea>
+          </mat-form-field>
+
+          <!-- Building No -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Bina No</mat-label>
+            <input matInput [(ngModel)]="address.buildingNo">
+          </mat-form-field>
+
+          <!-- Postal Code -->
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Posta Kodu</mat-label>
+            <input matInput [(ngModel)]="address.postalCode">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

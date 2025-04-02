@@ -1,0 +1,96 @@
+// General styling for the settings page
+:host {
+  display: block;
+  background-color: #f5f6fa;
+  min-height: 100%;
+}
+
+// Custom styling for color inputs
+input[type="color"] {
+  -webkit-appearance: none;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+  }
+}
+
+// Material Form Field full width
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+// Preview panel enhancements
+.preview-panel {
+  transition: all 0.3s ease;
+}
+
+// Responsive adjustments
+@media (max-width: 1024px) {
+  .settings-container {
+    margin-bottom: 2rem;
+  }
+}
+
+// Animation for button hover
+button.update-btn {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Material Checkbox styling
+.mat-mdc-checkbox {
+  margin: 5px 0;
+  
+  // Make the checkmark white
+  .mdc-checkbox__checkmark {
+    color: white;
+  }
+  
+  .mdc-checkbox__checkmark-path {
+    stroke: white !important;
+  }
+}
+
+// Material Slide Toggle styling
+.mat-mdc-slide-toggle {
+  --mdc-switch-selected-handle-color: #ffffff;
+  --mdc-switch-selected-track-color: #e53935;
+  --mdc-switch-selected-hover-track-color: #e53935;
+  --mdc-switch-selected-focus-track-color: #e53935;
+  
+  .mdc-switch__thumb-underlay {
+    padding: 8px;
+  }
+}
+
+// Material icons styling
+.mat-icon {
+  vertical-align: middle;
+}
+
+// Custom logo preview
+.logo-preview {
+  max-width: 100%;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+// Material button styling
+.mat-mdc-raised-button.mat-warn {
+  padding: 0 24px;
+}

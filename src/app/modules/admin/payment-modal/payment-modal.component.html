@@ -1,0 +1,174 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2" (click)="closeModal()">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-5xl overflow-hidden" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="bg-gray-100 text-gray-900 h-14 flex items-center justify-between px-4 border-b border-gray-200">
+      <div class="flex items-center">
+        <span class="text-base font-medium">Masa Adı: {{tableName}}</span>
+        <span class="ml-4 text-sm text-gray-600">Garson: yektas</span>
+      </div>
+      <div class="flex items-center space-x-1">
+        <button mat-button class="text-red-600 text-sm font-medium flex items-center px-2 py-1 border border-red-200 rounded">
+          <mat-icon class="text-red-600 text-sm mr-1">save</mat-icon>
+          Kaydet
+        </button>
+        <button mat-button class="text-red-600 text-sm font-medium flex items-center px-2 py-1 border border-red-200 rounded">
+          <mat-icon class="text-red-600 text-sm mr-1">receipt</mat-icon>
+          Öde ve Kapat
+        </button>
+        <button mat-button class="text-red-600 text-sm font-medium flex items-center px-2 py-1 border border-red-200 rounded">
+          <mat-icon class="text-red-600 text-sm mr-1">print</mat-icon>
+          Öde ve Yazdır
+        </button>
+        <button mat-button class="text-red-600 text-sm font-medium flex items-center px-2 py-1 border border-red-200 rounded">
+          <mat-icon class="text-red-600 text-sm mr-1">receipt</mat-icon>
+          Öde ve Kapat
+        </button>
+        <button mat-icon-button (click)="closeModal()" class="text-red-600 hover:bg-gray-100 rounded-full transition-colors">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Content -->
+    <div class="flex flex-col md:flex-row">
+      <!-- Left Side - Order Details -->
+      <div class="w-full md:w-2/3 p-6 flex flex-col" style="height: calc(94vh - 56px); overflow: hidden;">
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="text-xl font-semibold">PARÇALI ÖDE</h2>
+          <div class="flex space-x-1">
+            <button class="px-4 py-1 bg-gray-100 hover:bg-gray-200 rounded-md text-sm transition-colors focus:ring-2 focus:ring-gray-300">
+              Ödenmemiş Olanlar
+            </button>
+          </div>
+        </div>
+
+        <!-- Order Items - Fixed height with scrolling -->
+        <div class="overflow-y-auto border border-gray-200 rounded-lg mb-3 flex-1" style="max-height: 40vh;">
+          <div class="divide-y divide-gray-200">
+            <div *ngFor="let item of items; let i = index" 
+                class="flex justify-between items-center p-3 hover:bg-gray-50 transition-colors">
+              <div class="flex items-center">
+                <span class="mr-3 text-sm">{{i + 1}} - ({{item.quantity}} adet)</span>
+                <span class="font-medium text-sm">{{item.name}}</span>
+              </div>
+              <div class="flex items-center">
+                <span class="text-gray-600 mr-3 text-sm">Ödenen: ₺0,00</span>
+                <span class="font-semibold text-sm">Kalan: ₺{{(item.price * item.quantity).toFixed(2)}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom section - fixed position -->
+        <div class="bottom-0 left-0 right-0 bg-white pb-2 sticky z-10">
+          <!-- Total Section - More compact -->
+          <div class="grid grid-cols-3 gap-2 mb-2 border-b border-gray-200 pb-1">
+            <div class="flex flex-col">
+              <span class="text-gray-600 text-xs">TOPLAM</span>
+              <span class="font-bold text-sm">₺{{total.toFixed(2)}}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-gray-600 text-xs">TAHSİLAT GEÇMİŞİ</span>
+              <span class="font-bold text-blue-600 text-sm">₺{{total.toFixed(2)}}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-gray-600 text-xs">ÖDENECEK TUTAR</span>
+              <span class="font-bold text-sm">₺{{total.toFixed(2)}}</span>
+            </div>
+          </div>
+
+          <!-- Number Pad -->
+          <div class="grid grid-cols-4 gap-0.5 mb-2">
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('7')">7</button>
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('8')">8</button>
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('9')">9</button>
+            <button class="h-12 w-full bg-blue-50 border border-gray-300 rounded hover:bg-blue-100 text-blue-600 font-medium transition-all active:bg-blue-200 flex items-center justify-center" (click)="appendNumber('Tüm')">Tüm</button>
+            
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('4')">4</button>
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('5')">5</button>
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('6')">6</button>
+            <button class="h-12 w-full bg-blue-50 border border-gray-300 rounded hover:bg-blue-100 text-blue-600 font-medium transition-all active:bg-blue-200 flex items-center justify-center" (click)="appendNumber('1/n')">1/n</button>
+            
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('1')">1</button>
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('2')">2</button>
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('3')">3</button>
+            <button class="h-12 w-full bg-blue-50 border border-gray-300 rounded hover:bg-blue-100 text-blue-600 font-medium transition-all active:bg-blue-200 flex items-center justify-center" (click)="appendNumber('indirim')">İndirim</button>
+            
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('.')">.</button>
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('0')">0</button>
+            <button class="h-12 w-full border border-gray-300 rounded hover:bg-gray-50 font-medium transition-all active:bg-gray-200 flex items-center justify-center" (click)="appendNumber('')">
+              <mat-icon class="text-xs">arrow_back</mat-icon>
+            </button>
+            <button class="h-12 w-full bg-red-50 border border-gray-300 rounded hover:bg-red-100 text-red-600 font-medium transition-all active:bg-red-200 flex items-center justify-center" (click)="backspace()">
+              <mat-icon class="text-xs">backspace</mat-icon>
+            </button>
+          </div>
+
+          <!-- Payment Amount Display - More visible -->
+          <div class="bg-green-50 border border-green-200 rounded-lg">
+            <div class="text-center py-2">
+              <div class="text-xl font-bold text-green-700">₺{{amount}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Payment Methods -->
+      <div class="w-full md:w-1/3 bg-gray-50 p-6 border-t md:border-t-0 md:border-l border-gray-200">
+        <h2 class="text-xl font-semibold mb-5">ÖDEME TİPLERİ</h2>
+        
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Nakit (Cash) -->
+          <div class="flex flex-col items-center bg-white p-3 border border-gray-200 rounded cursor-pointer hover:border-blue-500 hover:shadow-md transition-all" (click)="processPayment('cash')">
+            <div class="w-12 h-12 flex items-center justify-center mb-2 bg-green-50 rounded-full">
+              <mat-icon class="text-green-600">payments</mat-icon>
+            </div>
+            <span class="font-medium text-sm">Nakit</span>
+          </div>
+          
+          <!-- Kredi Kartı (Credit Card) -->
+          <div class="flex flex-col items-center bg-white p-3 border border-gray-200 rounded cursor-pointer hover:border-blue-500 hover:shadow-md transition-all" (click)="processPayment('credit')">
+            <div class="w-12 h-12 flex items-center justify-center mb-2 bg-blue-50 rounded-full">
+              <mat-icon class="text-blue-600">credit_card</mat-icon>
+            </div>
+            <span class="font-medium text-sm">Kredi Kartı</span>
+          </div>
+          
+          <!-- Multinet -->
+          <div class="flex flex-col items-center bg-white p-3 border border-gray-200 rounded cursor-pointer hover:border-blue-500 hover:shadow-md transition-all" (click)="processPayment('multinet')">
+            <div class="w-12 h-12 flex items-center justify-center mb-2 bg-purple-50 rounded-full">
+              <mat-icon class="text-purple-600">card_membership</mat-icon>
+            </div>
+            <span class="font-medium text-sm">Multinet</span>
+          </div>
+          
+          <!-- Ödenmez (Unpaid) -->
+          <div class="flex flex-col items-center bg-white p-3 border border-gray-200 rounded cursor-pointer hover:border-blue-500 hover:shadow-md transition-all" (click)="processPayment('unpaid')">
+            <div class="w-12 h-12 flex items-center justify-center mb-2 bg-red-50 rounded-full">
+              <mat-icon class="text-red-600">block</mat-icon>
+            </div>
+            <span class="font-medium text-sm">Ödenmez</span>
+          </div>
+          
+          <!-- Açık Hesap (Open Account) -->
+          <div class="flex flex-col items-center bg-white p-3 border border-gray-200 rounded cursor-pointer hover:border-blue-500 hover:shadow-md transition-all" (click)="processPayment('account')">
+            <div class="w-12 h-12 flex items-center justify-center mb-2 bg-yellow-50 rounded-full">
+              <mat-icon class="text-yellow-600">account_balance</mat-icon>
+            </div>
+            <span class="font-medium text-sm">Açık Hesap</span>
+          </div>
+        </div>
+        
+        <!-- Special Discount Buttons -->
+        <div class="grid grid-cols-2 gap-3 mt-10">
+          <button class="py-3 px-4 bg-white border border-gray-300 rounded hover:bg-gray-50 font-medium text-sm transition-colors">
+            Ürün Bazlı 1/n
+          </button>
+          <button class="py-3 px-4 bg-white border border-gray-300 rounded hover:bg-gray-50 font-medium text-sm transition-colors">
+            Ürün Bazlı İndirim
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

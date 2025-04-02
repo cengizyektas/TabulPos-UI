@@ -1,0 +1,87 @@
+<!-- Printer Settings Page with Tailwind CSS -->
+<div class="bg-gray-50 p-4 md:p-6 w-full flex justify-center">
+  <div class="flex flex-col md:flex-row gap-6 max-w-6xl w-full">
+    <!-- Main Content Area -->
+    <div class="bg-white rounded-lg shadow-md p-6 flex-1">
+      <!-- Header Section -->
+      <div class="flex items-center gap-4 mb-8">
+        <div class="bg-orange-500 p-3 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-gray-800">Yazıcı Ayarları</h1>
+          <p class="text-sm text-gray-600">Yazıcı ile ilgili ayarlarınızı buradan yönetebilirsiniz</p>
+        </div>
+      </div>
+
+      <!-- Error/No Printer Section -->
+      <div class="flex flex-col items-center justify-center py-10 px-4">
+        <div class="bg-red-100 p-4 rounded-full mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Tanımlı Yazıcı Bulunamadı.</h2>
+        <p class="text-gray-600 text-center mb-6">Lütfen ekranın sağ tarafında bulunan işlemleri sırasıyla yapınız</p>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="md:w-96 space-y-6">
+      <!-- Guide Section -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-bold text-gray-800 mb-3">Keşfet</h2>
+        <p class="text-sm text-gray-600 mb-4">Yazıcılarınızın kurulumu ve Adisyo programına tanıtılması adımlarını anlattığımız videoyu izlemek için aşağıdaki bağlantıları kullanabilirsiniz.</p>
+        
+        <div class="space-y-3">
+          <a href="javascript:void(0)" (click)="openVideoTutorial('ethernet')" class="flex justify-between items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-md transition">
+            <span class="text-sm font-medium text-red-500">Ethernet Bağlantılı Yazıcı Tanımlama</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          
+          <a href="javascript:void(0)" (click)="openVideoTutorial('usb')" class="flex justify-between items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-md transition">
+            <span class="text-sm font-medium text-red-500">USB Bağlantılı Yazıcı Tanımlama</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Setup Steps Section -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-bold text-gray-800 mb-4">Kuruluma Başla</h2>
+        
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 bg-red-100 text-red-500 font-medium rounded-full h-8 w-8 flex items-center justify-center">
+              1
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-800 mb-1">Bulut Yazıcı Programını İndir</h3>
+              <p class="text-sm text-gray-600 mb-3">Adisyo bulut yazıcı programı, bilgisayarınıza tanımlı yazıcılar ile Adisyo programı arasındaki iletişimi sağlayarak, çok daha güzel çıktılar almanızı sağlar</p>
+              <button (click)="downloadPrinterProgram()" class="w-full py-3 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-md transition">Bulut Yazıcı Programını İndir</button>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 bg-red-100 text-red-500 font-medium rounded-full h-8 w-8 flex items-center justify-center">
+              2
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-800 mb-1">Yeni Yazıcı Ekle</h3>
+              <p class="text-sm text-gray-600 mb-3">Bilgisayarınızda tanımlı olan yazıcılarınızı Adisyo programına ekleyin.</p>
+              <button (click)="addNewPrinter()" class="w-full py-3 bg-red-500 hover:bg-red-600 text-white font-medium rounded-md transition">Yeni Yazıcı Ekle</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

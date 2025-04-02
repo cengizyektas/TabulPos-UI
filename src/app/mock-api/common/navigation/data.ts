@@ -66,7 +66,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
-
     {
         id: 'example',
         title: 'Sipariş',
@@ -75,11 +74,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link: '/order-panel',
     },
     {
-        id: 'example',
+        id: 'kitchen-detail',
         title: 'Mutfak',
         type: 'basic',
         icon: 'mat_solid:desktop_mac',
-        link: '',
+        link: '/kitchen-detail',
     },
     {
         id: 'example',
@@ -113,12 +112,40 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
+    
     {
-        id: 'example',
+        id: 'ayarlar',
         title: 'Ayarlar',
-        type: 'basic',
+        type: 'collapsable',
         icon: 'mat_solid:settings',
-        link: '',
+        link: '/product-definition',
+        children: [
+            {
+                id: 'customer-display-settings',
+                title: 'Müşteri Bilgi Ekranı',
+                type: 'basic',
+                icon: 'mat_solid:wysiwyg',
+                link: '/customer-display-settings',
+                exactMatch: true,
+            },
+            {
+                id: 'printer-settings',
+                title: 'Yazıcı Ayarları',
+                type: 'basic',
+                icon: 'mat_solid:print',
+                link: '/printer-settings',
+                exactMatch: true,
+            },
+            {
+                id: 'company-settings',
+                title: 'Restaurant Ayarları',
+                type: 'basic',
+                icon: 'mat_solid:restaurant',
+                link: '/company-settings',
+                exactMatch: true,
+            },
+           
+        ],
     },
 ];
 export const compactNavigation: FuseNavigationItem[] = [

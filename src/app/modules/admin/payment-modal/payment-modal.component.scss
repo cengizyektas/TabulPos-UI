@@ -1,0 +1,301 @@
+// Payment Modal Styles
+:host {
+  .fixed.inset-0 {
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .bg-white.rounded-lg.shadow-lg {
+    animation: slideUp 0.3s ease-out;
+    max-height: 94vh;
+    overflow: hidden;
+    width: 95vw;
+    max-width: 1100px !important;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  // Header styles
+  .bg-gray-100 {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  // Button styles for header actions
+  .text-red-600.text-sm {
+    font-size: 12px;
+    height: 30px;
+    
+    mat-icon {
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  // Payment method card styles
+  .flex.flex-col.items-center.bg-white {
+    transition: all 0.2s ease;
+    height: 110px;
+    
+    &:active {
+      transform: scale(0.95);
+      background-color: #f8f8f8;
+      border-color: #3b82f6;
+    }
+    
+    .w-12.h-12 {
+      transition: all 0.2s ease;
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+    
+    &:hover .w-12.h-12 {
+      transform: scale(1.1);
+    }
+    
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+    
+    span {
+      font-size: 14px !important;
+    }
+  }
+
+  // Layout improvements
+  .w-full.md\:w-2\/3.p-6.flex.flex-col {
+    display: flex;
+    flex-direction: column;
+    
+    .overflow-y-auto.border {
+      flex: 1;
+      min-height: 100px;
+      max-height: none;
+    }
+    
+    .mt-auto {
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+    
+    // Compact totals grid
+    .grid.grid-cols-3.gap-2 {
+      padding-bottom: 0.5rem;
+      
+      .flex.flex-col {
+        text-align: center;
+        
+        .text-gray-600 {
+          font-size: 0.75rem;
+          line-height: 1;
+          margin-bottom: 0.25rem;
+          white-space: nowrap;
+        }
+        
+        .font-bold {
+          font-size: 1.1rem;
+          line-height: 1.2;
+        }
+      }
+    }
+  }
+
+  // Number pad button styles - more compact
+  .grid.grid-cols-4.gap-0\.5 {
+    button {
+      transition: all 0.15s ease;
+      user-select: none;
+      height: 3rem !important;
+      font-size: 1.3rem;
+      
+      &:active {
+        transform: scale(0.95);
+      }
+      
+      &.bg-blue-50 {
+        font-size: 0.9rem;
+      }
+      
+      mat-icon {
+        font-size: 1.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+  }
+
+  // Payment amount display - more visible
+  .bg-green-50.border.border-green-200.rounded-lg {
+    border: 1px solid #10b981;
+    margin-bottom: 0.25rem;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    
+    .text-center.py-2 {
+      padding: 0.5rem 0;
+      
+      .text-xl.font-bold {
+        font-size: 1.5rem !important;
+        line-height: 1;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // Order items section with better scrollbar
+  .overflow-y-auto.border {
+    border: 1px solid #e5e7eb;
+    max-height: calc(42vh - 120px) !important;
+    
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f9fafb;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+    
+    .hover\:bg-gray-50:hover {
+      background-color: #f9fafb;
+    }
+  }
+
+  // Mobile optimizations for payment modal
+  @media (max-width: 768px) {
+    .bg-white.rounded-lg.shadow-lg {
+      max-width: 100%;
+      height: 95vh;
+      max-height: 95vh;
+      border-radius: 12px 12px 0 0;
+      margin-bottom: 0;
+      position: fixed;
+      bottom: 0;
+      animation: slideUpMobile 0.3s ease-out;
+    }
+    
+    @keyframes slideUpMobile {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    
+    .flex.flex-col.md\:flex-row {
+      flex-direction: column;
+      height: calc(95vh - 56px); // 56px is the header height
+      overflow: hidden;
+      
+      > div {
+        width: 100%;
+        
+        &:first-child {
+          height: 65%;
+          display: flex;
+          flex-direction: column;
+          
+          .overflow-y-auto.border {
+            flex: 1;
+            overflow-y: auto;
+          }
+          
+          .mt-auto {
+            flex-shrink: 0;
+          }
+        }
+        
+        &:last-child {
+          height: 35%;
+          overflow-y: auto;
+        }
+      }
+    }
+    
+    .grid.grid-cols-4.gap-0\.5 {
+      button {
+        height: 2.5rem !important;
+        font-size: 16px;
+      }
+    }
+    
+    .mt-4.p-3.bg-gray-50 {
+      padding: 0.5rem !important;
+      
+      .text-2xl {
+        font-size: 1.5rem !important;
+      }
+    }
+  }
+
+  // Better focus states for accessibility
+  button:focus {
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 1px;
+  }
+  
+  // Ensure the modal works correctly with mat-icon
+  mat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  // Add realistic shadowing
+  .rounded-lg.shadow-lg {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  // Improved hover/active states
+  button.border {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%, -50%);
+      transform-origin: 50% 50%;
+    }
+    
+    &:active::after {
+      opacity: 1;
+      animation: ripple 0.6s ease-out;
+    }
+  }
+  
+  @keyframes ripple {
+    0% {
+      transform: scale(0, 0);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(30, 30);
+      opacity: 0;
+    }
+  }
+} 

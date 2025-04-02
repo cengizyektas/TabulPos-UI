@@ -1,0 +1,182 @@
+<!-- Main Container -->
+<div class="flex flex-col lg:flex-row w-full gap-6 p-4">
+  <!-- Left Settings Panel -->
+  <div class="w-full lg:w-1/2 bg-white rounded-lg shadow-md p-6 settings-container">
+    <div class="mb-6">
+      <h2 class="text-xl font-bold mb-6">Müşteri Bilgi Ekranı Ayarları</h2>
+      
+      <!-- Enable Customer Display -->
+      <div class="mb-4 flex items-center justify-between">
+        <span class="text-sm text-gray-600">Müşteri Bilgi Ekranı Kullanılsın</span>
+        <mat-slide-toggle color="primary" [(ngModel)]="settings.displayEnabled" class="mb-2">
+        </mat-slide-toggle>
+      </div>
+      
+      <!-- Business Name -->
+      <div class="mb-4">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>İşletme Adı</mat-label>
+          <input matInput [(ngModel)]="settings.businessName">
+        </mat-form-field>
+      </div>
+      
+      <!-- Slogan -->
+      <div class="mb-4">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Altyazı</mat-label>
+          <input matInput [(ngModel)]="settings.slogan">
+        </mat-form-field>
+      </div>
+      
+      <!-- Font Sizes -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Genel Yazı Boyutu</mat-label>
+            <input matInput type="number" [(ngModel)]="settings.generalFontSize">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Ürün Listesi Yazı Boyutu</mat-label>
+            <input matInput type="number" [(ngModel)]="settings.itemsFontSize">
+          </mat-form-field>
+        </div>
+      </div>
+      
+      <!-- Color Settings -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Tema Renk Seçimi</label>
+          <div class="flex items-center p-2 border border-gray-300 rounded-md">
+            <input type="color" [(ngModel)]="settings.themeColor" class="mr-2 border-0">
+            <span>Tema Rengi</span>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Metin Renk Seçimi</label>
+          <div class="flex items-center p-2 border border-gray-300 rounded-md">
+            <input type="color" [(ngModel)]="settings.textColor" class="mr-2 border-0">
+            <span>Metin Rengi</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Order Types -->
+      <div class="mb-6">
+        <label class="block text-sm text-gray-600 mb-2">Sipariş Tipleri</label>
+        <div class="flex flex-row space-x-6">
+          <mat-checkbox color="primary"  [(ngModel)]="settings.orderTypes.tableSales">
+            Masa Siparişi
+          </mat-checkbox>
+          <mat-checkbox color="primary" [(ngModel)]="settings.orderTypes.takeAway">
+            Gel Al Sipariş
+          </mat-checkbox>
+          <mat-checkbox color="primary" [(ngModel)]="settings.orderTypes.delivery">
+            Paket Sipariş
+          </mat-checkbox>
+        </div>
+      </div>
+      
+      <!-- Logo Upload -->
+      <div class="mb-6">
+        <label for="logoInput" class="flex items-center bg-gray-100 text-gray-700 px-4 py-2 rounded-md border border-gray-300 cursor-pointer hover:bg-gray-200 transition-colors">
+          <mat-icon class="text-red-500 mr-2">image</mat-icon>
+          Logo Seçimi
+        </label>
+        <input id="logoInput" type="file" accept="image/*" class="hidden" (change)="onLogoSelect($event)">
+        <div *ngIf="settings.logo" class="mt-2">
+          <img [src]="settings.logo" alt="Selected Logo" class="h-16 object-contain logo-preview">
+        </div>
+      </div>
+      
+      <!-- Update Button -->
+      <div class="text-right">
+        <button mat-raised-button color="warn" class="update-btn" (click)="saveSettings()">
+          Güncelle
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Right Preview Panel -->
+  <div class="w-full lg:w-1/2">
+    <div class="rounded-lg overflow-hidden shadow-lg preview-panel">
+      <!-- Preview Header -->
+      <div class="bg-red-400 p-4 text-white relative" [style.background-color]="settings.themeColor">
+        <div class="absolute inset-0 flex items-center justify-center opacity-25">
+          <img src="assets/images/pasta.jpg" alt="Food Background" class="w-full h-full object-cover">
+        </div>
+        
+        <div class="relative z-10" [style.color]="settings.textColor">
+          <div class="flex justify-between items-center mb-4">
+            <div>
+              <h3 class="text-xl font-bold" [style.font-size.px]="settings.generalFontSize">
+                Masa {{ previewData.tableInfo.tableNumber }} #{{ previewData.tableInfo.orderNumber }}
+              </h3>
+            </div>
+            <div>
+              <p class="text-lg" [style.font-size.px]="settings.generalFontSize">
+                {{ previewData.tableInfo.dateTime }}
+              </p>
+            </div>
+          </div>
+          
+          <!-- Food Image or Logo -->
+          <div class="flex justify-center mb-2">
+            <div class="w-32 h-32 bg-white rounded-md overflow-hidden flex items-center justify-center">
+              <img *ngIf="settings.logo" [src]="settings.logo" alt="Restaurant Logo" class="w-full h-full object-cover">
+              <!-- SVG Logo Icon when no logo is selected -->
+              <svg *ngIf="!settings.logo" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" class="text-gray-400">
+                <path fill="currentColor" d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Order Items -->
+      <div class="bg-white p-4">
+        <div class="space-y-4">
+          <!-- Order Items Loop -->
+          <div *ngFor="let item of previewData.items" class="flex justify-between items-center">
+            <div class="flex items-center">
+              <div class="bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                <span>x{{ item.quantity }}</span>
+              </div>
+              <div>
+                <p class="font-semibold" [style.font-size.px]="settings.itemsFontSize">{{ item.name }}</p>
+                <p class="text-sm text-gray-500">{{ item.variant }}</p>
+              </div>
+            </div>
+            <div class="font-bold" [style.font-size.px]="settings.itemsFontSize">
+              ₺{{ item.price.toFixed(2).replace('.', ',') }}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Order Totals -->
+        <div class="mt-6 pt-4 border-t">
+          <div class="flex justify-between mb-2">
+            <p>İndirim</p>
+            <p class="font-bold">₺{{ previewData.discount.toFixed(2).replace('.', ',') }}</p>
+          </div>
+          <div class="flex justify-between mb-2">
+            <p>Brüt Tutar</p>
+            <p class="font-bold">₺{{ previewData.grossTotal.toFixed(2).replace('.', ',') }}</p>
+          </div>
+          <div class="flex justify-between text-lg">
+            <p class="font-bold">TOPLAM</p>
+            <p class="font-bold">₺{{ previewData.total.toFixed(2).replace('.', ',') }}</p>
+          </div>
+        </div>
+        
+        <!-- Business Info Footer -->
+        <div class="mt-6 pt-4 border-t text-center">
+          <p class="font-bold">{{ settings.businessName }}</p>
+          <p>{{ settings.slogan }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

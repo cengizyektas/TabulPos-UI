@@ -1,0 +1,175 @@
+<div class="flex flex-col h-screen w-full">
+  <!-- Header -->
+  <div class="bg-gray-800 text-white h-16 flex items-center justify-between px-4 shadow-md">
+    <div class="flex items-center">
+      <button mat-icon-button [routerLink]="['/order-panel']" class="mr-3">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span class="text-lg font-medium">{{tableTitle}}</span>
+      <span class="ml-4 text-sm text-gray-300 hidden sm:block">Adisyon No: {{adisyonNo}}</span>
+    </div>
+    <div class="flex items-center space-x-2">
+      <button mat-icon-button>
+        <mat-icon>print</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>credit_card</mat-icon>
+      </button>
+      <button mat-icon-button [routerLink]="['/order-panel']">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+    <!-- Left Side - Categories and Products -->
+    <div class="w-full md:w-2/3 flex flex-col overflow-hidden">
+      <!-- Search Bar -->
+      <div class="bg-white p-3 border-b border-gray-200 shadow-sm">
+        <div class="relative">
+          <mat-icon class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">search</mat-icon>
+          <input 
+            type="text" 
+            placeholder="Ürün Ara..." 
+            [(ngModel)]="searchText"
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        </div>
+      </div>
+
+      <!-- Category Tabs -->
+      <div class="flex overflow-x-auto bg-white border-b border-gray-200 py-2 px-1">
+        <button 
+          *ngFor="let category of categories; let i = index" 
+          class="px-4 py-2 mx-1 whitespace-nowrap font-medium rounded-md transition-colors"
+          [class.bg-red-100]="i === selectedCategoryIndex"
+          [class.text-red-600]="i === selectedCategoryIndex"
+          [class.border-b-2]="i === selectedCategoryIndex"
+          [class.border-red-600]="i === selectedCategoryIndex"
+          (click)="selectCategory(i)">
+          {{category.name}}
+        </button>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="flex-1 overflow-y-auto bg-gray-50 p-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+          <div 
+            *ngFor="let item of filteredProducts" 
+            class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all cursor-pointer overflow-hidden"
+            (click)="addToCart(item)">
+            <div class="p-3 flex flex-col h-28 sm:h-32">
+              <div class="flex justify-between items-start">
+                <h3 class="font-medium text-gray-800 mb-1 line-clamp-2">{{item.name}}</h3>
+                <div *ngIf="item.tag" class="px-2 py-1 bg-red-600 text-white text-xs rounded">{{item.tag}}</div>
+              </div>
+              <div class="mt-auto">
+                <span class="text-green-600 font-semibold">₺{{item.price.toFixed(2)}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side - Cart -->
+    <div class="w-full md:w-1/3 h-1/2 md:h-full flex flex-col bg-white border-t md:border-t-0 md:border-l border-gray-200 shadow-sm">
+      <!-- Cart Header -->
+      <div class="bg-gray-100 p-3 border-b border-gray-200 flex justify-between items-center">
+        <h2 class="font-semibold text-gray-800">Sipariş Detayı</h2>
+        <span class="text-sm bg-red-600 text-white px-2 py-1 rounded-full">{{cartItems.length}} Ürün</span>
+      </div>
+
+      <!-- Cart Items -->
+      <div class="flex-1 overflow-y-auto p-2">
+        <div 
+          *ngFor="let item of cartItems; let i = index" 
+          class="p-3 border-b border-gray-100 hover:bg-gray-50">
+          <div class="flex justify-between items-center">
+            <span class="font-medium">{{item.name}}</span>
+            <button 
+              class="h-8 w-8 flex items-center justify-center rounded-full hover:bg-red-50 text-red-500 transition-colors"
+              (click)="removeFromCart(i)">
+              <mat-icon class="text-sm">close</mat-icon>
+            </button>
+          </div>
+          <div class="flex justify-between items-center mt-2">
+            <div class="flex items-center h-9 border border-gray-300 rounded-lg overflow-hidden">
+              <button 
+                class="h-full w-9 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+                (click)="decrementQuantity(i)">
+                <mat-icon class="text-sm">remove</mat-icon>
+              </button>
+              <span class="w-10 text-center font-medium">{{item.quantity}}</span>
+              <button 
+                class="h-full w-9 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+                (click)="incrementQuantity(i)">
+                <mat-icon class="text-sm">add</mat-icon>
+              </button>
+            </div>
+            <span class="font-semibold">₺{{(item.price * (item.quantity || 1)).toFixed(2)}}</span>
+          </div>
+        </div>
+
+        <!-- Empty Cart Message -->
+        <div *ngIf="cartItems.length === 0" class="flex flex-col items-center justify-center p-8 text-center text-gray-500">
+          <mat-icon class="text-5xl mb-2">shopping_cart</mat-icon>
+          <p>Sepetiniz boş</p>
+          <p class="text-sm">Sipariş eklemek için sol taraftaki ürünlere tıklayın</p>
+        </div>
+      </div>
+
+      <!-- Totals -->
+      <div class="border-t border-gray-200 p-4 bg-gray-50">
+        <div class="flex justify-between mb-2">
+          <span class="text-gray-600">Ara Toplam</span>
+          <span>₺{{total.toFixed(2)}}</span>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span class="text-gray-600">KDV (%8)</span>
+          <span>₺{{(total * 0.08).toFixed(2)}}</span>
+        </div>
+        <div class="flex justify-between font-bold text-lg border-t border-gray-300 pt-2 mt-2">
+          <span>Toplam</span>
+          <span>₺{{(total * 1.08).toFixed(2)}}</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="p-3 border-t border-gray-200 flex flex-col gap-2">
+        <button 
+          mat-flat-button 
+          class="bg-green-600 hover:bg-green-700 text-white py-3 rounded-md font-medium"
+          (click)="openPaymentModal()">
+          <mat-icon class="mr-1">payment</mat-icon>
+          ÖDEME
+        </button>
+        <div class="grid grid-cols-2 gap-2">
+          <button 
+            mat-flat-button 
+            class="bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-md font-medium">
+            <mat-icon class="mr-1">bolt</mat-icon>
+            HIZLI ÖDEME
+          </button>
+          <button 
+            mat-flat-button 
+            (click)="saveOrder()"
+            class="bg-red-600 hover:bg-red-700 text-white py-3 rounded-md font-medium">
+            <mat-icon class="mr-1">save</mat-icon>
+            KAYDET
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Use the new PaymentModalComponent -->
+<app-payment-modal 
+  *ngIf="showPaymentModal"
+  [items]="cartItems"
+  [tableName]="tableTitle"
+  [total]="total"
+  (close)="closePaymentModal()"
+  (payment)="handlePayment($event)">
+</app-payment-modal> 
