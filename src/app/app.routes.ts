@@ -73,6 +73,7 @@ export const appRoutes: Route[] = [
             {path: 'users-list', loadChildren: () => import('app/modules/admin/users/users.routes')},
             {path: 'app-permission', loadChildren: () => import('app/modules/admin/app-permissions/app-permission.routes')},
             {path: 'order-panel', loadChildren: () => import('app/modules/admin/order-panel/order-panel.routes')},
+            {path: 'orders', loadChildren: () => import('app/components/orders/orders.routes')},
             {path: 'kitchen-detail', loadChildren: () => import('app/modules/admin/kitchen-detail/kitchen-detail.routes')},
             {path: 'printer-settings', loadChildren: () => import('app/modules/admin/printer-settings/printer-setting.routes')},
             {path: 'customer-display-settings', loadChildren: () => import('app/modules/admin/customer-display-settings/customer-display-settings.routes')},

@@ -10,7 +10,7 @@
                 <mat-icon>grid_view</mat-icon>
                 <span>Bölgeler</span>
             </a>
-            <a href="#" class="sidebar-nav-item" [class.active]="activeItem === 'siparisler'" (click)="setActive('siparisler')">
+            <a [routerLink]="['/orders']" class="sidebar-nav-item" [class.active]="activeItem === 'siparisler'" (click)="setActive('siparisler')">
                 <mat-icon>restaurant</mat-icon>
                 <span>Siparişler</span>
             </a>

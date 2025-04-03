@@ -3,6 +3,7 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { RouterModule } from '@angular/router';
 import {
     createSampleRestaurantData,
     RestaurantAreasModel,
@@ -17,6 +18,7 @@ import { RestaurantPanelComponent } from './restaurant-panel/restaurant-panel.co
         CommonModule,
         MatTabsModule,
         RestaurantPanelComponent,
+        RouterModule,
     ],
     templateUrl: './order-panel.component.html',
     styleUrl: './order-panel.component.scss',

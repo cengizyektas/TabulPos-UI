@@ -12,6 +12,10 @@ interface MenuItem {
   price: number;
   quantity?: number;
   tag?: string;
+  isNew?: boolean;
+  wasUpdated?: boolean;
+  isHighlighted?: boolean;
+  quantityChanged?: boolean;
 }
 
 interface CategoryTab {
@@ -153,8 +157,46 @@ export class OrderDetailComponent implements OnInit {
     
     if (existingItem) {
       existingItem.quantity = (existingItem.quantity || 1) + 1;
+      existingItem.isNew = true;
+      existingItem.wasUpdated = true;
+      existingItem.quantityChanged = true;
+      
+      // Move the updated item to the top of the list
+      const index = this.cartItems.indexOf(existingItem);
+      if (index > 0) {
+        this.cartItems.splice(index, 1);
+        this.cartItems.unshift(existingItem);
+      }
+      
+      // Reset animation flags after animation completes
+      setTimeout(() => {
+        existingItem.isNew = false;
+        existingItem.wasUpdated = false;
+        
+        // Add highlight effect after quantity update animation
+        existingItem.isHighlighted = true;
+        setTimeout(() => {
+          existingItem.isHighlighted = false;
+        }, 1500);
+      }, 700);
+      
+      setTimeout(() => {
+        existingItem.quantityChanged = false;
+      }, 400);
     } else {
-      this.cartItems.push({ ...item, quantity: 1 });
+      const newItem = { 
+        ...item, 
+        quantity: 1, 
+        isNew: true,
+        wasUpdated: false
+      };
+      // Add new item to the beginning of the array
+      this.cartItems.unshift(newItem);
+      
+      // Reset animation flags after animation completes
+      setTimeout(() => {
+        newItem.isNew = false;
+      }, 700);
     }
     
     this.calculateTotal();
@@ -187,6 +229,18 @@ export class OrderDetailComponent implements OnInit {
   incrementQuantity(index: number) {
     const item = this.cartItems[index];
     item.quantity = (item.quantity || 1) + 1;
+    item.quantityChanged = true;
+    
+    // Move item to top of the list
+    if (index > 0) {
+      this.cartItems.splice(index, 1);
+      this.cartItems.unshift(item);
+    }
+    
+    setTimeout(() => {
+      item.quantityChanged = false;
+    }, 400);
+    
     this.calculateTotal();
   }
 
@@ -194,6 +248,17 @@ export class OrderDetailComponent implements OnInit {
     const item = this.cartItems[index];
     if (item.quantity && item.quantity > 1) {
       item.quantity--;
+      item.quantityChanged = true;
+      
+      // Move item to top of the list
+      if (index > 0) {
+        this.cartItems.splice(index, 1);
+        this.cartItems.unshift(item);
+      }
+      
+      setTimeout(() => {
+        item.quantityChanged = false;
+      }, 400);
     } else {
       this.cartItems.splice(index, 1);
     }

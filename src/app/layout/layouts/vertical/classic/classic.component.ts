@@ -68,6 +68,45 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
         return new Date().getFullYear();
     }
 
+    /**
+     * Get current route title
+     * 
+     * @returns {string}
+     */
+    getCurrentRouteTitle(): string {
+        // Get current URL path
+        const currentUrl = this._router.url;
+        let currentTitle = '';
+        let parentTitle = '';
+        
+        // Navigate through all items in the navigation to find the current one
+        if (this.navigation && this.navigation.default) {
+            // Check top-level items
+            for (const item of this.navigation.default) {
+                // First check if it's a direct match at top level
+                if (item.link && currentUrl.includes(item.link)) {
+                    currentTitle = item.title;
+                    parentTitle = '';
+                }
+                
+                // Then check children if it's a collapsable item
+                if (item.children) {
+                    for (const child of item.children) {
+                        // If child link matches and is more specific than parent
+                        if (child.link && currentUrl.includes(child.link) && 
+                           (!item.link || child.link.length > item.link.length)) {
+                            currentTitle = child.title;
+                            parentTitle = item.title;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Return the title with parent category if available
+        return parentTitle ? `${parentTitle} / ${currentTitle}` : currentTitle;
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------

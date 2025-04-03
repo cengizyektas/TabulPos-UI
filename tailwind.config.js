@@ -96,6 +96,41 @@ const config = {
         extend: {
             animation: {
                 'spin-slow': 'spin 3s linear infinite',
+                'fade-in-down': 'fadeInDown 0.5s ease-out',
+                'pulse': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                'bounce-in': 'bounceIn 0.7s cubic-bezier(0.215, 0.61, 0.355, 1)',
+                'slide-in-right': 'slideInRight 0.5s ease-out',
+                'scale-up': 'scaleUp 0.4s ease-out',
+                'highlight': 'highlight 1.5s ease-in-out',
+            },
+            keyframes: {
+                fadeInDown: {
+                    '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                pulse: {
+                    '0%, 100%': { opacity: '1' },
+                    '50%': { opacity: '0.5' },
+                },
+                bounceIn: {
+                    '0%': { opacity: '0', transform: 'scale(0.3)' },
+                    '50%': { opacity: '1', transform: 'scale(1.05)' },
+                    '70%': { transform: 'scale(0.9)' },
+                    '100%': { transform: 'scale(1)' },
+                },
+                slideInRight: {
+                    '0%': { opacity: '0', transform: 'translateX(50px)' },
+                    '100%': { opacity: '1', transform: 'translateX(0)' },
+                },
+                scaleUp: {
+                    '0%': { transform: 'scale(0.8)', opacity: '0' },
+                    '100%': { transform: 'scale(1)', opacity: '1' },
+                },
+                highlight: {
+                    '0%': { backgroundColor: 'rgba(187, 247, 208, 0)' },
+                    '30%': { backgroundColor: 'rgba(187, 247, 208, 0.8)' },
+                    '100%': { backgroundColor: 'rgba(187, 247, 208, 0)' },
+                },
             },
             colors: {
                 gray: colors.slate,

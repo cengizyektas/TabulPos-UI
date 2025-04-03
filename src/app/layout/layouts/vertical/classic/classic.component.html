@@ -4,7 +4,7 @@
 <!-- Navigation -->
 <fuse-vertical-navigation
     class="dark bg-wite  print:hidden"
-    [mode]="isScreenSmall ? 'side' : 'over'"
+    [mode]="isScreenSmall ? 'over' : 'over'"
     [name]="'mainNavigation'"
     [navigation]="navigation.default"
     [opened]="false"
@@ -39,6 +39,12 @@
         <button mat-icon-button (click)="toggleNavigation('mainNavigation')">
             <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
         </button>
+        
+        <!-- Current route title -->
+        <div class="current-route ml-2 font-medium text-secondary">
+            {{ getCurrentRouteTitle() }}
+        </div>
+        
         <!-- Components -->
         <div class="ml-auto flex items-center space-x-0.5 pl-2 sm:space-x-2">
             <languages></languages>

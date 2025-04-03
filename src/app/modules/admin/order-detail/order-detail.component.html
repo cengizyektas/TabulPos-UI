@@ -24,7 +24,7 @@
   <!-- Main Content -->
   <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
     <!-- Left Side - Categories and Products -->
-    <div class="w-full md:w-2/3 flex flex-col overflow-hidden">
+    <div class="w-full md:w-2/3 flex flex-col overflow-hidden h-1/2 md:h-full">
       <!-- Search Bar -->
       <div class="bg-white p-3 border-b border-gray-200 shadow-sm">
         <div class="relative">
@@ -38,10 +38,10 @@
       </div>
 
       <!-- Category Tabs -->
-      <div class="flex overflow-x-auto bg-white border-b border-gray-200 py-2 px-1">
+      <div class="flex overflow-x-auto bg-white border-b border-gray-200 py-3 px-1">
         <button 
           *ngFor="let category of categories; let i = index" 
-          class="px-4 py-2 mx-1 whitespace-nowrap font-medium rounded-md transition-colors"
+          class="px-5 py-3 mx-1 whitespace-nowrap font-medium text-base rounded-md transition-colors"
           [class.bg-red-100]="i === selectedCategoryIndex"
           [class.text-red-600]="i === selectedCategoryIndex"
           [class.border-b-2]="i === selectedCategoryIndex"
@@ -84,13 +84,19 @@
       <div class="flex-1 overflow-y-auto p-2">
         <div 
           *ngFor="let item of cartItems; let i = index" 
-          class="p-3 border-b border-gray-100 hover:bg-gray-50">
+          class="p-3 border-b border-gray-100 hover:bg-gray-50 transition-all duration-300"
+          [ngClass]="{
+            'animate-bounce-in': item.isNew && !item.wasUpdated,
+            'animate-slide-in-right': item.isNew && item.wasUpdated,
+            'animate-highlight': item.isHighlighted
+          }"
+          >
           <div class="flex justify-between items-center">
             <span class="font-medium">{{item.name}}</span>
             <button 
-              class="h-8 w-8 flex items-center justify-center rounded-full hover:bg-red-50 text-red-500 transition-colors"
+              class="h-9 w-9 flex items-center justify-center rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors shadow-sm border border-red-200"
               (click)="removeFromCart(i)">
-              <mat-icon class="text-sm">close</mat-icon>
+              <mat-icon>delete</mat-icon>
             </button>
           </div>
           <div class="flex justify-between items-center mt-2">
@@ -100,7 +106,7 @@
                 (click)="decrementQuantity(i)">
                 <mat-icon class="text-sm">remove</mat-icon>
               </button>
-              <span class="w-10 text-center font-medium">{{item.quantity}}</span>
+              <span class="w-10 text-center font-medium" [ngClass]="{'animate-scale-up': item.quantityChanged}">{{item.quantity}}</span>
               <button 
                 class="h-full w-9 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
                 (click)="incrementQuantity(i)">
@@ -135,28 +141,28 @@
         </div>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Action Buttons - Mobile-friendly layout -->
       <div class="p-3 border-t border-gray-200 flex flex-col gap-2">
         <button 
           mat-flat-button 
-          class="bg-green-600 hover:bg-green-700 text-white py-3 rounded-md font-medium"
+          class="bg-green-600 hover:bg-green-700 text-white py-3 rounded-md font-medium flex items-center justify-center"
           (click)="openPaymentModal()">
           <mat-icon class="mr-1">payment</mat-icon>
-          ÖDEME
+          <span>ÖDEME</span>
         </button>
         <div class="grid grid-cols-2 gap-2">
           <button 
             mat-flat-button 
-            class="bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-md font-medium">
+            class="bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-md font-medium flex items-center justify-center">
             <mat-icon class="mr-1">bolt</mat-icon>
-            HIZLI ÖDEME
+            <span class="whitespace-nowrap">HIZLI ÖDEME</span>
           </button>
           <button 
             mat-flat-button 
             (click)="saveOrder()"
-            class="bg-red-600 hover:bg-red-700 text-white py-3 rounded-md font-medium">
+            class="bg-red-600 hover:bg-red-700 text-white py-3 rounded-md font-medium flex items-center justify-center">
             <mat-icon class="mr-1">save</mat-icon>
-            KAYDET
+            <span>KAYDET</span>
           </button>
         </div>
       </div>
