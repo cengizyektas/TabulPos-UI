@@ -4,17 +4,27 @@ import { FuseNavigationItem } from '@fuse/components/navigation';
 export const defaultNavigation: FuseNavigationItem[] = [
     {
         id: 'anasayfa',
-        title: 'Anasayfa',
+        title: 'Ana Sayfa',
         type: 'basic',
         icon: 'mat_solid:home',
         link: '/dashboard',
+    },
+    {
+        id: 'dijital-menu',
+        title: 'Dijital Menu',
+        type: 'basic',
+        icon: 'mat_solid:menu_book',
+        link: '/digital-menu',
+        badge: {
+            title: 'Yepyeni',
+            classes: 'px-2 bg-red-600 text-white rounded-full'
+        }
     },
     {
         id: 'tanimlamalar',
         title: 'Tanımlamalar',
         type: 'collapsable',
         icon: 'mat_solid:assignment_turned_in',
-        link: '/product-definition',
         children: [
             {
                 id: 'tanimlamalar.masalar.bolgeler',
@@ -36,66 +46,80 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'tanimlamalar.customer',
                 title: 'Müşteriler',
                 type: 'basic',
-                icon: 'mat_outline:assignment_ind',
+                icon: 'mat_outline:people',
                 link: '/restaurant-customers',
                 exactMatch: true,
             },
             {
-                id: 'tanimlamalar.complimentary ',
-                title: 'Ödenmezler -İkramlar',
+                id: 'tanimlamalar.complimentary',
+                title: 'Ödenmezler',
                 type: 'basic',
-                icon: 'mat_outline:badge',
+                icon: 'mat_outline:money_off',
                 link: '/restaurant-complimentary',
                 exactMatch: true,
             },
             {
-                id: 'tanimlamalar.discounts ',
+                id: 'tanimlamalar.discounts',
                 title: 'İndirimler',
                 type: 'basic',
-                icon: 'mat_outline:trending_down',
+                icon: 'mat_outline:local_offer',
                 link: '/restaurant-discounts',
                 exactMatch: true,
             },
             {
                 id: 'tanimlamalar.product-properties',
-                title: ' Özellikler',
+                title: 'Özellikler',
                 type: 'basic',
-                icon: 'mat_outline:view_list',
-                link: '/',
+                icon: 'mat_outline:list_alt',
+                link: '/product-properties',
+                exactMatch: true,
+            },
+            {
+                id: 'tanimlamalar.waiter',
+                title: 'Kuver/Garsoniye',
+                type: 'basic',
+                icon: 'mat_outline:person',
+                link: '/waiter-settings',
                 exactMatch: true,
             },
         ],
     },
     {
-        id: 'example',
+        id: 'siparis',
         title: 'Sipariş',
         type: 'basic',
-        icon: 'mat_solid:view_column',
+        icon: 'mat_outline:shopping_basket',
         link: '/order-panel',
     },
     {
         id: 'kitchen-detail',
         title: 'Mutfak',
         type: 'basic',
-        icon: 'mat_solid:desktop_mac',
+        icon: 'mat_solid:kitchen',
         link: '/kitchen-detail',
     },
     {
-        id: 'example',
+        id: 'islemler',
         title: 'İşlemler',
-        type: 'basic',
-        icon: 'mat_solid:layers',
-        link: '',
+        type: 'collapsable',
+        icon: 'mat_outline:article',
+        children: [],
     },
     {
-        id: 'tanimlamalar',
+        id: 'raporlar',
+        title: 'Raporlar',
+        type: 'collapsable',
+        icon: 'mat_outline:assessment',
+        children: [],
+    },
+    {
+        id: 'kullanicilar',
         title: 'Kullanıcılar',
         type: 'collapsable',
         icon: 'mat_solid:people',
-        link: '',
         children: [
             {
-                id: 'tanimlamalar.masalar.bolgeler',
+                id: 'kullanicilar.list',
                 title: 'Kullanıcılar',
                 type: 'basic',
                 icon: 'mat_solid:people',
@@ -103,7 +127,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 exactMatch: true,
             },
             {
-                id: 'tanimlamalar.menu-urunler',
+                id: 'kullanicilar.permissions',
                 title: 'Yetkiler',
                 type: 'basic',
                 icon: 'mat_solid:verified_user',
@@ -112,13 +136,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
-    
     {
         id: 'ayarlar',
         title: 'Ayarlar',
         type: 'collapsable',
         icon: 'mat_solid:settings',
-        link: '/product-definition',
         children: [
             {
                 id: 'customer-display-settings',
@@ -144,10 +166,24 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/company-settings',
                 exactMatch: true,
             },
-           
         ],
     },
+    {
+        id: 'entegrasyonlar',
+        title: 'Entegrasyonlar',
+        type: 'basic',
+        icon: 'mat_outline:integration_instructions',
+        link: '/integrations',
+    },
+    {
+        id: 'cikis',
+        title: 'Çıkış Yap',
+        type: 'basic',
+        icon: 'mat_outline:logout',
+        link: '/sign-out',
+    },
 ];
+
 export const compactNavigation: FuseNavigationItem[] = [
     {
         id: 'example',

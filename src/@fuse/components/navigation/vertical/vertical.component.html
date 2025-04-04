@@ -1,4 +1,4 @@
-<div class="fuse-vertical-navigation-wrapper">
+<div class="fuse-vertical-navigation-wrapper ">
     <!-- Header -->
     <div class="fuse-vertical-navigation-header">
         <ng-content select="[fuseVerticalNavigationHeader]"></ng-content>
@@ -55,7 +55,7 @@
                 }
 
                 <!-- Divider -->
-                @if (item.type === 'divider') {
+                @if (item.type == 'divider') {
                     <fuse-vertical-navigation-divider-item
                         [item]="item"
                         [name]="name"
