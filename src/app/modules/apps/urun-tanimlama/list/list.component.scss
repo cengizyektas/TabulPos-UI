@@ -1,0 +1,398 @@
+/* Updated search field styling */
+.search-box {
+    margin-bottom: 0 !important; /* Remove negative margin */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+    /* Remove bottom spacing */
+    &::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
+    }
+    
+    /* Custom search field styling */
+    &.fuse-mat-dense {
+        margin-top: 0;
+        margin-bottom: 0;
+        
+        /* Ensure the form field itself doesn't add additional spacing */
+        ::ng-deep .mat-mdc-form-field-bottom-align {
+            display: none;
+        }
+        
+        .mat-mdc-form-field-flex {
+            padding: 0 6px 0 12px !important;
+            background-color: white !important;
+            border-radius: 8px !important; /* Less oval, matching button radius */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            height: 40px !important; /* Match button height */
+            
+            &:hover {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+                border-color: rgba(0, 0, 0, 0.12) !important;
+            }
+            
+            &:focus-within {
+                border-color: var(--fuse-primary) !important;
+            }
+            
+            .mat-icon {
+                color: #616161;
+                margin-right: 8px !important;
+            }
+            
+            .mdc-text-field__input {
+                caret-color: var(--fuse-primary) !important;
+                font-size: 14px !important;
+                font-weight: 400 !important;
+            }
+            
+            .mat-mdc-form-field-infix {
+                padding-top: 8px !important;
+                padding-bottom: 8px !important;
+            }
+            
+            /* Clear button styling */
+            .mat-mdc-icon-button {
+                width: 28px !important;
+                height: 28px !important;
+                padding: 2px !important;
+                
+                .mat-icon {
+                    font-size: 16px !important;
+                    width: 16px !important;
+                    height: 16px !important;
+                    color: #9ca3af !important;
+                    margin-right: 0 !important;
+                }
+                
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.04) !important;
+                    
+                    .mat-icon {
+                        color: #4b5563 !important;
+                    }
+                }
+            }
+        }
+        
+        &::ng-deep {
+            .mat-mdc-form-field-subscript-wrapper {
+                display: none !important;
+            }
+            
+            .mat-mdc-text-field-wrapper {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                background-color: transparent !important;
+            }
+            
+            .mat-mdc-form-field-focus-overlay {
+                opacity: 0 !important;
+            }
+        }
+    }
+}
+
+/* Dark mode search field styling */
+:host-context(.dark) {
+    .search-box.fuse-mat-dense {
+        .mat-mdc-form-field-flex {
+            background-color: #1E293B !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+            
+            &:hover {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) !important;
+                border-color: rgba(255, 255, 255, 0.1) !important;
+            }
+            
+            &:focus-within {
+                border-color: var(--fuse-primary-400) !important;
+                box-shadow: 0 1px 4px rgba(var(--fuse-primary-rgb), 0.2) !important;
+            }
+            
+            .mat-icon {
+                color: #94A3B8 !important;
+            }
+            
+            .mdc-text-field__input {
+                color: #E2E8F0 !important;
+            }
+            
+            /* Dark mode clear button styling */
+            .mat-mdc-icon-button {
+                .mat-icon {
+                    color: #64748B !important;
+                }
+                
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.05) !important;
+                    
+                    .mat-icon {
+                        color: #94A3B8 !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Touch-friendly button styles for better touch targets */
+.touch-btn {
+    min-height: 40px;
+    line-height: 40px;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    &:active {
+        transform: scale(0.96);
+    }
+    
+    @media (min-width: 768px) {
+        min-height: 40px;
+        line-height: 40px;
+        padding: 0 12px;
+    }
+}
+
+.touch-icon-btn {
+    width: 40px !important;
+    height: 40px !important;
+    line-height: 40px !important;
+    
+    .mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+    }
+    
+    &:active {
+        transform: scale(0.96);
+    }
+    
+    @media (min-width: 768px) {
+        width: 40px !important;
+        height: 40px !important;
+        line-height: 40px !important;
+        
+        .mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+        }
+    }
+}
+
+/* Icon sizes */
+.icon-size-7 {
+    width: 28px;
+    height: 28px;
+    font-size: 28px;
+}
+
+/* Product card enhancements */
+.product-card {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 8px !important; /* Less rounded corners, slightly oval */
+    
+    &:active {
+        transform: scale(0.98);
+    }
+    
+    /* Price badge */
+    .price-badge {
+        transition: transform 0.2s ease;
+        z-index: 2;
+    }
+    
+    &:hover .price-badge {
+        transform: scale(1.05);
+    }
+}
+
+/* Status indicators */
+.status-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7);
+    z-index: 2;
+    
+    &.active {
+        background-color: #10b981; /* green */
+    }
+    
+    &.inactive {
+        background-color: #ef4444; /* red */
+    }
+    
+    /* Subtle pulse animation for active status */
+    &.active::after {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background-color: rgba(16, 185, 129, 0.3);
+        animation: pulse 2s infinite;
+        z-index: 1;
+        pointer-events: none;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.7);
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* Price badge styles */
+.rounded-full {
+    border-radius: 9999px;
+}
+
+/* Category tag styles */
+.category-tag {
+    border-radius: 9999px;
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Hover effects */
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Make sure text doesn't wrap awkwardly in product names */
+.product-card .text-lg {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-height: 2.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 599px) {
+    .grid {
+        gap: 10px !important;
+    }
+    
+    .product-card {
+        border-radius: 16px;
+    }
+}
+
+/* Ensure consistent border radius on all devices */
+.product-card {
+    border-radius: 8px !important;
+}
+
+/* Header styling for product cards */
+.product-card > div.relative > div.h-16 {
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+
+/* Dark mode enhancements */
+:host-context(.dark) {
+    .product-card {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        
+        &:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+    }
+    
+    /* Improved contrast for dark mode */
+    .bg-gray-750 {
+        background-color: #2d3748;
+    }
+    
+    .status-indicator {
+        box-shadow: 0 0 0 2px rgba(30, 41, 59, 0.7);
+    }
+}
+
+/* Category Sidebar Styles */
+mat-drawer {
+    border-right: 1px solid rgba(0, 0, 0, 0.05) !important;
+    background-color: #f9fafb !important;
+    
+    /* Category items styling */
+    .flex-col.space-y-1 > div {
+        position: relative;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        
+        &:hover {
+            transform: translateY(-1px);
+        }
+        
+        &:active {
+            transform: translateY(0);
+        }
+        
+        /* Active indicator bar animation */
+        .right-3 {
+            animation: fadeIn 0.3s ease;
+        }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    /* Footer styling */
+    .border-t {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+}
+
+/* Dark mode category sidebar styles */
+:host-context(.dark) {
+    mat-drawer {
+        border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+        background-color: #1a202c !important;
+        
+        .flex-col.space-y-1 > div {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .border-t {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+} 

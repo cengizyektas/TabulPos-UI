@@ -36,109 +36,99 @@
     <!-- Main Content -->
     <div class="main-content bg-gray-100 dark:bg-gray-900">
         <div class="content-container">
-            <!-- Tabs for order filtering -->
-            <div class="order-tabs-container flex overflow-x-auto bg-white border-b border-gray-200 shadow">
-                <button 
-                *ngFor="let tab of tabs"
-                (click)="setActiveTab(tab.id)"
-                class="tab-button flex items-center px-6 py-4 whitespace-nowrap text-gray-700 font-medium border-b-2 transition-colors"
-                [class.border-blue-600]="activeTab === tab.id"
-                [class.border-transparent]="activeTab !== tab.id"
-                [class.text-blue-700]="activeTab === tab.id"
-                [class.bg-blue-50]="activeTab === tab.id">
-                <mat-icon class="mr-2">{{tab.icon}}</mat-icon>
-                <span>{{tab.label}}</span>
-                <span 
-                    *ngIf="tab.count > 0"
-                    class="ml-2 px-2 py-1 text-xs bg-red-600 text-white rounded-full">
-                    {{tab.count}}
-                </span>
-                </button>
-            </div>
-
-            <!-- Orders list -->
-            <div class="orders-list-container flex-1 p-4 bg-gray-100 overflow-y-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    <!-- Individual order card -->
-                    <div 
-                        *ngFor="let order of getActiveOrders()" 
-                        class="order-card bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
-                        
-                        <!-- Order header -->
-                        <div class="flex justify-between items-center p-4 bg-gray-50 border-b border-gray-200">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
-                            <span class="text-yellow-600 font-bold">{{order.table[0]}}</span>
-                            </div>
-                            <div>
-                            <h3 class="font-semibold text-gray-800">{{order.table}} {{order.tableNumber}}</h3>
-                            <p class="text-sm text-gray-500">#{{order.id}}</p>
-                            </div>
+            <!-- Order Status Tabs -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-4">
+                <!-- Bekleyen Siparişler -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-green-500">
+                    <div class="flex items-center p-4 bg-green-50">
+                        <div class="w-10 h-10 bg-green-500 rounded-md flex items-center justify-center mr-3">
+                            <mat-icon class="text-white">inventory_2</mat-icon>
                         </div>
-                        <div>
-                            <div class="flex flex-col items-end">
-                            <span class="font-semibold text-gray-800">₺{{order.amount.toFixed(2)}}</span>
-                            <span class="text-sm text-gray-500">{{order.time}}</span>
-                            </div>
-                        </div>
-                        </div>
-                        
-                        <!-- Order actions -->
-                        <div class="order-actions flex items-center justify-between p-3">
-                        <div class="w-1/2">
-                            <button 
-                            (click)="viewOrderDetails(order)"
-                            class="w-full py-2 px-4 text-sm text-blue-600 hover:text-blue-800 font-medium bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center justify-center">
-                            <span>Geçmiş sipariş bilgisi</span>
-                            </button>
-                        </div>
-                        <div class="flex">
-                            <!-- Print button -->
-                            <button 
-                            (click)="printOrder(order)"
-                            class="action-btn text-gray-600 hover:text-gray-800 ml-1">
-                            <mat-icon>print</mat-icon>
-                            </button>
-                            
-                            <!-- Pay button -->
-                            <button 
-                            (click)="payOrder(order)"
-                            class="action-btn text-gray-600 hover:text-gray-800 ml-1">
-                            <mat-icon>credit_card</mat-icon>
-                            </button>
-                            
-                            <!-- More options button -->
-                            <button 
-                            [matMenuTriggerFor]="menu"
-                            class="action-btn text-gray-600 hover:text-gray-800 ml-1">
-                            <mat-icon>more_vert</mat-icon>
-                            </button>
-                            
-                            <mat-menu #menu="matMenu">
-                            <button mat-menu-item (click)="viewOrderDetails(order)">
-                                <mat-icon>visibility</mat-icon>
-                                <span>Sipariş Detayı</span>
-                            </button>
-                            <button mat-menu-item (click)="printOrder(order)">
-                                <mat-icon>print</mat-icon>
-                                <span>Yazdır</span>
-                            </button>
-                            <button mat-menu-item (click)="payOrder(order)">
-                                <mat-icon>credit_card</mat-icon>
-                                <span>Ödeme Al</span>
-                            </button>
-                            </mat-menu>
-                        </div>
+                        <h3 class="font-semibold text-gray-800">Bekleyen Siparişler (0)</h3>
+                    </div>
+                    <div class="order-list-content p-2 max-h-[calc(100vh-250px)] overflow-y-auto">
+                        <!-- Empty state for Bekleyen -->
+                        <div class="flex flex-col items-center justify-center p-8 text-center text-gray-500">
+                            <p class="text-sm">Bu kategoride henüz sipariş bulunmamaktadır.</p>
                         </div>
                     </div>
-                    
-                    <!-- Empty state when no orders -->
-                    <div 
-                        *ngIf="getActiveOrders().length === 0" 
-                        class="col-span-full flex flex-col items-center justify-center p-12 text-center text-gray-500">
-                        <mat-icon class="text-5xl mb-2">inventory</mat-icon>
-                        <p class="text-lg font-medium mb-2">Hiç sipariş yok</p>
-                        <p class="text-sm">Bu kategoride henüz sipariş bulunmamaktadır.</p>
+                </div>
+
+                <!-- Teslimata Çıkanlar -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-blue-500">
+                    <div class="flex items-center p-4 bg-blue-50">
+                        <div class="w-10 h-10 bg-blue-500 rounded-md flex items-center justify-center mr-3">
+                            <mat-icon class="text-white">delivery_dining</mat-icon>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Teslimata Çıkanlar (0)</h3>
+                    </div>
+                    <div class="order-list-content p-2 max-h-[calc(100vh-250px)] overflow-y-auto">
+                        <!-- Empty state for Teslimata Çıkanlar -->
+                        <div class="flex flex-col items-center justify-center p-8 text-center text-gray-500">
+                            <p class="text-sm">Bu kategoride henüz sipariş bulunmamaktadır.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Açık Siparişler -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-indigo-500">
+                    <div class="flex items-center p-4 bg-indigo-50">
+                        <div class="w-10 h-10 bg-indigo-500 rounded-md flex items-center justify-center mr-3">
+                            <mat-icon class="text-white">restaurant_menu</mat-icon>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Açık Siparişler (0)</h3>
+                    </div>
+                    <div class="order-list-content p-2 max-h-[calc(100vh-250px)] overflow-y-auto">
+                        <!-- Empty state for Açık Siparişler -->
+                        <div class="flex flex-col items-center justify-center p-8 text-center text-gray-500">
+                            <p class="text-sm">Bu kategoride henüz sipariş bulunmamaktadır.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hazırlanıyor -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden border-t-4 border-yellow-500">
+                    <div class="flex items-center p-4 bg-yellow-50">
+                        <div class="w-10 h-10 bg-yellow-500 rounded-md flex items-center justify-center mr-3">
+                            <mat-icon class="text-white">schedule</mat-icon>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Hazırlanıyor (5/5)</h3>
+                    </div>
+                    <div class="order-list-content p-2 max-h-[calc(100vh-250px)] overflow-y-auto">
+                        <!-- Order Card Example for Hazırlanıyor -->
+                        <div *ngFor="let i of [1, 2, 3, 4, 5]" class="order-card bg-white rounded-lg shadow border border-gray-200 mb-3 overflow-hidden">
+                            <div class="flex justify-between items-center px-4 py-3 border-b border-gray-100">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium bg-yellow-100 text-yellow-800 px-2 py-1 rounded mr-2">Geciken Sipariş</span>
+                                    <span class="text-sm text-gray-600">07:{{14+i*2}}:{{10+i*2}}</span>
+                                </div>
+                                <div class="text-xs text-gray-500">#10{{i}}</div>
+                            </div>
+                            
+                            <div class="p-3">
+                                <div class="flex justify-between">
+                                    <h4 class="font-medium text-gray-800">Masa {{i+1}}</h4>
+                                    <span class="font-bold text-primary-600">₺{{(30 * (i+1)).toFixed(2)}}</span>
+                                </div>
+                                
+                                <div class="flex justify-between mt-2">
+                                    <a href="#" class="text-sm text-primary-600 hover:underline">Geçmiş sipariş bilgisi</a>
+                                    <span class="text-xs text-gray-500">Görüntüle</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex border-t border-gray-100 bg-gray-50">
+                                <button class="flex-1 py-2 text-gray-600 hover:text-primary-600 flex items-center justify-center">
+                                    <mat-icon class="text-sm">print</mat-icon>
+                                </button>
+                                <button class="flex-1 py-2 text-gray-600 hover:text-primary-600 flex items-center justify-center border-l border-r border-gray-100">
+                                    <mat-icon class="text-sm">credit_card</mat-icon>
+                                </button>
+                                <button class="flex-1 py-2 text-gray-600 hover:text-primary-600 flex items-center justify-center">
+                                    <mat-icon class="text-sm">more_horiz</mat-icon>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

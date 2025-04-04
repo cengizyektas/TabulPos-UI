@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { FuseMasonryComponent } from '@fuse/components/masonry';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
@@ -35,6 +36,7 @@ import {
 @Component({
     selector: 'urunler-list',
     templateUrl:'./list.component.html',
+    styleUrls: ['./list.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
@@ -46,6 +48,7 @@ import {
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
+        MatTooltipModule,
         FuseMasonryComponent,
         AsyncPipe,
         RouterModule
@@ -80,8 +83,7 @@ export class UrunlerListComponent implements OnInit, OnDestroy {
         this._urunlerservis.getUrunler().subscribe();
 
         this.kategoriler$ = this._urunlerservis.kategoriler$;
-
-       
+        
         this.urunler$ =combineLatest([
             this._urunlerservis.urunler$,
             this.filter$,
@@ -144,26 +146,48 @@ export class UrunlerListComponent implements OnInit, OnDestroy {
                     this.drawerOpened = false;
                 }
 
-                // Set the masonry columns
-                //
-                // This if block structured in a way so that only the
-                // biggest matching alias will be used to set the column
-                // count.
-                if (matchingAliases.includes('xl')) {
-                    this.masonryColumns = 5;
-                } else if (matchingAliases.includes('lg')) {
-                    this.masonryColumns = 4;
-                } else if (matchingAliases.includes('md')) {
-                    this.masonryColumns = 3;
-                } else if (matchingAliases.includes('sm')) {
-                    this.masonryColumns = 2;
-                } else {
-                    this.masonryColumns = 1;
-                }
-
+                // We're not using masonry columns anymore so this is simplified
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+    }
+
+    // Add touch-specific methods
+    /**
+     * Handle product card tap/click
+     * @param urun The product that was tapped
+     */
+    onProductTap(urun: Urun): void {
+        // Navigate to product detail or show quick preview
+        console.log('Product tapped:', urun);
+        // Implement your navigation logic here
+    }
+
+    /**
+     * Edit the product
+     * @param urun The product to edit
+     */
+    onEdit(urun: Urun): void {
+        console.log('Edit product:', urun);
+        // Implement your editing logic here
+    }
+
+    /**
+     * View product details
+     * @param urun The product to view
+     */
+    onView(urun: Urun): void {
+        console.log('View product:', urun);
+        // Implement your view logic here
+    }
+
+    /**
+     * Delete the product
+     * @param urun The product to delete
+     */
+    onDelete(urun: Urun): void {
+        console.log('Delete product:', urun);
+        // Implement your delete logic here
     }
 
     /**

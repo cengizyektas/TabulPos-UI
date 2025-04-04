@@ -1,173 +1,182 @@
 <div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
-    <mat-drawer-container class="bg-card h-full flex-auto dark:bg-transparent">
+    <mat-drawer-container class="h-full flex-auto dark:bg-transparent">
         <!-- Drawer -->
+        <mat-drawer class="w-2/3 border-r-0 sm:w-72 lg:w-64" [mode]="drawerMode" [opened]="drawerOpened" #drawer>
+            <div class="flex flex-col h-full">
+                <!-- Category list -->
+                <div class="flex-1 overflow-y-auto px-4 py-4">
+                    <div class="flex flex-col space-y-1">
+                        <!-- Add Category Button -->
+                        <div class="flex cursor-pointer items-center rounded-lg p-3 font-medium bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 mb-3"
+                            (click)="openEditLabelsDialog()" matRipple>
+                            <mat-icon class="text-primary-500" [svgIcon]="'heroicons_outline:plus-circle'"></mat-icon>
+                            <div class="ml-3">Kategori Ekle</div>
+                        </div>
+                        
+                        <!-- All Categories -->
+                        <div class="relative flex cursor-pointer items-center rounded-lg p-3 font-medium"
+                            [ngClass]="{'bg-primary-50 text-primary-700 dark:bg-primary-900 dark:text-primary-300': filterStatus === 'urunler',
+                                'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200': filterStatus !== 'urunler'}"
+                            (click)="resetFilter()" matRipple>
+                            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:squares-2x2'"></mat-icon>
+                            <div class="ml-3">Tüm Kategoriler</div>
+                            <div *ngIf="filterStatus === 'urunler'" class="absolute right-3 w-1.5 h-full">
+                                <div class="h-full w-1 bg-primary-500 dark:bg-primary-400 rounded-full"></div>
+                            </div>
+                        </div>
 
-        <mat-drawer class="bg-default w-2/3 border-r-0 sm:w-72 lg:w-56" [mode]="drawerMode" [opened]="drawerOpened"
-            #drawer>
-            <div class="p-6 lg:py-8 lg:pl-4 lg:pr-0">
-
-                <!-- Filters -->
-
-                <div class="space-y-2">
-                    <!-- Edit Labels -->
-                    <div class=" flex cursor-pointer items-center rounded-full px-4 py-2 font-medium hover:bg-hover bg-white"
-                        [ngClass]="{
-                        'bg-gray-200 text-primary dark:bg-gray-700 dark:text-primary-400':
-                            filterStatus === 'urunler',
-                        'text-hint hover:bg-hover':
-                            filterStatus !== 'urunler',
-                    }" (click)="openEditLabelsDialog()" matRipple>
-                        <mat-icon class="text-hint" svgIcon="heroicons_outline:plus"></mat-icon>
-                        <div class="ml-3 select-none leading-5 text-default">
-                            Kategori Ekle
+                        <!-- Individual Categories -->
+                        @if (kategoriler$ | async; as kategoriler) {
+                        @for (kategori of kategoriler; track trackByFn($index, kategori)) {
+                        <div class="relative flex cursor-pointer items-center rounded-lg p-3 font-medium" 
+                            [ngClass]="{'bg-primary-50 text-primary-700 dark:bg-primary-900 dark:text-primary-300': 'label:' + kategori.id === filterStatus,
+                                'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200': 'label:' + kategori.id !== filterStatus}"
+                            (click)="filterByLabel(kategori.id)" matRipple>
+                            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:clipboard'"></mat-icon>
+                            <div class="ml-3">{{ kategori.baslik }}</div>
+                            <div *ngIf="'label:' + kategori.id === filterStatus" class="absolute right-3 w-1.5 h-full">
+                                <div class="h-full w-1 bg-primary-500 dark:bg-primary-400 rounded-full"></div>
+                            </div>
+                        </div>
+                        }
+                        }
+                        
+                        <!-- Inactive Items -->
+                        <div class="relative flex cursor-pointer items-center rounded-lg p-3 font-medium mt-2" 
+                            [ngClass]="{'bg-primary-50 text-primary-700 dark:bg-primary-900 dark:text-primary-300': filterStatus === 'aktif',
+                                'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200': filterStatus !== 'aktif'}"
+                            (click)="filterByArchived()" matRipple>
+                            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:archive-box'"></mat-icon>
+                            <div class="ml-3">İptaller</div>
+                            <div *ngIf="filterStatus === 'aktif'" class="absolute right-3 w-1.5 h-full">
+                                <div class="h-full w-1 bg-primary-500 dark:bg-primary-400 rounded-full"></div>
+                            </div>
                         </div>
                     </div>
-
-
-                    <!-- Labels -->
-                    @if (kategoriler$ | async; as kategoriler) {
-                    @for (kategori of kategoriler; track trackByFn($index, kategori)) {
-                    <div class="relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium" [ngClass]="{
-                                    'bg-gray-200 text-primary dark:bg-gray-700 dark:text-primary-400':
-                                        'label:' + kategori.id === filterStatus,
-                                    'text-hint hover:bg-hover':
-                                        'label:' + kategori.id !== filterStatus,
-                                }" (click)="filterByLabel(kategori.id)" matRipple [matRippleDisabled]="
-                                    'label:' + kategori.id === filterStatus
-                                ">
-                        <mat-icon class="text-current" [svgIcon]="'heroicons_outline:clipboard'"></mat-icon>
-                        <div class="text-default ml-3 select-none leading-5">
-                            {{ kategori.baslik }}
-                        </div>
-                    </div>
-                    }
-                    }
-                    <!-- Archive -->
-                    <div class="relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium" [ngClass]="{
-                        'bg-gray-200 text-primary dark:bg-gray-700 dark:text-primary-400':
-                            filterStatus === 'aktif',
-                        'text-hint hover:bg-hover':
-                            filterStatus !== 'aktif',
-                    }" (click)="filterByArchived()" matRipple [matRippleDisabled]="filterStatus === 'aktif'">
-                        <mat-icon class="text-current" [svgIcon]="'heroicons_outline:archive-box'"></mat-icon>
-
-                        <div class="text-default ml-3 select-none leading-5">
-                            İptaller
-                        </div>
-                    </div>
-                    <div class="relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium"
-                        (click)="resetFilter()" matRipple [matRippleDisabled]="filterStatus === 'urunler'">
-                        <mat-icon class="text-hint" svgIcon="heroicons_outline:squares-2x2"></mat-icon>
-                        <div class="text-default ml-3 select-none leading-5">
-                            Tüm Kategoriler
-                        </div>
-                    </div>
-
+                </div>
+                
+                <!-- Footer -->
+                <div class="p-3 border-t border-gray-200 dark:border-gray-700 text-center text-xs text-gray-500">
+                    {{ (kategoriler$ | async)?.length || 0 }} kategori
                 </div>
             </div>
         </mat-drawer>
 
         <mat-drawer-content class="flex flex-col bg-gray-100 dark:bg-transparent">
             <!-- Main -->
-            <div class="flex flex-auto flex-col p-6 md:p-8">
+            <div class="flex flex-auto flex-col p-4 md:p-6">
                 <!-- Header -->
-                <div class="flex items-center">
-                    <div class="flex flex-auto items-center">
-                        <button class="-ml-2 flex lg:hidden" mat-icon-button (click)="drawer.toggle()">
-                            <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
-                        </button>
-                        <mat-form-field class="fuse-mat-rounded fuse-mat-dense ml-4 flex-auto lg:ml-0"
-                            [subscriptSizing]="'dynamic'">
-                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:magnifying-glass'"
-                                matPrefix></mat-icon>
-                            <input matInput [autocomplete]="'off'" [placeholder]="'Ürün Arama...'"
+                <div class="flex items-center gap-2">
+                    <button class="flex lg:hidden" mat-icon-button (click)="drawer.toggle()">
+                        <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
+                    </button>
+                    <div class="flex-auto flex items-center">
+                        <mat-form-field class="search-box fuse-mat-dense min-w-[160px] w-full" [subscriptSizing]="'dynamic'">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:magnifying-glass'" matPrefix></mat-icon>
+                            <input matInput [autocomplete]="'off'" [placeholder]="'Ürün Ara...'"
                                 (input)="filterByQuery(searchInput.value)" #searchInput />
+                            <button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Temizle" 
+                                (click)="searchInput.value=''; filterByQuery('')">
+                                <mat-icon [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
+                            </button>
                         </mat-form-field>
                     </div>
-                    <!-- New note -->
-                    <button class="ml-4 min-w-10 px-1 sm:px-4 no-radius" mat-flat-button [color]="'danger'">
-                        <mat-icon  class="text-current " svgIcon="mat_outline:library_books"></mat-icon>
-
-                        <span class="ml-2 hidden sm:inline-block">Birimler</span>
-                    </button>
-                    <!-- New note -->
-                    <button class="ml-4 min-w-10 px-1 sm:px-4" mat-flat-button [color]="'danger'">
-                        <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:dvr'"></mat-icon>
-                        <span class="ml-2 hidden sm:inline-block">Mutfak Grupları</span>
-                    </button>
-                    <!-- New note -->
-                    <button class="ml-4 min-w-10 px-1 sm:px-4" mat-flat-button color="'bg-accent'" [routerLink]="['/product-definition/product-detail']">
-                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                        <span class="ml-2 hidden sm:inline-block">Yeni Ürün Ekle</span>
-                    </button>
-
+                    
+                    <!-- Action buttons -->
+                    <div class="flex gap-2">
+                        <button class="touch-btn" mat-flat-button [color]="'danger'">
+                            <mat-icon svgIcon="mat_outline:library_books"></mat-icon>
+                            <span class="ml-2 hidden sm:inline">Birimler</span>
+                        </button>
+                        <button class="touch-btn" mat-flat-button [color]="'danger'">
+                            <mat-icon [svgIcon]="'mat_outline:dvr'"></mat-icon>
+                            <span class="ml-2 hidden sm:inline">Mutfak</span>
+                        </button>
+                        <button class="touch-btn" mat-flat-button color="accent" [routerLink]="['/product-definition/product-detail']">
+                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                            <span class="ml-2 hidden sm:inline">Yeni Ürün</span>
+                        </button>
+                    </div>
                 </div>
+
                 @if (urunler$ | async; as urunler) {
                 @if (urunler.length) {
-                <!-- Masonry layout -->
-                <fuse-masonry class="-mx-2 mt-8 w-full" [items]="urunler" [columns]="masonryColumns"
-                    [columnsTemplate]="columnsTemplate">
-                    <!-- Columns template -->
-                    <ng-template #columnsTemplate let-columns class="w-full">
-                        <!-- Columns -->
-                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 ">
-                            @for (urun of urunler; track trackByFn($index, urun)) {
-                            <!-- Card -->
-                            <div class=" rounded-xl shadow-md overflow-hidden w-full bg-white dark:bg-gray-800">
-                                <!-- Buttons -->
-                                <div class="flex justify-around px-8 py-2 border-t  dark:bg-gray-800">
-                                    <button mat-icon-button color="primary" (click)="onEdit(urunler)">
-                                        <mat-icon [svgIcon]="'mat_outline:color_lens'"></mat-icon>
-                                    </button>
-                                    <button mat-icon-button (click)="onView(urunler)">
-                                        <mat-icon [svgIcon]="'heroicons_outline:eye'"></mat-icon>
-                                    </button>
-                                    <button mat-icon-button (click)="onDelete(urunler)">
-                                        <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
-                                    </button>
-                                   
+                <!-- Products grid -->
+                <div class="mt-6">
+                    <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                        @for (urun of urunler; track trackByFn($index, urun)) {
+                        <!-- Product Card -->
+                        <div class="product-card shadow-lg bg-white dark:bg-gray-800" (click)="onProductTap(urun)">
+                            <!-- Header Area -->
+                            <div class="relative">
+                                <div class="h-16 bg-gradient-to-r from-gray-500 to-gray-600 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center">
+                                    <mat-icon class="text-white icon-size-7" [svgIcon]="'mat_outline:restaurant_menu'"></mat-icon>
                                 </div>
-
-                                <!-- Product Name -->
-                                <div
-                                    class="p-4 text-center font-semibold text-md text-gray-800 dark:text-gray-200 h-auto grow ">
-                                    {{ urun.urunAdi || 'Ürün İsmi' }}
-                                </div>
-                                <!-- Category Name -->
-                                <div
-                                    class="p-2 text-center font-medium text-xs text-gray-600 dark:text-gray-400 dark:bg-gray-800  ">
-                                    {{ urun?.kategori.baslik || 'Kategori İsmi' }}
-                                </div>
-                                <!-- Category Name -->
-                                <div
-                                    class="p-2 text-left font-medium text-md text-gray-600 dark:text-gray-400 bg-primary-50 dark:bg-gray-800  ">
+                                
+                                <!-- Status Indicator -->
+                                <div class="status-indicator" [ngClass]="urun?.aktif ? 'active' : 'inactive'" 
+                                     [matTooltip]="urun?.aktif ? 'Aktif' : 'İnaktif'"></div>
+                                    
+                                <!-- Price Badge -->
+                                <div class="absolute -bottom-3 right-3 bg-white dark:bg-gray-700 text-primary-700 dark:text-primary-300 font-bold px-3 py-1 rounded-full shadow price-badge text-sm">
                                     {{ urun?.fiyat || 0 | currency:'TRY':'symbol-narrow' }}
                                 </div>
-
-
-
                             </div>
-                            }
+                            
+                            <!-- Content -->
+                            <div class="pt-5 px-3 pb-3 flex flex-col items-center">
+                                <!-- Name -->
+                                <div class="text-center font-semibold text-lg text-gray-800 dark:text-gray-200">
+                                    {{ urun.urunAdi || 'Ürün İsmi' }}
+                                </div>
+                                
+                                <div class="flex flex-col items-center mt-2 w-full">
+                                    <!-- Category -->
+                                    <div class="category-tag py-1 px-2 text-xs font-medium text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-gray-600">
+                                        {{ urun?.kategori.baslik || 'Kategori İsmi' }}
+                                    </div>
+                                    
+                                    <!-- Details -->
+                                    <div class="grid grid-cols-2 gap-2 mt-3 w-full text-center">
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                                            <span class="block text-gray-400 dark:text-gray-500">Kod</span>
+                                            {{ urun?.urunKodu || 'U0000' }}
+                                        </div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                                            <span class="block text-gray-400 dark:text-gray-500">Stok</span>
+                                            {{ urun?.stok || '0' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Actions -->
+                            <div class="flex justify-around p-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-750">
+                                <button mat-icon-button class="touch-icon-btn" matTooltip="Düzenle" color="primary" (click)="onEdit(urun); $event.stopPropagation()">
+                                    <mat-icon [svgIcon]="'mat_outline:edit'"></mat-icon>
+                                </button>
+                                <button mat-icon-button class="touch-icon-btn" matTooltip="Görüntüle" (click)="onView(urun); $event.stopPropagation()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:eye'"></mat-icon>
+                                </button>
+                                <button mat-icon-button class="touch-icon-btn" matTooltip="Sil" color="warn" (click)="onDelete(urun); $event.stopPropagation()">
+                                    <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                </button>
+                            </div>
                         </div>
-                    </ng-template>
-                </fuse-masonry>
+                        }
+                    </div>
+                </div>
                 } @else {
-                <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                <div class="flex flex-auto flex-col items-center justify-center mt-6">
                     <mat-icon class="icon-size-24" [svgIcon]="'heroicons_outline:document'"></mat-icon>
-                    <div class="text-secondary mt-4 text-2xl font-semibold tracking-tight">
-                        Ürün Bulunamadı..
-                    </div>
+                    <div class="text-secondary mt-4 text-2xl font-semibold">Ürün Bulunamadı..</div>
                 </div>
                 }
                 } @else {
-                <div class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
-                    <div class="text-secondary mt-4 text-2xl font-semibold tracking-tight">
-                        Yükleniyor...
-                    </div>
+                <div class="flex flex-auto flex-col items-center justify-center mt-6">
+                    <div class="text-secondary text-2xl font-semibold">Yükleniyor...</div>
                 </div>
                 }
-
-                <!-- Loading template -->
             </div>
         </mat-drawer-content>
     </mat-drawer-container>
