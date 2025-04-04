@@ -6,3 +6,42 @@
     padding: 0 20px !important;
     border-radius: 5px !important;
 }
+
+/* Custom navigation divider styling */
+fuse-vertical-navigation-divider-item {
+    margin: 2px 0 !important;
+    
+    /* Override default shadowing */
+    .fuse-vertical-navigation-item-wrapper.divider {
+        height: 1px !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Override margin for all dividers in navigation content */
+.fuse-vertical-navigation-content > fuse-vertical-navigation-divider-item {
+    margin: 2px 0 !important;
+}
+
+/* Style dividers in submenu items */
+.fuse-vertical-navigation-item-children fuse-vertical-navigation-divider-item {
+    margin: 1px 0 !important;
+}
+
+/* Fix Perfect Scrollbar in navigation - Basit Çözüm */
+.fuse-vertical-navigation-content {
+    overflow-y: auto !important;
+    
+    /* Tamamen devre dışı bırak */
+    .ps {
+        overflow: auto !important;
+    }
+    
+    /* Scrollbar elementlerini gizle */
+    .ps__rail-x, 
+    .ps__rail-y,
+    .ps__thumb-x,
+    .ps__thumb-y {
+        display: none !important;
+    }
+}

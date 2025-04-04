@@ -49,7 +49,6 @@ import {
         MatFormFieldModule,
         MatInputModule,
         MatTooltipModule,
-        FuseMasonryComponent,
         AsyncPipe,
         RouterModule
     ],
