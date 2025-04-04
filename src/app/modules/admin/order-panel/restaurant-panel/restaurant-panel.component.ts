@@ -48,7 +48,20 @@ export class RestaurantPanelComponent {
             this.createSampleRestaurantArea();
         }
     }
-    // Masa seçme işlemi
+    
+    // Dolu masaların sayısını hesapla
+    getBusyTablesCount(): number {
+        if (!this.restaurantArea?.tables) return 0;
+        return this.restaurantArea.tables.filter(table => table.status === 1).length;
+    }
+    
+    // Rezerve masaların sayısını hesapla
+    getReservedTablesCount(): number {
+        if (!this.restaurantArea?.tables) return 0;
+        return this.restaurantArea.tables.filter(table => table.status === 2).length;
+    }
+    
+    // Masa seçme işlemi - sipariş detay sayfasına yönlendir
     selectTable(table: RestaurantTable): void {
         this.selectedTable = table;
         this.router.navigate(['/order-detail'], {
@@ -75,6 +88,32 @@ export class RestaurantPanelComponent {
     isRoundTable(table: RestaurantTable): boolean {
         return table.paramObject && table.paramObject.radius === 1;
     }
+    
+    // Sipariş oluşturulduğundan beri geçen süreyi hesapla
+    getElapsedTime(dateString: string): string {
+        if (!dateString) return '';
+        
+        const orderDate = new Date(dateString);
+        const now = new Date();
+        const diffMs = now.getTime() - orderDate.getTime();
+        
+        // Dakika cinsinden süre
+        const diffMins = Math.floor(diffMs / 60000);
+        
+        if (diffMins < 60) {
+            return `${diffMins} dakika`;
+        } else {
+            const hours = Math.floor(diffMins / 60);
+            const mins = diffMins % 60;
+            
+            // Saat ve dakika için tek satırda basitleştirilmiş format
+            if (mins === 0) {
+                return `${hours} saat`;
+            } else {
+                return `${hours} s ${mins} dk`;
+            }
+        }
+    }
 
     addSquareTable(): void {
         const tableCount = this.restaurantArea.tables.length + 1;
@@ -84,7 +123,6 @@ export class RestaurantPanelComponent {
         );
         this.restaurantArea.tables.push(newTable);
         this.selectedTable = newTable;
-        console.log(this.restaurantArea.tables);
     }
 
     addRoundTable(): void {
@@ -95,7 +133,6 @@ export class RestaurantPanelComponent {
         );
         this.restaurantArea.tables.push(newTable);
         this.selectedTable = newTable;
-        console.log(this.restaurantArea.tables);
     }
 
     deleteSelectedTable(): void {
@@ -138,9 +175,27 @@ export class RestaurantPanelComponent {
             errorTitle: null,
         };
 
-        // Örnek masalar ekle
-        this.addSquareTable();
-        this.addRoundTable();
+        // Örnek masalar ekle ve bazılarına sipariş ekle
+        const table1 = this.createNewTable('Masa 1', false);
+        table1.status = 1; // Dolu masa
+        table1.orderTotal = 245.50;
+        table1.orderInsertDate = new Date(Date.now() - 45 * 60000).toISOString(); // 45 dakika önce
+        
+        const table2 = this.createNewTable('Masa 2', true);
+        table2.status = 0; // Boş masa
+        
+        const table3 = this.createNewTable('Masa 3', false);
+        table3.status = 2; // Rezerve masa
+        table3.reservName = 'Ahmet Yılmaz';
+        table3.reservTime = new Date(Date.now() + 60 * 60000).toISOString(); // 1 saat sonra
+        
+        const table4 = this.createNewTable('Masa 4', true);
+        table4.status = 1; // Dolu masa
+        table4.isWaitingPayment = true;
+        table4.orderTotal = 358.75;
+        table4.orderInsertDate = new Date(Date.now() - 90 * 60000).toISOString(); // 90 dakika önce
+        
+        this.restaurantArea.tables = [table1, table2, table3, table4];
     }
 
     // Yeni masa oluştur
@@ -151,8 +206,8 @@ export class RestaurantPanelComponent {
 
         return {
             name: name,
-            x: 50,
-            y: 50,
+            x: 50 + (this.restaurantArea?.tables?.length || 0) * 200,
+            y: 50 + (this.restaurantArea?.tables?.length || 0) * 50,
             width: defaults.width,
             height: defaults.height,
             status: 0,

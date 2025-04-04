@@ -1,48 +1,49 @@
 <div class="app-container dark:bg-gray-900" [class.dark]="isDarkMode">
-    <!-- Sidebar -->
-    <div class="sidebar">
-       <!--  <div class="logo-area">
-            Removed the Menü text as requested 
-        </div>-->
-        
+    <!-- Sidebar - only for desktop -->
+    <div class="sidebar" [class.collapsed]="sidebarCollapsed">
         <nav class="sidebar-nav-container">
             <a href="#" class="sidebar-nav-item" [class.active]="activeItem === 'bolgeler'" (click)="setActive('bolgeler')">
-                <mat-icon>grid_view</mat-icon>
-                <span>Bölgeler</span>
+                <mat-icon class="text-yellow-500">grid_view</mat-icon>
+                <span class="text-gray-700" [class.hidden]="sidebarCollapsed">Bölgeler</span>
             </a>
             <a [routerLink]="['/orders']" class="sidebar-nav-item" [class.active]="activeItem === 'siparisler'" (click)="setActive('siparisler')">
-                <mat-icon>restaurant</mat-icon>
-                <span>Siparişler</span>
+                <mat-icon class="text-gray-600">menu_book</mat-icon>
+                <span class="text-gray-700" [class.hidden]="sidebarCollapsed">Siparişler</span>
             </a>
             <a href="#" class="sidebar-nav-item" [class.active]="activeItem === 'paketler'" (click)="setActive('paketler')">
-                <mat-icon>payments</mat-icon>
-                <span>Paketler</span>
+                <mat-icon class="text-gray-600">visibility</mat-icon>
+                <span class="text-gray-700" [class.hidden]="sidebarCollapsed">Paketler</span>
             </a>
             <a href="#" class="sidebar-nav-item" [class.active]="activeItem === 'hazirla'" (click)="setActive('hazirla')">
-                <mat-icon>settings</mat-icon>
-                <span>Hazırla</span>
+                <mat-icon class="text-gray-600">check_circle</mat-icon>
+                <span class="text-gray-700" [class.hidden]="sidebarCollapsed">Hazırlar</span>
             </a>
-            <a href="#" class="sidebar-nav-item" [class.active]="activeItem === 'gelal'" (click)="setActive('gelal')">
-                <mat-icon>receipt</mat-icon>
-                <span>Gel Al</span>
+            <div class="flex-grow"></div>
+            <a href="#" class="sidebar-nav-item border-t border-gray-200" [class.active]="activeItem === 'gelal'" (click)="setActive('gelal')">
+                <mat-icon class="text-gray-600">store</mat-icon>
+                <span class="text-gray-700" [class.hidden]="sidebarCollapsed">Gel Al</span>
+            </a>
+            <a href="#" class="sidebar-nav-item" [class.active]="activeItem === 'paket'" (click)="setActive('paket')">
+                <mat-icon class="text-gray-600">directions_bike</mat-icon>
+                <span class="text-gray-700" [class.hidden]="sidebarCollapsed">Paket</span>
             </a>
         </nav>
-        
-        <!-- Dark Mode Toggle -->
-        <div class="dark-mode-toggle">
-            <button (click)="toggleDarkMode()" class="theme-toggle-btn">
-                <mat-icon *ngIf="!isDarkMode">dark_mode</mat-icon>
-                <mat-icon *ngIf="isDarkMode">light_mode</mat-icon>
-            </button>
-        </div>
     </div>
     
-    <!-- Main Content -->
-    <div class="main-content bg-gray-100 dark:bg-gray-900">
+    <!-- Main Content with White Tabs -->
+    <div class="main-content bg-white dark:bg-gray-900">
         <div class="content-container">
             <mat-tab-group [disableRipple]="true" mat-stretch-tabs="false" animationDuration="200ms">
-                <mat-tab *ngFor="let area of restaurantData.restaurantAreas" [label]="area.name">
-                    <app-restaurant-layout [restaurantArea]="area"></app-restaurant-layout>
+                <mat-tab *ngFor="let area of restaurantData.restaurantAreas">
+                    <ng-template mat-tab-label>
+                        <div class="flex items-center py-1 px-2">
+                            <mat-icon class="text-current mr-2">table_restaurant</mat-icon>
+                            <span>{{area.name}}</span>
+                        </div>
+                    </ng-template>
+                    <div class="h-full">
+                        <app-restaurant-layout [restaurantArea]="area" [hideTableInfo]="true"></app-restaurant-layout>
+                    </div>
                 </mat-tab>
             </mat-tab-group>
         </div>

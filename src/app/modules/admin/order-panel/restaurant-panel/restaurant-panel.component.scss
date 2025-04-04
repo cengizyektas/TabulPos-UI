@@ -1,83 +1,223 @@
 .mat-mdc-tab-group .mat-mdc-tab-body-content {
     padding: 4px !important;
-  }
+}
+
 .restaurant-layout-container {
     display: flex;
     flex-direction: column;
-
-    .layout-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    
+    .area-header {
+        background-color: #ffffff;
+        padding: 16px;
+        border-bottom: 1px solid #e2e8f0;
+        
         h2 {
             margin: 0;
-            color: #333;
+            font-size: 18px;
+            color: #1e293b;
+            font-weight: 600;
         }
-
-        .layout-actions {
+        
+        .area-info {
+            margin-top: 4px;
+            font-size: 14px;
+            color: #64748b;
             display: flex;
-            gap: 10px;
+            align-items: center;
+            gap: 12px;
+            
+            @media (max-width: 768px) {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
         }
     }
 
     .layout-area {
         position: relative;
-        background-color: #f3f3f3; /* Masa alanının arka plan rengi */
-        border-radius: 8px; /* Köşeleri yuvarlat */
-        min-height: 800px;
-        overflow: hidden;
+        background-color: #f8fafc;
+        border-radius: 0 0 8px 8px;
+        min-height: 600px;
+        padding: 8px;
+        overflow: auto;
+
+        @media (max-width: 768px) {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-gap: 12px;
+            min-height: auto;
+            
+            .table-item {
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: 140px !important;
+                margin-bottom: 0;
+            }
+        }
 
         .table-item {
             position: absolute;
-            background-color: #ffffff; /* Masaların arka plan rengi */
+            background-color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #d9d0d0;
+            border: 2px solid #e2e8f0;
             cursor: pointer;
             user-select: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hafif gölge */
-            border-radius: 8px; /* Köşeleri yuvarlat */
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            min-width: 120px;
+            min-height: 120px;
+            touch-action: manipulation;
+            overflow: hidden;
+            padding: 2px;
 
-            &.selected {
-                box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Seçili masaya daha belirgin gölge */
-                transform: scale(1.05); /* Seçili masayı biraz büyüt */
+            &:active {
+                transform: scale(0.98);
+            }
+
+            // Empty table
+            &:not(.table-busy):not(.table-reserved):not(.table-waiting-payment) {
+                background-color: #ffffff;
+                border-color: #cbd5e1;
+            }
+
+            // Busy table (has active order)
+            &.table-busy {
+                background-color: #ffebee;
+                border-color: #cbd5e1;
+            }
+
+            // Reserved table 
+            &.table-reserved {
+                background-color: #fef3c7;
+                border-color: #f59e0b;
+            }
+
+            // Table waiting for payment
+            &.table-waiting-payment {
+                background-color: #fee2e2;
+                border-color: #ef4444;
             }
 
             &.table-round {
-                border-radius: 50%; /* Yuvarlak masalar */
+                border-radius: 50%;
+                
+                @media (max-width: 768px) {
+                    border-radius: 12px;
+                }
             }
 
             &.table-square {
-                border-radius: 8px; /* Kare masalar */
+                border-radius: 8px;
             }
 
             .table-content {
+                width: 100%;
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
+                justify-content: space-between;
                 text-align: center;
-                pointer-events: none;
+                padding: 10px 8px;
+                gap: 4px;
 
                 .table-name {
-                    font-weight: bold;
+                    font-weight: 600;
                     font-size: 16px;
-                    color: #333;
+                    color: #334155;
+                    margin-bottom: 2px;
+                    white-space: nowrap;
+                }
+
+                .table-status {
+                    margin-bottom: 2px;
+
+                    .status-badge {
+                        font-size: 12px;
+                        padding: 2px 8px;
+                        border-radius: 12px;
+                        font-weight: 500;
+                        display: inline-block;
+                        
+                        &.empty {
+                            background-color: #e2e8f0;
+                            color: #475569;
+                        }
+                        
+                        &.busy {
+                            background-color: #e53935;
+                            color: #ffffff;
+                        }
+                        
+                        &.reserved {
+                            background-color: #f59e0b;
+                            color: #ffffff;
+                        }
+                    }
                 }
 
                 .table-capacity {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     font-size: 14px;
-                    color: #666;
+                    color: #64748b;
+                    margin-bottom: 2px;
+                    
+                    .person-icon {
+                        font-size: 16px;
+                        height: 16px;
+                        width: 16px;
+                        margin-right: 2px;
+                    }
                 }
-            }
 
-            .ng-resizable-handle {
-                z-index: 3;
+                .table-order-info {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin-top: 2px;
+                    
+                    .order-amount {
+                        font-weight: 600;
+                        font-size: 18px;
+                        color: #0f172a;
+                        line-height: 1.2;
+                    }
+                    
+                    .order-time {
+                        font-size: 12px;
+                        color: #64748b;
+                        line-height: 1.2;
+                    }
+                }
+
+                .table-payment-status {
+                    display: flex;
+                    align-items: center;
+                    font-size: 12px;
+                    color: #ef4444;
+                    margin-top: 2px;
+                    font-weight: 500;
+                    line-height: 1;
+                    
+                    .payment-icon {
+                        font-size: 14px;
+                        height: 14px;
+                        width: 14px;
+                        margin-right: 2px;
+                    }
+                }
             }
         }
     }
@@ -109,4 +249,14 @@
             }
         }
     }
+}
+
+// Hide resize handles for order screen
+.cdk-resizable-handle {
+    display: none !important;
+}
+
+// Make tables non-draggable for order screen
+.cdk-drag {
+    cursor: pointer !important;
 }

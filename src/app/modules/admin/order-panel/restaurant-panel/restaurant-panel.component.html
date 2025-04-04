@@ -1,24 +1,50 @@
 <div class="restaurant-layout-container">
   <div class="layout-area h-full">
       <!-- Her bir masa için -->
-      <div *ngFor="let table of restaurantArea.tables" class="table-item "
+      <div *ngFor="let table of restaurantArea.tables" 
+          class="table-item"
           [class.table-round]="isRoundTable(table)"
-          [class.table-square]="!isRoundTable(table)" 
-          [style.width.px]="table.width" [style.height.px]="table.height"
-          [style.left.px]="table.x" [style.top.px]="table.y"
-          [ngStyle]="{'z-index': table.id === selectedTable?.id ? 2 : 1}"  
-          cdkDrag
-          cdkDragBoundary=".layout-area"
-          cdkDragFreeDragPosition="{x: table.x, y: table.y}"
-          (cdkDragEnded)="onTableMoved($event, table)"
-          cdkResizable
-          [cdkResizableHandles]="'all'"
-          (resizeEnd)="onTableResized($event, table)"
+          [class.table-square]="!isRoundTable(table)"
+          [class.table-busy]="table.status === 1"
+          [class.table-reserved]="table.status === 2"
+          [class.table-waiting-payment]="table.isWaitingPayment"
+          [style.width.px]="table.width" 
+          [style.height.px]="table.height"
+          [style.left.px]="table.x" 
+          [style.top.px]="table.y"
           (click)="selectTable(table)">
+          
           <div class="table-content">
               <div class="table-name">{{ table.name }}</div>
-              <div class="table-capacity" *ngIf="table.capacity">{{ table.capacity }} Kişilik</div>
+              
+              <div class="table-status">
+                <div *ngIf="table.status === 0" class="status-badge empty">Boş</div>
+                <div *ngIf="table.status === 1" class="status-badge busy">Dolu</div>
+                <div *ngIf="table.status === 2" class="status-badge reserved">Rezerve</div>
+              </div>
+              
+              <div class="table-capacity" *ngIf="table.capacity">
+                <mat-icon class="person-icon">person</mat-icon> {{ table.capacity }}
+              </div>
+              
+              <div class="table-order-info" *ngIf="table.orderTotal">
+                <div class="order-amount">{{ table.orderTotal }} ₺</div>
+                <div class="order-time" *ngIf="table.orderInsertDate">
+                  {{ getElapsedTime(table.orderInsertDate) }}
+                </div>
+              </div>
+              
+              <div class="table-payment-status" *ngIf="table.isWaitingPayment">
+                <mat-icon class="payment-icon">payment</mat-icon>
+                <span>Ödeme Bekliyor</span>
+              </div>
           </div>
+      </div>
+      
+      <!-- Boş alan mesajı -->
+      <div *ngIf="restaurantArea.tables.length === 0" class="flex flex-col items-center justify-center h-full">
+        <mat-icon class="text-5xl text-gray-300">table_restaurant</mat-icon>
+        <p class="text-gray-400 mt-4">Henüz hiç masa tanımlanmamış</p>
       </div>
   </div>
 </div>

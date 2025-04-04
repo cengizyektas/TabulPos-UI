@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, HostListener } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -32,10 +32,35 @@ export class OrderPanelComponent implements OnInit {
     
     // Dark mode state
     isDarkMode: boolean = false;
+    
+    // Sidebar collapsed state
+    sidebarCollapsed: boolean = false;
+    
+    // Is mobile view
+    isMobile: boolean = false;
+    
+    // Show sidebar on mobile
+    showMobileSidebar: boolean = false;
+
+    // Listen to window resize
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        this.checkIfMobile();
+    }
+    
+    // Check if mobile view
+    checkIfMobile(): void {
+        this.isMobile = window.innerWidth <= 768;
+    }
 
     // Method to set active navigation item
     setActive(item: string): void {
         this.activeItem = item;
+        
+        // On mobile, hide sidebar after selection
+        if (this.isMobile) {
+            this.showMobileSidebar = false;
+        }
     }
     
     // Toggle dark mode
@@ -45,8 +70,29 @@ export class OrderPanelComponent implements OnInit {
         // Optionally save this preference to localStorage
         localStorage.setItem('darkMode', this.isDarkMode ? 'true' : 'false');
     }
+    
+    // Toggle sidebar collapse state
+    toggleSidebar(): void {
+        this.sidebarCollapsed = !this.sidebarCollapsed;
+        
+        // On mobile, also toggle mobile sidebar
+        if (this.isMobile) {
+            this.showMobileSidebar = !this.showMobileSidebar;
+        }
+        
+        // Optionally save this preference to localStorage
+        localStorage.setItem('sidebarCollapsed', this.sidebarCollapsed ? 'true' : 'false');
+    }
+    
+    // Toggle mobile sidebar
+    toggleMobileSidebar(): void {
+        this.showMobileSidebar = !this.showMobileSidebar;
+    }
 
     ngOnInit(): void {
+        // Check if mobile on init
+        this.checkIfMobile();
+        
         // Get sample data first
         this.restaurantData = createSampleRestaurantData();
         
@@ -64,6 +110,12 @@ export class OrderPanelComponent implements OnInit {
         const savedDarkMode = localStorage.getItem('darkMode');
         if (savedDarkMode === 'true') {
             this.isDarkMode = true;
+        }
+        
+        // Check for saved sidebar state
+        const savedSidebarState = localStorage.getItem('sidebarCollapsed');
+        if (savedSidebarState === 'true') {
+            this.sidebarCollapsed = true;
         }
     }
 }
