@@ -179,9 +179,52 @@ export function createSampleRestaurantData(): RestaurantAreasModel {
         tables: [],
     };
 
+    // Üç adet yeni masa ekleyerek mevcut masaların yanına konumlandırma
+    const table3: RestaurantTable = {
+        ...table1,
+        id: 1503630,
+        guid: 'b5f68710-8eg0-6g56-1ea0-027be8089112',
+        name: 'Masa 3',
+        x: 520, // Table2'nin yanında (x:270 + width:240 + 10 boşluk)
+        y: 10,   // Table1 ve Table2 ile aynı hizada
+        width: 240,
+        height: 145,
+        status: 0,
+    };
+
+    const table4: RestaurantTable = {
+        ...table1,
+        id: 1503631,
+        guid: 'c6g79821-9fh1-7h67-2fb1-138cf9190223',
+        name: 'Masa 4',
+        x: 770, // Table3'ün yanında (x:520 + width:240 + 10 boşluk)
+        y: 10,  // Aynı hizada
+        width: 240,
+        height: 145,
+        status: 0,
+    };
+
+    const table5: RestaurantTable = {
+        ...table1,
+        id: 1503632,
+        guid: 'd7h80932-0gi2-8i78-3gc2-249dg0201334',
+        name: 'Masa 5',
+        x: 1020, // Table4'ün yanında (x:770 + width:240 + 10 boşluk)
+        y: 10,   // Aynı hizada
+        width: 240,
+        height: 145,
+        status: 0,
+    };
+
     // Ana veri modeli
     const restaurantData: RestaurantAreasModel = {
-        restaurantAreas: [salonArea, bahceArea],
+        restaurantAreas: [
+            {
+                ...salonArea,
+                tables: [...salonArea.tables, table3, table4, table5]
+            }, 
+            bahceArea
+        ],
     };
 
     return restaurantData;
