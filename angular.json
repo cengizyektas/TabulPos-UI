@@ -30,7 +30,8 @@
                             "crypto-js/enc-utf8",
                             "crypto-js/hmac-sha256",
                             "crypto-js/enc-base64",
-                            "quill-delta"
+                            "quill-delta",
+                            "leaflet"
                         ],
                         "assets": [
                             {
@@ -41,6 +42,11 @@
                                 "glob": "_redirects",
                                 "input": "src",
                                 "output": "/"
+                            },
+                            {
+                                "glob": "**/*",
+                                "input": "node_modules/leaflet/dist/images",
+                                "output": "assets/leaflet"
                             }
                         ],
                         "stylePreprocessorOptions": {
@@ -56,7 +62,8 @@
                             "src/styles/vendors.scss",
                             "src/@fuse/styles/main.scss",
                             "src/styles/styles.scss",
-                            "src/styles/tailwind.scss"
+                            "src/styles/tailwind.scss",
+                            "node_modules/leaflet/dist/leaflet.css"
                         ],
                         "scripts": []
                     },

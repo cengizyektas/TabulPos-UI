@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  tabulpos-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tabulpos-ui
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      - tabulpos-network
+
+networks:
+  tabulpos-network:
+    driver: bridge 

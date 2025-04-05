@@ -4,8 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import * as L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 
 @Component({
   selector: 'app-location-modal',
@@ -15,14 +15,20 @@ import 'leaflet/dist/leaflet.css';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    FormsModule
+    FormsModule,
+    LeafletModule
   ],
   templateUrl: './location-modal.component.html',
   styleUrls: ['./location-modal.component.scss']
 })
 export class LocationModalComponent implements OnInit {
-  private map: any;
-  private marker: any;
+  private map: L.Map;
+  private marker: L.Marker;
+  
+  // Leaflet configuration
+  options: L.MapOptions;
+  layers: L.Layer[] = [];
+  
   public location: { lat: number, lng: number, address: string } = {
     lat: 39.975969,  // Default coordinates for Ankara
     lng: 32.840523,
@@ -33,37 +39,61 @@ export class LocationModalComponent implements OnInit {
     public dialogRef: MatDialogRef<LocationModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { location?: { lat: number, lng: number, address: string } }
   ) {
+    // Fix Leaflet's default icon path
+    const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
+    const iconUrl = 'assets/leaflet/marker-icon.png';
+    const shadowUrl = 'assets/leaflet/marker-shadow.png';
+    
+    // Fix default icon
+    const iconDefault = L.icon({
+      iconRetinaUrl,
+      iconUrl,
+      shadowUrl,
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      tooltipAnchor: [16, -28],
+      shadowSize: [41, 41]
+    });
+    L.Marker.prototype.options.icon = iconDefault;
+
     // If existing location was passed, use it
     if (data?.location) {
       this.location = { ...data.location };
     }
+    
+    // Initialize leaflet options
+    this.options = {
+      layers: [
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        })
+      ],
+      zoom: 17,
+      center: L.latLng(this.location.lat, this.location.lng)
+    };
+    
+    // Create marker with custom icon path
+    this.marker = L.marker([this.location.lat, this.location.lng], {
+      draggable: true
+    });
+    
+    this.layers = [this.marker];
   }
 
   ngOnInit(): void {
-    // We need to wait for the dialog to render before initializing the map
-    setTimeout(() => {
-      this.initMap();
-    }, 100);
+    // If we already have an address, update the UI
+    if (this.data?.location?.address) {
+      this.location.address = this.data.location.address;
+    } else {
+      this.reverseGeocode(this.location.lat, this.location.lng);
+    }
   }
 
-  private initMap(): void {
-    // Create map
-    this.map = L.map('location-map', {
-      center: [this.location.lat, this.location.lng],
-      zoom: 17
-    });
-
-    // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
-
-    // Add marker
-    this.marker = L.marker([this.location.lat, this.location.lng], {
-      draggable: true
-    }).addTo(this.map);
-
+  onMapReady(map: L.Map): void {
+    this.map = map;
+    
     // Handle marker drag events
     this.marker.on('dragend', (event: any) => {
       const position = this.marker.getLatLng();
@@ -80,13 +110,6 @@ export class LocationModalComponent implements OnInit {
       this.location.lng = lng;
       this.reverseGeocode(lat, lng);
     });
-
-    // If we already have an address, update the UI
-    if (this.data?.location?.address) {
-      this.location.address = this.data.location.address;
-    } else {
-      this.reverseGeocode(this.location.lat, this.location.lng);
-    }
   }
 
   private reverseGeocode(lat: number, lng: number): void {
