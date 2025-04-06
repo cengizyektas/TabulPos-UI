@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {
     ApplicationConfig,
     inject,
@@ -17,16 +17,16 @@ import { provideIcons } from 'app/core/icons/icons.provider';
 import { MockApiService } from 'app/mock-api';
 import { firstValueFrom } from 'rxjs';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
+import { ApiAuthInterceptor } from './core/auth/keycloak/api-auth.interceptor';
+
 
 export const appConfig: ApplicationConfig = {
     providers: [
-        provideAnimations(),
-        provideHttpClient(),
+        provideAnimations(),     
         provideRouter(
             appRoutes,
             withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
         ),
-
         // Material Date Adapter
         {
             provide: DateAdapter,
@@ -77,6 +77,12 @@ export const appConfig: ApplicationConfig = {
 
         // Fuse
         provideAuth(),
+        provideHttpClient(withInterceptorsFromDi()),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ApiAuthInterceptor,
+            multi: true
+        },
         provideIcons(),
         provideFuse({
             mockApi: {

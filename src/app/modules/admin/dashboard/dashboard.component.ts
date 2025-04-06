@@ -7,6 +7,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { HttpClient } from '@angular/common/http';
+import { FirmaService, Firma } from '../../../services/firma.service';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-dashboard',
@@ -21,7 +24,9 @@ import { HttpClient } from '@angular/common/http';
         MatMenuModule,
         MatCardModule,
         MatTabsModule,
-        NgApexchartsModule
+        NgApexchartsModule,
+        MatTableModule,
+        MatProgressSpinnerModule
     ]
 })
 export class DashboardComponent implements OnInit {
@@ -49,17 +54,40 @@ export class DashboardComponent implements OnInit {
         expenses: '₺0,00'
     };
 
+    // Firma verileri
+    firmaListesi: Firma[] = [];
+    displayedColumns: string[] = ['firmaId', 'firmaAdi', 'firmaKodu', 'telefon', 'email', 'aktif'];
+    isLoading = true;
+
     selectedWeek: 'this-week' | 'last-week' = 'this-week';
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private firmaService: FirmaService
+    ) {}
 
     ngOnInit(): void {
         this.updateRandomData();
         this.initializeCharts();
+        this.loadFirmaList();
     }
 
     selectWeek(week: 'this-week' | 'last-week'): void {
         this.selectedWeek = week;
+    }
+
+    private loadFirmaList(): void {
+        this.isLoading = true;
+        this.firmaService.getFirmaList().subscribe({
+            next: (response) => {
+                this.firmaListesi = response.data;
+                this.isLoading = false;
+            },
+            error: (error) => {
+                console.error('Firma listesi yüklenirken hata oluştu:', error);
+                this.isLoading = false;
+            }
+        });
     }
 
     private updateRandomData(): void {
