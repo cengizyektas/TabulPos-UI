@@ -6,9 +6,9 @@ export const environment = {
   
   // Keycloak configuration
   keycloak: {
-    url: 'http://localhost:8080/auth',
+    url: 'https://auth.tabul.com.tr/auth',
     realm: 'master',
-    clientId: 'tabulapi',
-    clientSecret: 'da3da70b-4ac8-4b61-b169-f783f8f5c99f'
+    clientId: 'tabulposapi',
+    clientSecret: 'd491c624-e978-40ba-a796-7fed9fa6a494'
   }
 }; 
