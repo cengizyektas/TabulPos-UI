@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
+import { AuthMockApi } from 'app/mock-api/common/auth/api';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -9,6 +10,8 @@ export class AuthService {
     private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
+    private _testToken = inject(AuthMockApi);
+
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -55,7 +58,7 @@ export class AuthService {
     signIn(credentials: { email: string; password: string }): Observable<any> {
         // Throw error, if the user is already logged in
         if (this._authenticated) {
-            return throwError('User is already logged in.');
+            return throwError(() => 'User is already logged in.');
         }
 
         return this._httpClient.post('api/auth/sign-in', credentials).pipe(
@@ -153,8 +156,8 @@ export class AuthService {
         return this._httpClient.post('api/auth/unlock-session', credentials);
     }
 
-    /**
-     * Check the authentication status
+    /**Sayfa yuklenirken token kontrolü yapar 
+     * daha sonra düzenle şimdilik bir önenmi yok
      */
     check(): Observable<boolean> {
         // Check if the user is logged in
@@ -162,17 +165,51 @@ export class AuthService {
             return of(true);
         }
 
-        // Check the access token availability
+        // token gelirse ve geçerli ise kontorol et
         if (!this.accessToken) {
             return of(false);
         }
 
-        // Check the access token expire date
+        // token süresi dolmuş mu
         if (AuthUtils.isTokenExpired(this.accessToken)) {
             return of(false);
         }
 
         // If the access token exists, and it didn't expire, sign in using it
         return this.signInUsingToken();
+    }
+
+    /**
+     * Sign in with phone number
+     *
+     * @param credentials
+     */
+    signInWithPhone(credentials: { phoneNumber: string; password: string }): Observable<any> {
+        // Throw error, if the user is already logged in
+        if (this._authenticated) {
+            return throwError(() => 'User is already logged in.');
+        }
+
+        return this._httpClient.post('http://localhost:35029/v1/Auth/Login', credentials).pipe(
+            switchMap((response: any) => {
+                // Check if the response is successful
+                if (response.status === 200 && response.data) {
+                    // Store the access token - assuming the backend returns a token in the response
+                    // If the token is in a different format, adjust accordingly
+                    this.accessToken = this._testToken._generateJWTToken() || '';
+
+                    // Set the authenticated flag to true
+                    this._authenticated = true;
+
+                    // Store the user on the user service
+                    this._userService.user = response.data;
+
+                    // Return a new observable with the response
+                    return of(response);
+                }
+                
+                return throwError(() => response.messages || 'Authentication failed');
+            })
+        );
     }
 }

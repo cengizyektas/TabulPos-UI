@@ -91,14 +91,14 @@
             <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
                 <!-- Email field -->
                 <mat-form-field class="w-full">
-                    <mat-label>E-posta adresi</mat-label>
-                    <input id="email" matInput [formControlName]="'email'" />
-                    @if (signInForm.get('email').hasError('required')) {
-                    <mat-error> E-posta adresi gerekli </mat-error>
+                    <mat-label>Telefon Numarası</mat-label>
+                    <input id="phoneNumber" matInput [formControlName]="'phoneNumber'" />
+                    @if (signInForm.get('phoneNumber').hasError('required')) {
+                    <mat-error> Telefon numarası gerekli </mat-error>
                     }
-                    @if (signInForm.get('email').hasError('email')) {
+                    @if (signInForm.get('phoneNumber').hasError('pattern')) {
                     <mat-error>
-                        Lütfen geçerli bir e-posta adresi girin
+                        Lütfen geçerli bir telefon numarası girin (10 haneli)
                     </mat-error>
                     }
                 </mat-form-field>

@@ -32,17 +32,17 @@ export const authInterceptor = (
     // for the protected API routes which our response interceptor will
     // catch and delete the access token from the local storage while logging
     // the user out from the app.
-    if (
-        authService.accessToken &&
-        !AuthUtils.isTokenExpired(authService.accessToken)
-    ) {
-        newReq = req.clone({
-            headers: req.headers.set(
-                'Authorization',
-                'Bearer ' + authService.accessToken
-            ),
-        });
-    }
+    // if (
+    //     authService.accessToken &&
+    //     !AuthUtils.isTokenExpired(authService.accessToken)
+    // ) {
+    //     newReq = req.clone({
+    //         headers: req.headers.set(
+    //             'Authorization',
+    //             'Bearer ' + authService.accessToken
+    //         ),
+    //     });
+    // }
 
     // Response
     return next(newReq).pipe(
@@ -50,13 +50,14 @@ export const authInterceptor = (
             // Catch "401 Unauthorized" responses
             if (error instanceof HttpErrorResponse && error.status === 401) {
                 // Sign out
-                authService.signOut();
+               // authService.signOut();
 
                 // Reload the app
-                location.reload();
+              //  location.reload();
             }
 
-            return throwError(error);
+            // Return the error as is
+            return throwError(() => error);
         })
     );
 };
