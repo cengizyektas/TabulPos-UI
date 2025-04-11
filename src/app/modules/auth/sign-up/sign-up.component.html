@@ -2,27 +2,70 @@
     class="flex min-w-0 flex-auto flex-col items-center sm:flex-row sm:justify-center md:items-start md:justify-start"
 >
     <div
-        class="w-full px-4 py-8 sm:bg-card sm:w-auto sm:rounded-2xl sm:p-12 sm:shadow md:flex md:h-full md:w-1/2 md:items-center md:justify-end md:rounded-none md:p-16 md:shadow-none"
+        class="relative hidden h-full w-1/2 flex-auto items-center justify-center overflow-hidden bg-gray-800 p-16 dark:border-l md:flex lg:px-28" style="background-color: #1A1A1A;"
+    >
+        <!-- Background -->
+        <!-- Rings -->
+        <!-- prettier-ignore -->
+        <svg class="absolute inset-0 pointer-events-none"
+             viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+            <g class="opacity-25" fill="none" stroke="#FF6000" stroke-width="100">
+                <circle r="234" cx="196" cy="23"></circle>
+                <circle r="234" cx="790" cy="491"></circle>
+            </g>
+        </svg>
+        <!-- Dots -->
+        <!-- prettier-ignore -->
+        <svg class="absolute -top-16 -right-16"
+             viewBox="0 0 220 192" width="220" height="192" fill="none">
+            <defs>
+                <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <rect x="0" y="0" width="4" height="4" fill="#FF6000" opacity="0.2"></rect>
+                </pattern>
+            </defs>
+            <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
+        </svg>
+        <!-- Content -->
+        <div class="relative z-10 w-full max-w-2xl">
+            <div class="text-5xl font-bold leading-none text-gray-100">
+                <div>Topluluğumuza <span style="color: #FF6000">Hoş</span></div>
+                <div><span style="color: #FF6000">Geldiniz</span></div>
+            </div>
+            <div class="mt-6 text-md leading-6 tracking-tight text-gray-300">
+                POS ile Güçlen, İşini Şimdi Dijitale Taşı! Hızlı, güvenli ve sorunsuz ödeme çözümleriyle işinizi
+                büyütün. Müşteri memnuniyetini artırın, satışları hızlandırın ve rekabette öne çıkın.
+            </div>
+            <div class="mt-8 flex items-center">
+                <div class="flex flex-0 items-center -space-x-1.5">
+                    <div class="flex h-10 w-10 flex-0 items-center justify-center rounded-full text-white font-bold ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800 font-mono text-lg" style="background-color: #FF6000;">T</div>
+                    <div class="flex h-10 w-10 flex-0 items-center justify-center rounded-full text-white font-bold ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800 font-mono text-lg" style="background-color: #FF6000;">A</div>
+                    <div class="flex h-10 w-10 flex-0 items-center justify-center rounded-full text-white font-bold ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800 font-mono text-lg" style="background-color: #FF6000;">B</div>
+                    <div class="flex h-10 w-10 flex-0 items-center justify-center rounded-full text-white font-bold ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800 font-mono text-lg" style="background-color: #FF6000;">U</div>
+                    <div class="flex h-10 w-10 flex-0 items-center justify-center rounded-full text-white font-bold ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800 font-mono text-lg" style="background-color: #FF6000;">L</div>
+                </div>
+                <div class="ml-4 text-sm font-medium tracking-tight text-gray-300">
+                    100'den fazla kişi bize katıldı, şimdi sıra sizde
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        class="w-full px-4 py-8 sm:bg-card sm:w-auto sm:rounded-2xl sm:p-12 bg-white sm:shadow md:flex md:h-full md:w-1/2 md:items-center md:justify-center md:rounded-none md:p-16 md:shadow-none"
     >
         <div class="mx-auto w-full max-w-80 sm:mx-0 sm:w-80">
             <!-- Logo -->
-            <div class="w-12">
-                <img src="images/logo/logo.svg" />
+            <div class="w-40">
+                <img src="images/logo/logo.png" />
             </div>
 
             <!-- Title -->
             <div
-                class="mt-8 text-4xl font-extrabold leading-tight tracking-tight"
+                class="mt-8 text-xl font-extrabold leading-tight tracking-tight"
             >
-                Sign up
+                Tabul'a Hoşgeldiniz
             </div>
-            <div class="mt-0.5 flex items-baseline font-medium">
-                <div>Already have an account?</div>
-                <a
-                    class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/sign-in']"
-                    >Sign in
-                </a>
+            <div class="mt-0.5 text-gray-500">
+                Hemen kaydolun, 15 Gün boyunca ücretsiz deneyin!
             </div>
 
             <!-- Alert -->
@@ -40,32 +83,65 @@
 
             <!-- Sign Up form -->
             <form class="mt-8" [formGroup]="signUpForm" #signUpNgForm="ngForm">
+                <!-- Company field -->
+                <mat-form-field class="w-full" appearance="outline">
+                    <mat-label>İşletme Adı</mat-label>
+                    <input
+                        id="company"
+                        matInput
+                        [formControlName]="'company'"
+                    />
+                    @if (signUpForm.get('company').touched && signUpForm.get('company').hasError('required')) {
+                        <mat-error>İşletme adı gerekli</mat-error>
+                    }
+                </mat-form-field>
+
                 <!-- Name field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Full name</mat-label>
+                <mat-form-field class="w-full" appearance="outline">
+                    <mat-label>İsim Soyisim</mat-label>
                     <input id="name" matInput [formControlName]="'name'" />
-                    @if (signUpForm.get('name').hasError('required')) {
-                        <mat-error> Full name is required </mat-error>
+                    @if (signUpForm.get('name').touched && signUpForm.get('name').hasError('required')) {
+                        <mat-error>İsim Soyisim gerekli</mat-error>
                     }
                 </mat-form-field>
 
                 <!-- Email field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Email address</mat-label>
+                <mat-form-field class="w-full" appearance="outline">
+                    <mat-label>Güncel Mail Adresiniz</mat-label>
                     <input id="email" matInput [formControlName]="'email'" />
-                    @if (signUpForm.get('email').hasError('required')) {
-                        <mat-error> Email address is required </mat-error>
+                    @if (signUpForm.get('email').touched && signUpForm.get('email').hasError('required')) {
+                        <mat-error>E-posta adresi gerekli</mat-error>
                     }
-                    @if (signUpForm.get('email').hasError('email')) {
+                    @if (signUpForm.get('email').touched && signUpForm.get('email').hasError('email')) {
                         <mat-error>
-                            Please enter a valid email address
+                            Lütfen geçerli bir e-posta adresi girin
                         </mat-error>
                     }
                 </mat-form-field>
 
+                <!-- Phone field -->
+                <div class="flex gap-2">
+                    <div class="w-3/12" >
+                        <mat-form-field class="w-full"  appearance="outline">
+                            <mat-select [value]="'+90'" disabled>
+                                <mat-option value="+90">+90</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="w-9/12">
+                        <mat-form-field class="w-full" appearance="outline">
+                            <mat-label>Cep Telefonu</mat-label>
+                            <input id="phone" matInput [formControlName]="'phone'" />
+                            @if (signUpForm.get('phone').touched && signUpForm.get('phone').hasError('required')) {
+                                <mat-error>Cep telefonu gerekli</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+                </div>
+
                 <!-- Password field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Password</mat-label>
+                <mat-form-field class="w-full" appearance="outline">
+                    <mat-label>Şifre</mat-label>
                     <input
                         id="password"
                         matInput
@@ -96,51 +172,77 @@
                             ></mat-icon>
                         }
                     </button>
-                    <mat-error> Password is required </mat-error>
+                    @if (signUpForm.get('password').touched && signUpForm.get('password').hasError('required')) {
+                        <mat-error>Şifre gerekli</mat-error>
+                    }
                 </mat-form-field>
 
-                <!-- Company field -->
-                <mat-form-field class="w-full">
-                    <mat-label>Company</mat-label>
+                <!-- Password Confirm field -->
+                <mat-form-field class="w-full" appearance="outline">
+                    <mat-label>Şifre Tekrar</mat-label>
                     <input
-                        id="company-confirm"
+                        id="passwordConfirm"
                         matInput
-                        [formControlName]="'company'"
+                        type="password"
+                        [formControlName]="'passwordConfirm'"
+                        #passwordConfirmField
                     />
+                    <button
+                        mat-icon-button
+                        type="button"
+                        (click)="
+                            passwordConfirmField.type === 'password'
+                                ? (passwordConfirmField.type = 'text')
+                                : (passwordConfirmField.type = 'password')
+                        "
+                        matSuffix
+                    >
+                        @if (passwordConfirmField.type === 'password') {
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:eye'"
+                            ></mat-icon>
+                        }
+                        @if (passwordConfirmField.type === 'text') {
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:eye-slash'"
+                            ></mat-icon>
+                        }
+                    </button>
+                    @if (signUpForm.get('passwordConfirm').touched && signUpForm.get('passwordConfirm').hasError('required')) {
+                        <mat-error>Şifre tekrarı gerekli</mat-error>
+                    }
                 </mat-form-field>
 
                 <!-- ToS and PP -->
-                <div class="mt-1.5 inline-flex w-full items-end">
+                <div class="mt-1.5 flex items-start">
                     <mat-checkbox
-                        class="-ml-2"
-                        [color]="'primary'"
+                        [color]="'warn'"
                         [formControlName]="'agreements'"
+                        style="--mdc-checkbox-selected-checkmark-color: #FF6000; --mdc-checkbox-selected-focus-state-layer-color: #FF6000; --mdc-checkbox-selected-hover-state-layer-color: #FF6000; --mdc-checkbox-selected-icon-color: #FF6000; --mdc-checkbox-selected-pressed-state-layer-color: #FF6000;"
                     >
-                        <span>I agree with</span>
-                        <a
-                            class="ml-1 text-primary-500 hover:underline"
-                            [routerLink]="['./']"
-                            >Terms
-                        </a>
-                        <span>and</span>
-                        <a
-                            class="ml-1 text-primary-500 hover:underline"
-                            [routerLink]="['./']"
-                            >Privacy Policy
-                        </a>
                     </mat-checkbox>
+                    <div class="ml-2 text-sm">
+                        <span>Kullanım Sözleşmesini ve Aydınlatma Metnini</span>
+                        <br>
+                        <span>okudum kabul ediyorum.</span>
+                    </div>
                 </div>
+                @if (signUpForm.get('agreements').touched && signUpForm.get('agreements').hasError('required')) {
+                    <div class="mt-1 text-red-500 text-xs ml-8">Kullanım sözleşmesini kabul etmelisiniz</div>
+                }
 
                 <!-- Submit button -->
                 <button
                     class="fuse-mat-button-large mt-6 w-full"
                     mat-flat-button
-                    [color]="'primary'"
                     [disabled]="signUpForm.disabled"
                     (click)="signUp()"
+                    style="background-color: #FF6000;"
                 >
                     @if (!signUpForm.disabled) {
-                        <span> Create your free account </span>
+                        <span class="text-white"> Kayıt Ol </span>
                     }
                     @if (signUpForm.disabled) {
                         <mat-progress-spinner
@@ -149,67 +251,17 @@
                         ></mat-progress-spinner>
                     }
                 </button>
+                
+                <div class="mt-4 text-center">
+                    <span class="text-gray-600">Üye Misiniz? </span>
+                    <a
+                        class="hover:underline font-medium"
+                        style="color: #FF6000;"
+                        [routerLink]="['/sign-in']"
+                        >Giriş Yap
+                    </a>
+                </div>
             </form>
-        </div>
-    </div>
-    <div
-        class="relative hidden h-full w-1/2 flex-auto items-center justify-center overflow-hidden bg-gray-800 p-16 dark:border-l md:flex lg:px-28"
-    >
-        <!-- Background -->
-        <!-- Rings -->
-        <!-- prettier-ignore -->
-        <svg class="absolute inset-0 pointer-events-none"
-             viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-            <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
-                <circle r="234" cx="196" cy="23"></circle>
-                <circle r="234" cx="790" cy="491"></circle>
-            </g>
-        </svg>
-        <!-- Dots -->
-        <!-- prettier-ignore -->
-        <svg class="absolute -top-16 -right-16 text-gray-700"
-             viewBox="0 0 220 192" width="220" height="192" fill="none">
-            <defs>
-                <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                    <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
-                </pattern>
-            </defs>
-            <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
-        </svg>
-        <!-- Content -->
-        <div class="relative z-10 w-full max-w-2xl">
-            <div class="text-7xl font-bold leading-none text-gray-100">
-                <div>Welcome to</div>
-                <div>our community</div>
-            </div>
-            <div class="mt-6 text-lg leading-6 tracking-tight text-gray-400">
-                Fuse helps developers to build organized and well coded
-                dashboards full of beautiful and rich modules. Join us and start
-                building your application today.
-            </div>
-            <div class="mt-8 flex items-center">
-                <div class="flex flex-0 items-center -space-x-1.5">
-                    <img
-                        class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-                        src="images/avatars/female-18.jpg"
-                    />
-                    <img
-                        class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-                        src="images/avatars/female-11.jpg"
-                    />
-                    <img
-                        class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-                        src="images/avatars/male-09.jpg"
-                    />
-                    <img
-                        class="h-10 w-10 flex-0 rounded-full object-cover ring-4 ring-gray-800 ring-offset-1 ring-offset-gray-800"
-                        src="images/avatars/male-16.jpg"
-                    />
-                </div>
-                <div class="ml-4 font-medium tracking-tight text-gray-400">
-                    More than 17k people joined us, it's your turn
-                </div>
-            </div>
         </div>
     </div>
 </div>

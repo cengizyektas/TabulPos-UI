@@ -3,7 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { AuthMockApi } from 'app/mock-api/common/auth/api';
+import { ApiResponse } from 'app/services/firma.service';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
+import { ApiService } from '../api/api.service';
+import { User } from '../user/user.types';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -11,7 +14,7 @@ export class AuthService {
     private _httpClient = inject(HttpClient);
     private _userService = inject(UserService);
     private _testToken = inject(AuthMockApi);
-
+    private _apiService = inject(ApiService);
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -26,6 +29,13 @@ export class AuthService {
 
     get accessToken(): string {
         return localStorage.getItem('accessToken') ?? '';
+    }
+    set phoneNumber(token: string) {
+        localStorage.setItem('phoneNumber', token);
+    }
+
+    get phoneNumber(): string {
+        return localStorage.getItem('phoneNumber') ?? '';
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -83,10 +93,8 @@ export class AuthService {
      */
     signInUsingToken(): Observable<any> {
         // Sign in using the token
-        return this._httpClient
-            .post('api/auth/sign-in-with-token', {
-                accessToken: this.accessToken,
-            })
+        return this._apiService
+            .get<ApiResponse<User>>(`User/GetUserByPhone/${this.phoneNumber}`)
             .pipe(
                 catchError(() =>
                     // Return false
@@ -100,15 +108,15 @@ export class AuthService {
                     // in using the token, you should generate a new one on the server
                     // side and attach it to the response object. Then the following
                     // piece of code can replace the token with the refreshed one.
-                    if (response.accessToken) {
-                        this.accessToken = response.accessToken;
-                    }
+                    // if (response.accessToken) {
+                    //     this.accessToken = response.accessToken;
+                    // }
 
                     // Set the authenticated flag to true
                     this._authenticated = true;
 
                     // Store the user on the user service
-                    this._userService.user = response.user;
+                    this._userService.user = response.data;
 
                     // Return true
                     return of(true);
@@ -156,7 +164,7 @@ export class AuthService {
         return this._httpClient.post('api/auth/unlock-session', credentials);
     }
 
-    /**Sayfa yuklenirken token kontrolü yapar 
+    /**Sayfa yuklenirken token kontrolü yapar
      * daha sonra düzenle şimdilik bir önenmi yok
      */
     check(): Observable<boolean> {
@@ -167,6 +175,10 @@ export class AuthService {
 
         // token gelirse ve geçerli ise kontorol et
         if (!this.accessToken) {
+            return of(false);
+        }
+        // token gelirse ve geçerli ise kontorol et
+        if (!this.phoneNumber) {
             return of(false);
         }
 
@@ -184,32 +196,34 @@ export class AuthService {
      *
      * @param credentials
      */
-    signInWithPhone(credentials: { phoneNumber: string; password: string }): Observable<any> {
+    signInWithPhone(credentials: {
+        phoneNumber: string;
+        password: string;
+    }): Observable<any> {
         // Throw error, if the user is already logged in
         if (this._authenticated) {
             return throwError(() => 'User is already logged in.');
         }
 
-        return this._httpClient.post('http://localhost:35029/v1/Auth/Login', credentials).pipe(
-            switchMap((response: any) => {
-                // Check if the response is successful
-                if (response.status === 200 && response.data) {
-                    // Store the access token - assuming the backend returns a token in the response
-                    // If the token is in a different format, adjust accordingly
-                    this.accessToken = this._testToken._generateJWTToken() || '';
+        return this._httpClient
+            .post('http://localhost:35029/v1/Auth/Login', credentials)
+            .pipe(
+                switchMap((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        this.accessToken =
+                            this._testToken._generateJWTToken() || '';
 
-                    // Set the authenticated flag to true
-                    this._authenticated = true;
+                        this._authenticated = true;
+                        this.phoneNumber = credentials.phoneNumber;
 
-                    // Store the user on the user service
-                    this._userService.user = response.data;
+                        this._userService.user = response.data;
+                        return of(response);
+                    }
 
-                    // Return a new observable with the response
-                    return of(response);
-                }
-                
-                return throwError(() => response.messages || 'Authentication failed');
-            })
-        );
+                    return throwError(
+                        () => response.messages || 'Authentication failed'
+                    );
+                })
+            );
     }
 }

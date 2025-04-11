@@ -1,0 +1,65 @@
+image: docker:24.0.6
+
+variables:
+  DOCKER_IMAGE: "$CI_REGISTRY_IMAGE/tabul_pos"
+  DOCKER_TAG: "$CI_COMMIT_REF_SLUG"
+  ASPNETCORE_ENVIRONMENT: "Production"
+
+services:
+  - docker:dind
+
+stages:
+  - build
+  - deploy
+
+
+before_script:
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+
+build:
+  stage: build
+  script:
+    - echo "Building Docker Image..."
+    - docker build -t "$DOCKER_IMAGE:$DOCKER_TAG" -f ./Dockerfile ./
+    - echo "Pushing Image to GitLab Container Registry..."
+    - docker push "$DOCKER_IMAGE:$DOCKER_TAG"
+    - docker tag "$DOCKER_IMAGE:$DOCKER_TAG" "$DOCKER_IMAGE:latest"
+    - docker push "$DOCKER_IMAGE:latest"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"  # Run on merge requests
+    - if: $CI_COMMIT_BRANCH == "main"  # Run when merged into main
+
+before_script:
+  - |
+    echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+    apk add --no-cache openssh-client
+    mkdir -p ~/.ssh
+    cat "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    chmod 600 ~/.ssh/id_rsa
+    ssh-keyscan -H 188.245.115.147 >> ~/.ssh/known_hosts
+
+deploy:
+  stage: deploy
+  needs: ["build"]
+  script:
+    - |
+      ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no bb@188.245.115.147 "
+        cd ~/docker/tabul_v1_deploy
+        
+        # Force stop and remove all containers and associated resources
+        docker compose --env-file .env.local -f docker-compose-tabulposfe.yml down || true
+        
+        # Clean up any lingering containers that might cause conflicts
+        docker stop tabulposfe || true
+        docker rm -f tabulposfe || true
+        
+        # Pull latest images and start fresh containers
+        docker compose --env-file .env.local -f docker-compose-tabulposfe.yml pull
+        docker compose --env-file .env.local -f docker-compose-tabulposfe.yml up -d
+      "
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+  environment:
+    name: production
+    action: start

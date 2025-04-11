@@ -13,16 +13,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from 'app/core/auth/auth.service';
+import { RestaurantService } from './restaurant.service';
+import { RegisterRestaurantRequest } from './restaurant.types';
 
 @Component({
     selector: 'auth-sign-up',
     templateUrl: './sign-up.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
+    standalone: true,
     imports: [
         RouterLink,
         FuseAlertComponent,
@@ -34,6 +37,7 @@ import { AuthService } from 'app/core/auth/auth.service';
         MatIconModule,
         MatCheckboxModule,
         MatProgressSpinnerModule,
+        MatSelectModule,
     ],
 })
 export class AuthSignUpComponent implements OnInit {
@@ -45,12 +49,13 @@ export class AuthSignUpComponent implements OnInit {
     };
     signUpForm: UntypedFormGroup;
     showAlert: boolean = false;
+    countryCode: string = '+90';
 
     /**
      * Constructor
      */
     constructor(
-        private _authService: AuthService,
+        private _restaurantService: RestaurantService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router
     ) {}
@@ -65,12 +70,30 @@ export class AuthSignUpComponent implements OnInit {
     ngOnInit(): void {
         // Create the form
         this.signUpForm = this._formBuilder.group({
+            company: ['', Validators.required],
             name: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
+            phone: ['', Validators.required],
             password: ['', Validators.required],
-            company: [''],
-            agreements: ['', Validators.requiredTrue],
+            passwordConfirm: ['', Validators.required],
+            agreements: [false, Validators.requiredTrue],
+        }, {
+            validators: this.passwordMatchValidator
         });
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Private methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Password match validator
+     */
+    private passwordMatchValidator(formGroup: UntypedFormGroup): { [key: string]: boolean } | null {
+        const password = formGroup.get('password').value;
+        const passwordConfirm = formGroup.get('passwordConfirm').value;
+
+        return password === passwordConfirm ? null : { passwordMismatch: true };
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -83,6 +106,18 @@ export class AuthSignUpComponent implements OnInit {
     signUp(): void {
         // Do nothing if the form is invalid
         if (this.signUpForm.invalid) {
+            // Mark all fields as touched to display validation errors
+            this.signUpForm.markAllAsTouched();
+            
+            // Set alert message if password doesn't match
+            if (this.signUpForm.hasError('passwordMismatch')) {
+                this.alert = {
+                    type: 'error',
+                    message: 'Şifreler eşleşmiyor. Lütfen kontrol ediniz.',
+                };
+                this.showAlert = true;
+            }
+            
             return;
         }
 
@@ -92,23 +127,53 @@ export class AuthSignUpComponent implements OnInit {
         // Hide the alert
         this.showAlert = false;
 
-        // Sign up
-        this._authService.signUp(this.signUpForm.value).subscribe(
+        // Format the phone number with the country code
+        const phoneNumber = this.signUpForm.get('phone').value;
+        const formattedPhoneNumber = phoneNumber.startsWith('+90') ? 
+            phoneNumber : 
+            phoneNumber.startsWith('0') ? 
+                `+9${phoneNumber}` : 
+                `+90${phoneNumber}`;
+
+        // Prepare request data
+        const registerData: RegisterRestaurantRequest = {
+            İşletmeAdı: this.signUpForm.get('company').value,
+            İsimSoyisim: this.signUpForm.get('name').value,
+            güncelMailAdresiniz: this.signUpForm.get('email').value,
+            cepTelefonu: formattedPhoneNumber,
+            şifre: this.signUpForm.get('password').value,
+            şifreTekrar: this.signUpForm.get('passwordConfirm').value,
+            kullanımSözleşmesini: this.signUpForm.get('agreements').value,
+        };
+
+        // Register restaurant
+        this._restaurantService.registerRestaurant(registerData).subscribe(
             (response) => {
-                // Navigate to the confirmation required page
-                this._router.navigateByUrl('/confirmation-required');
+                if (response.success) {
+                    // Navigate to the main dashboard
+                    this._router.navigateByUrl('/app/dashboard');
+                } else {
+                    // Re-enable the form
+                    this.signUpForm.enable();
+
+                    // Set the alert
+                    this.alert = {
+                        type: 'error',
+                        message: response.message || 'Kayıt sırasında bir hata oluştu.',
+                    };
+
+                    // Show the alert
+                    this.showAlert = true;
+                }
             },
-            (response) => {
+            (error) => {
                 // Re-enable the form
                 this.signUpForm.enable();
-
-                // Reset the form
-                this.signUpNgForm.resetForm();
 
                 // Set the alert
                 this.alert = {
                     type: 'error',
-                    message: 'Something went wrong, please try again.',
+                    message: error.error?.message || 'Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.',
                 };
 
                 // Show the alert

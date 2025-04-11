@@ -7,7 +7,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { HttpClient } from '@angular/common/http';
-import { FirmaService, Firma } from '../../../services/firma.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -54,40 +53,19 @@ export class DashboardComponent implements OnInit {
         expenses: '₺0,00'
     };
 
-    // Firma verileri
-    firmaListesi: Firma[] = [];
-    displayedColumns: string[] = ['firmaId', 'firmaAdi', 'firmaKodu', 'telefon', 'email', 'aktif'];
-    isLoading = true;
-
     selectedWeek: 'this-week' | 'last-week' = 'this-week';
 
     constructor(
-        private http: HttpClient,
-        private firmaService: FirmaService
+        private http: HttpClient
     ) {}
 
     ngOnInit(): void {
         this.updateRandomData();
         this.initializeCharts();
-        this.loadFirmaList();
     }
 
     selectWeek(week: 'this-week' | 'last-week'): void {
         this.selectedWeek = week;
-    }
-
-    private loadFirmaList(): void {
-        this.isLoading = true;
-        this.firmaService.getFirmaList().subscribe({
-            next: (response) => {
-                this.firmaListesi = response.data;
-                this.isLoading = false;
-            },
-            error: (error) => {
-                console.error('Firma listesi yüklenirken hata oluştu:', error);
-                this.isLoading = false;
-            }
-        });
     }
 
     private updateRandomData(): void {
